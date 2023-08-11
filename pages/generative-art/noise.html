@@ -87,7 +87,7 @@
 			
 			<p>Seed: <span id="seedvalue"></span></p>
 			<p onclick="var value = Math.random();noise.seed(value);document.getElementById('seedvalue').innerHTML = Math.floor(value * 65536);" id="changeSeedButton">Change Seed</p>
-			<p onclick="render();", id="rerenderButton">Rerender</p>
+			<p onclick="renderWithUpdates();", id="rerenderButton">Rerender</p>
 		</div>
 		<script>
 			var sliderIds = ["noisescale", "fbmamplitude", "fbmfrequency", "fbmoctavecount", "fbmpersistence", "fbmlacunarity", "dwarpnumwarps", "dwarpfalloff", "dwarpscale"];
@@ -127,8 +127,8 @@
 			rendering = true;
 			document.getElementById("rerenderButton").innerHTML = "Rendering in progress...";
 			setTimeout(function() { // force dom update
-				for (x = 0; x < width; x++) {
-					for (y = 0; y < height; y++) {
+				for (var x = 0; x < width; x++) {
+					for (var y = 0; y < height; y++) {
 						var col = getWarpedColor(mainNoiseFunction, x, y, gz);
 						context.fillStyle = "#" + ((col[0] << 16) + (col[1] << 8) + col[2]).toString(16);
 						context.fillRect(x, y, 1, 1);
@@ -140,6 +140,35 @@
 			// gz += 50;
             // requestAnimationFrame(render);
         }
+		
+		function renderWithUpdates() { // bad code but works, updates the canvas while rendering
+			if (rendering) {
+				return;
+			} else {
+				rendering = true;
+				document.getElementById("rerenderButton").innerHTML = "Rendering in progress...";
+			}
+			function* drawLoop() {
+				for (var y = 0; y < height; y++) {
+					for (var x = 0; x < width; x++) {
+						const col = getWarpedColor(mainNoiseFunction, x, y, gz);
+						context.fillStyle = "#" + ((col[0] << 16) + (col[1] << 8) + col[2]).toString(16);
+						context.fillRect(x, y, 1, 1);
+					}
+					yield;
+				}
+				rendering = false;
+				document.getElementById("rerenderButton").innerHTML = "Rerender";
+			}
+			const loopGenerator = drawLoop();
+			function updateCanvas() {
+				loopGenerator.next();
+				if (!loopGenerator.done) {
+					requestAnimationFrame(updateCanvas);
+				}
+			}
+			requestAnimationFrame(updateCanvas);
+		}
 
         function getValue(x, y, z) {
             return noise.simplex3(x * sliderValues["noisescale"], y * sliderValues["noisescale"], z * sliderValues["noisescale"]);
