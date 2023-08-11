@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Noisy img</title>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+		
+		.slidercontainer {
+			position: absolute;
+			z-index: 999;
+			width: 20%;
+			x: 20%;
+			background: rgba(50, 50, 50, 0.4);
+		}
+		.slider {
+			-webkit-appearance: none;
+			appearance: none;
+			height: 20px;
+			background: #d3d3d3;
+			outline: none;
+			opacity: 0.7; 
+			-webkit-transition: .2s; 
+			transition: opacity .2s;
+			width: 100%;
+			margin: 0px;
+			padding: 0px;
+		}
+		.slider:hover {
+			opacity: 1;
+		}
+		.slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 15px;
+			height: 15px;
+			background: #000;
+		}
+		.slider::-moz-range-thumb {
+			width: 15px; 
+			height: 15px;
+			background: #000;
+		}
+		p {
+			margin: 0px;
+			font-family: system-ui;
+			font-size: 20px;
+		}
+		#rerenderButton, #changeSeedButton {
+			cursor: pointer;
+		}
+    </style>
+    <script type="text/javascript" src="perlin.js"></script>
+    <script type="text/javascript" src="colormaps.js"></script>
+</head>
+
+<body>
+	<div id="sliders">
+		<div class="slidercontainer">
+		
+			<p>Noise: scale: <span id="noisescalevalue"></span></p>
+			<input type="range" min="0.001" max="0.1" value="0.003" step="0.001" class="slider" id="noisescale">
+			
+			<p>FBM: amplitude: <span id="fbmamplitudevalue"></span></p>
+			<input type="range" min="0.1" max="2" value="1" step="0.1" class="slider" id="fbmamplitude">
+			<p>FBM: frequency: <span id="fbmfrequencyvalue"></span></p>
+			<input type="range" min="0.1" max="2" value="1" step="0.1" class="slider" id="fbmfrequency">
+			<p>FBM: octaveCount: <span id="fbmoctavecountvalue"></span></p>
+			<input type="range" min="1" max="10" value="6" step="1" class="slider" id="fbmoctavecount">
+			<p>FBM: persistence: <span id="fbmpersistencevalue"></span></p>
+			<input type="range" min="0" max="1" value="0.5" step="0.1" class="slider" id="fbmpersistence">
+			<p>FBM: lacunarity: <span id="fbmlacunarityvalue"></span></p>
+			<input type="range" min="0" max="5" value="2.5" step="0.1" class="slider" id="fbmlacunarity">
+			
+			<p>Domain Warp: numWarps: <span id="dwarpnumwarpsvalue"></span></p>
+			<input type="range" min="0" max="10" value="2" step="1" class="slider" id="dwarpnumwarps">
+			<p>Domain Warp: falloff: <span id="dwarpfalloffvalue"></span></p>
+			<input type="range" min="0" max="1" value="0.5" step="0.1" class="slider" id="dwarpfalloff">
+			<p>Domain Warp: scale: <span id="dwarpscalevalue"></span></p>
+			<input type="range" min="1" max="200" value="60" step="1" class="slider" id="dwarpscale">
+			
+			<p>Seed: <span id="seedvalue"></span></p>
+			<p onclick="var value = Math.random();noise.seed(value);document.getElementById('seedvalue').innerHTML = Math.floor(value * 65536);" id="changeSeedButton">Change Seed</p>
+			<p onclick="render();", id="rerenderButton">Rerender</p>
+		</div>
+		<script>
+			var sliderIds = ["noisescale", "fbmamplitude", "fbmfrequency", "fbmoctavecount", "fbmpersistence", "fbmlacunarity", "dwarpnumwarps", "dwarpfalloff", "dwarpscale"];
+			var sliderElements = [];
+			var sliderValues = {};
+			sliderIds.forEach((id) => {
+				sliderElements.push(document.getElementById(id));
+			});
+			sliderElements.forEach((slider) => {
+				document.getElementById(slider.id + "value").innerHTML = slider.value;
+				sliderValues[slider.id] = Number(slider.value);
+				slider.oninput = function() {
+					document.getElementById(this.id + "value").innerHTML = this.value;
+					sliderValues[this.id] = Number(this.value);
+				}
+			})
+		</script>
+	</div>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById("canvas"),
+            context = canvas.getContext("2d"),
+            width = canvas.width = window.innerWidth,
+            height = canvas.height = window.innerHeight;
+
+		var seed = Math.random()
+		document.getElementById("seedvalue").innerHTML = Math.floor(seed * 65536); 
+        noise.seed(seed);
+        var gz = 0;
+		var colormap = BuPu_r;
+		var rendering = false;
+		render();
+
+        function render() {
+			if (rendering) {
+				return;
+			}
+			rendering = true;
+            for (x = 0; x < width; x++) {
+				for (y = 0; y < height; y++) {
+					var col = getWarpedColor(mainNoiseFunction, x, y, gz);
+					context.fillStyle = "#" + ((col[0] << 16) + (col[1] << 8) + col[2]).toString(16);
+					context.fillRect(x, y, 1, 1);
+				}
+			}
+			rendering = false;
+			// gz += 40;
+            // requestAnimationFrame(render);
+        }
+
+        function getValue(x, y, z) {
+            return noise.simplex3(x * sliderValues["noisescale"], y * sliderValues["noisescale"], z * sliderValues["noisescale"]);
+		}
+		function mainNoiseFunction(x, y, z) {
+			return fbm(getValue, x, y, z);
+		}
+		
+		function getColorAtPosition(func, x, y, z) {
+			const value = (1 + func(x, y, z)) / 2;
+			return colormap(value); // step(20, value)
+		}
+		function getWarpedColor(func, x, y, z) {
+			[x, y, z] = domainWarp(func, x, y, z);
+			return getColorAtPosition(func, x, y, z);
+		}
+		function fbm(func, x, y, z, amplitude, frequency, octaveCount, persistence, lacunarity) {
+			var amplitude = amplitude || sliderValues["fbmamplitude"];
+			var frequency = frequency || sliderValues["fbmfrequency"];
+			var octaveCount = octaveCount || sliderValues["fbmoctavecount"];
+			var persistence = persistence || sliderValues["fbmpersistence"];
+			var lacunarity = lacunarity || sliderValues["fbmlacunarity"];
+			var val = 0;
+			var max = 0;
+			for (i = 0; i < octaveCount; i++) {
+				val += amplitude * func(x * frequency, y * frequency, z * frequency);
+				max += amplitude;
+				amplitude *= persistence;
+				frequency *= lacunarity;
+			}
+			return val / max;
+		}
+		function domainWarp(func, x, y, z, numWarps, falloff, scale) {
+			var numWarps = numWarps || sliderValues["dwarpnumwarps"];
+			var falloff = falloff || sliderValues["dwarpfalloff"];
+			var scale = scale || sliderValues["dwarpscale"];
+			for (var i = 0; i < numWarps; i++) {
+				const d = scale * func(x, y, z);
+				x += d;
+				y += d;
+				z += d;
+				scale *= falloff;
+			}
+			return [x, y, z];
+		}
+		function step(n, v) { // bad but it works
+			var stepsize = 1 / n;
+			for (var i = 0; i < 1; i += stepsize) {
+				if (v >= i && v < i + stepsize) {
+					return i;
+				}
+			}
+		}
+		
+		
+    </script>
+</body>
+
+</html>

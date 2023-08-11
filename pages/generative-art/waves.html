@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Perlin dots</title>
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+    <script type="text/javascript" src="colors.js"></script>
+    <script type="text/javascript" src="perlin.js"></script>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById("canvas"),
+            context = canvas.getContext("2d"),
+            width = canvas.width = window.innerWidth,
+            height = canvas.height = window.innerHeight;
+			
+			
+		
+		var offsetX = 5;
+		var offsetY = 5;
+		var speed = 0.01;
+		var spacing = 30;
+		
+		
+		var points = [];
+		for (x = 0; x < width; x += spacing) {
+			for (y = 0; y < height; y += spacing) {
+				points.push({x: x, y: y});
+			}
+		}
+
+        noise.seed(Math.random());
+        var z = 0;
+		
+        function render() {
+			context.clearRect(0, 0, width, height)
+            for (var i = 0; i < points.length; i++) {
+				var p = points[i];
+				var offset = getValue(p.x, p.y) * spacing;
+				context.fillRect(p.x + offset * offsetX - spacing / 4, p.y + offset * offsetY - spacing / 4, spacing / 4, spacing / 4);
+			}
+			z += 0.01;
+            requestAnimationFrame(render);
+        }
+
+        function getValue(x, y) {
+			var scale = 0.001;
+            var v = noise.simplex3(x * scale, y * scale, z);
+			return v;
+		}
+		
+        render();
+    </script>
+</body>
+
+</html>
