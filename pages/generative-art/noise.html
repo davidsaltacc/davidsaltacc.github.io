@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Noisy img</title>
+    <title>Noisy image</title>
     <style type="text/css">
         html, body {
             margin: 0;
@@ -16,8 +16,7 @@
 		.slidercontainer {
 			position: absolute;
 			z-index: 999;
-			width: 20%;
-			x: 20%;
+			width: 25%;
 			background: rgba(50, 50, 50, 0.4);
 		}
 		.slider {
@@ -126,15 +125,19 @@
 				return;
 			}
 			rendering = true;
-            for (x = 0; x < width; x++) {
-				for (y = 0; y < height; y++) {
-					var col = getWarpedColor(mainNoiseFunction, x, y, gz);
-					context.fillStyle = "#" + ((col[0] << 16) + (col[1] << 8) + col[2]).toString(16);
-					context.fillRect(x, y, 1, 1);
+			document.getElementById("rerenderButton").innerHTML = "Rendering in progress...";
+			setTimeout(function() { // force dom update
+				for (x = 0; x < width; x++) {
+					for (y = 0; y < height; y++) {
+						var col = getWarpedColor(mainNoiseFunction, x, y, gz);
+						context.fillStyle = "#" + ((col[0] << 16) + (col[1] << 8) + col[2]).toString(16);
+						context.fillRect(x, y, 1, 1);
+					}
 				}
-			}
-			rendering = false;
-			// gz += 40;
+				rendering = false;
+				document.getElementById("rerenderButton").innerHTML = "Rerender";
+			}, 0);
+			// gz += 50;
             // requestAnimationFrame(render);
         }
 
@@ -147,7 +150,7 @@
 		
 		function getColorAtPosition(func, x, y, z) {
 			const value = (1 + func(x, y, z)) / 2;
-			return colormap(value); // step(20, value)
+			return colormap(value); // step(20, value) for a interesting effect
 		}
 		function getWarpedColor(func, x, y, z) {
 			[x, y, z] = domainWarp(func, x, y, z);
