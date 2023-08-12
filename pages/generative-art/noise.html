@@ -51,8 +51,9 @@
 			margin: 0px;
 			font-family: system-ui;
 			font-size: 20px;
+			margin-bottom: 5px;
 		}
-		#rerenderButton, #changeSeedButton {
+		.pointerCursor {
 			cursor: pointer;
 		}
     </style>
@@ -85,12 +86,21 @@
 			<p>Domain Warp: scale: <span id="dwarpscalevalue"></span></p>
 			<input type="range" min="1" max="200" value="60" step="1" class="slider" id="dwarpscale">
 			
+			<p onclick="usecustomcmap = !usecustomcmap;setCustomColormap(usecustomcmap);document.getElementById('usecustomcmap').innerHTML = usecustomcmap;" id="usecustomcmapbutton" class="pointerCursor">Use Custom Colormap: <span id="usecustomcmap"></span></p>
+			
+			<p>Custom Colormap: red: <span id="cmapredvalue"></span></p>
+			<input type="range" min="0" max="255" value="255" step="1" class="slider" id="cmapred">
+			<p>Custom Colormap: green: <span id="cmapgreenvalue"></span></p>
+			<input type="range" min="0" max="255" value="255" step="1" class="slider" id="cmapgreen">
+			<p>Custom Colormap: blue: <span id="cmapbluevalue"></span></p>
+			<input type="range" min="0" max="255" value="255" step="1" class="slider" id="cmapblue">
+			
 			<p>Seed: <span id="seedvalue"></span></p>
-			<p onclick="var value = Math.random();noise.seed(value);document.getElementById('seedvalue').innerHTML = Math.floor(value * 65536);" id="changeSeedButton">Change Seed</p>
-			<p onclick="renderWithUpdates();", id="rerenderButton">Rerender</p>
+			<p onclick="var value = Math.random();noise.seed(value);document.getElementById('seedvalue').innerHTML = Math.floor(value * 65536);" id="changeSeedButton" class="pointerCursor">Change Seed</p>
+			<p onclick="renderWithUpdates();", id="rerenderButton" class="pointerCursor">Rerender</p>
 		</div>
 		<script>
-			var sliderIds = ["noisescale", "fbmamplitude", "fbmfrequency", "fbmoctavecount", "fbmpersistence", "fbmlacunarity", "dwarpnumwarps", "dwarpfalloff", "dwarpscale"];
+			var sliderIds = ["noisescale", "fbmamplitude", "fbmfrequency", "fbmoctavecount", "fbmpersistence", "fbmlacunarity", "dwarpnumwarps", "dwarpfalloff", "dwarpscale", "cmapred", "cmapgreen", "cmapblue"];
 			var sliderElements = [];
 			var sliderValues = {};
 			sliderIds.forEach((id) => {
@@ -113,11 +123,14 @@
             width = canvas.width = window.innerWidth,
             height = canvas.height = window.innerHeight;
 
+		var usecustomcmap = false;
+		document.getElementById('usecustomcmap').innerHTML = usecustomcmap;
 		var seed = Math.random()
 		document.getElementById("seedvalue").innerHTML = Math.floor(seed * 65536); 
         noise.seed(seed);
         var gz = 0;
 		var colormap = BuPu_r;
+		var defaultcolormap = colormap;
 		var rendering = false;
 
         function render() {
@@ -168,6 +181,15 @@
 				}
 			}
 			requestAnimationFrame(updateCanvas);
+		}
+		function setCustomColormap(enabled) {
+			if (enabled) {
+				colormap = function(v) {
+					return [parseInt(v * sliderValues["cmapred"]), parseInt(v * sliderValues["cmapgreen"]), parseInt(v * sliderValues["cmapblue"])];
+				}
+				return;
+			}
+			colormap = defaultcolormap;
 		}
 
         function getValue(x, y, z) {
