@@ -3,6 +3,7 @@
 
 <head>
     <title>Noisy image</title>
+	<link rel="stylesheet" type="text/css" href="../../styles.css">
     <style type="text/css">
         html, body {
             margin: 0;
@@ -57,7 +58,7 @@
 			cursor: pointer;
 		}
     </style>
-    <script src="https://cdn.jsdelivr.net/gh/josephg/noisejs/perlin.js"></script>
+    <script src="noise.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/timothygebhard/js-colormaps/js-colormaps.js"></script>
 </head>
 
@@ -193,7 +194,7 @@
 		}
 
         function getValue(x, y, z) {
-            return noise.simplex3(x * sliderValues["noisescale"], y * sliderValues["noisescale"], z * sliderValues["noisescale"]);
+			return noise.simplex3d(x * sliderValues["noisescale"], y * sliderValues["noisescale"], z * sliderValues["noisescale"]);
 		}
 		function mainNoiseFunction(x, y, z) {
 			return fbm(getValue, x, y, z);
@@ -247,6 +248,9 @@
 		
 		
     </script>
+	<div class="backbutton">
+		<a href="../../">&#10094; Back</a>
+	</div>
 </body>
 
 </html>
