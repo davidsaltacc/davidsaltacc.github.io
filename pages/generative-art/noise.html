@@ -48,7 +48,7 @@
 			height: 15px;
 			background: #000;
 		}
-		p {
+		p, a {
 			margin: 0px;
 			font-family: system-ui;
 			font-size: 20px;
@@ -99,6 +99,7 @@
 			<p>Seed: <span id="seedvalue"></span></p>
 			<p onclick="var value = Math.random();noise.seed(value);document.getElementById('seedvalue').innerHTML = Math.floor(value * 65536);" id="changeSeedButton" class="pointerCursor">Change Seed</p>
 			<p onclick="renderWithUpdates();", id="rerenderButton" class="pointerCursor">Rerender</p>
+			<p onclick="exportCanvas();", id="exportButton" class="pointerCursor">Export as PNG</p>
 		</div>
 		<script>
 			var sliderIds = ["noisescale", "fbmamplitude", "fbmfrequency", "fbmoctavecount", "fbmpersistence", "fbmlacunarity", "dwarpnumwarps", "dwarpfalloff", "dwarpscale", "cmapred", "cmapgreen", "cmapblue"];
@@ -140,7 +141,7 @@
 			}
 			rendering = true;
 			document.getElementById("rerenderButton").innerHTML = "Rendering in progress...";
-			setTimeout(function() { // force dom update
+			setTimeout(function() { // force dom update so button text updates
 				for (var x = 0; x < width; x++) {
 					for (var y = 0; y < height; y++) {
 						var col = getWarpedColor(mainNoiseFunction, x, y, gz);
@@ -183,6 +184,16 @@
 			}
 			requestAnimationFrame(updateCanvas);
 		}
+		
+		function exportCanvas() { 
+			var image = canvas.toDataURL("image/png");
+			var a = document.createElement("a");
+			a.href = image;
+			a.download = "noise";
+			a.click();
+			a.remove();
+		}
+		
 		function setCustomColormap(enabled) {
 			if (enabled) {
 				colormap = function(v) {
