@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="../../../styles.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/atom-one-dark.min.css">
+		<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/highlight.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+	
+		<h1>untitled small html game engine</h1>
+		<h2>small usage example:</h2>
+	
+		<h3><!-- putting code into a hN increases the font size, im lazy --><pre><code class="language-javascript">
+// example.js
+
+
+
+// constructors
+
+var s = new Sprite("test.png", 50, 50, 0, 0, "testsprite", "testsprite", 0);
+// image, sizeX, sizeY, spawnX, spawnY, name, id, rotation (deg)
+
+var gm = new GameManager();
+// GameManager manages background color and other things
+
+s.SetSize(200, 200);
+// Sprite.SetSize changes a sprites a say
+
+// events
+
+s.SetOnKeyDownEvent(function(key) { // set a onkeydown event
+    if (key.code == "KeyR") { // if key down = R key
+        s.SmoothRotate(360, 5, "linear"); // smooth rotation, 360 degrees, 5 seconds, easing (same easings as in css)
+    }
+});
+s.SetOnHoverEvent(function() { // set on hover event
+    s.Move(20, 20); // move 20, 20 px
+});
+s.SetOnHoverEndEvent(function() { // set on hover end event
+    s.Move(-20, -20); // move back 20, 20 px
+});
+
+s2 = s.Clone("testsprite2"); // clone the sprite, clones all attributes, testsprite2 = id, should be different for the clone
+
+s2.Move(200, 200); // move the clone 200, 200 px
+
+s2.SetOnClickEvent(function() { // set click event for sprite clone, events do not clone
+    gm.Background_SetRandomColor(); // set random background color
+});
+
+// particles
+
+var particle_area1 = new ParticleArea(200, 200, 0, 200); // particle areas both used for areas for where they spawn, and where they go to
+var particle_area2 = new ParticleArea(400, 400, 0, 0);
+// minX, minY, maxX, maxY
+
+var particle_emitter1 = new ParticleEmitter(particle_area1, particle_area2, 2, 20, ["test.png"], 20, 20, "epicparticle", 0, 360, "linear", 0, 200);
+// create particle emitter
+// spawnarea, endarea, time (that particles take to travel), amount_per_second, pictures (list, can be multiple), picSizeX, picSizeY, particlesId, maxrotation, maxRotationOverTime, easing, minzlayer, maxzlayer
+		</code></pre></h3>
+		<script> hljs.highlightAll(); </script>
+		<a href="example" style="cursor: pointer;color: #f5f1ed;"><code>// See this example working</code></a>
+		<h2>where to get:</h2>
+		<a href="https://github.com/davidsaltacc/untitled-small-html-game-engine/blob/main/gameengine.js">module on github</a><br>
+		<a href="https://raw.githubusercontent.com/davidsaltacc/untitled-small-html-game-engine/main/gameengine.js">raw code</a><br>
+		<a href="https://cdn.jsdelivr.net/gh/davidsaltacc/untitled-small-html-game-engine/gameengine.js">jsdelivr link to include in html</a>
+		<h3><pre><code class="language-html">
+&lt;-- include this in your head --&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/davidsaltacc/untitled-small-html-game-engine/gameengine.js"&gt;&lt;/script&gt;
+		</code></pre></h3>
+		</div>
+		<div class="backbutton">
+			<a href="../../../">&#10094; Back</a>
+		</div>
+	</body>
+</html>
