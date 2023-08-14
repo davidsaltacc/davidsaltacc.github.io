@@ -11,14 +11,19 @@
 			<br><br><hr><br>
 			<div class="slideshow-container">
 				<div class="slideshow fade">
-					<div class="numbertext">1 / 2</div>
-					<img src="assets/thumbnail_noise.html.png" style="width:100%" onclick="window.open('pages/generative-art/noise', '_blank').focus();">
+					<div class="numbertext">1 / 3</div>
+					<img src="assets/thumbnail_noise.html.png" style="width:100%" onclick="window.location.href = 'pages/generative-art/noise'">
 					<div class="text">Perlin Noise Playground</div>
 				</div>
 				<div class="slideshow fade">
-					<div class="numbertext" style="color:black;">2 / 2</div>
-					<img src="assets/thumbnail_waves.html.png" style="width:100%" onclick="window.open('pages/generative-art/waves', '_blank').focus();">
+					<div class="numbertext">2 / 3</div>
+					<img src="assets/thumbnail_waves.html.png" style="width:100%" onclick="window.location.href = 'pages/generative-art/waves'">
 					<div class="text">Wavy Thing</div>
+				</div>
+				<div class="slideshow fade">
+					<div class="numbertext">3 / 3</div>
+					<img src="assets/thumbnail_game-engine.png" style="width:100%" onclick="window.location.href = 'pages/code/game-engine/main'">
+					<div class="text">Untitled Small Html Game Engine</div>
 				</div>
 				<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
 				<a class="next" onclick="plusSlides(1)">&#10095;</a>
@@ -26,6 +31,7 @@
 			<div style="text-align:center">
 				<span class="dot" onclick="currentSlide(1)"></span>
 				<span class="dot" onclick="currentSlide(2)"></span>
+				<span class="dot" onclick="currentSlide(3)"></span>
 			</div>
 			<script>
 				let slideIndex = 1;
