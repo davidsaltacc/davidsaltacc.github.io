@@ -348,37 +348,106 @@ noise.perlin3d = function(x, y, z) {
 		v
 	)
 }
-
+/**
+ * Calculates the perlin value for a 0D loopable noise.
+ *
+ * @param {number} a - The angle value.
+ * @param {number} r - The radius value.
+ * @param {number} cx - The center x-coordinate.
+ * @param {number} cy - The center y-coordinate.
+ * @return {number} The Perlin noise value.
+ */
 noise.perlin0dLoopable = function(a, r, cx, cy) { // not tested i hope it works
-	var xoff = (Math.cos(a) + 1 / 2) * r + cx;
-	var yoff = (Math.sin(a) + 1 / 2) * r + cy;
+	var a_ = a || 0, // defaults
+		r_ = r || 1,
+		cx_ = cx || 0,
+		cy_ = cy || 0;
+	var xoff = (Math.cos(a_) + 1) / 2 * r_ + cx_;
+	var yoff = (Math.sin(a_) + 1) / 2 * r_ + cy_;
 	var v = global.noise.perlin2d(xoff, yoff);
 	return v;
 }
 
+/**
+ * Calculates the simplex value for a 0D loopable noise.
+ *
+ * @param {number} a - The angle value.
+ * @param {number} r - The radius value.
+ * @param {number} cx - The center x-coordinate.
+ * @param {number} cy - The center y-coordinate.
+ * @return {number} The Simplex noise value.
+ */
 noise.simplex0dLoopable = function(a, r, cx, cy) { // not tested i hope it works
-	var xoff = (Math.cos(a) + 1 / 2) * r + cx;
-	var yoff = (Math.sin(a) + 1 / 2) * r + cy;
+	var a_ = a || 0, // defaults
+		r_ = r || 1,
+		cx_ = cx || 0,
+		cy_ = cy || 0;
+	var xoff = (Math.cos(a_) + 1) / 2 * r_ + cx_;
+	var yoff = (Math.sin(a_) + 1) / 2 * r_ + cy_;
 	var v = global.noise.simplex2d(xoff, yoff);
 	return v;
 }
 
+/**
+ * Calculates the perlin value for a 1D loopable noise.
+ *
+ * @param {number} a - The angle value.
+ * @param {number} r - The radius value.
+ * @param {number} x - The x-coordinate.
+ * @param {number} cx - The center x-coordinate.
+ * @param {number} cy - The center y-coordinate.
+ * @param {number} cz - The center z-coordinate.
+ * @return {number} The Perlin noise value.
+ */
 noise.perlin1dLoopable = function(a, r, x, cx, cy, cz) { // not tested i hope it works
-	var xoff = (Math.cos(a) + 1 / 2) * r + cx;
-	var yoff = (Math.sin(a) + 1 / 2) * r + cy;
-    var zoff = cz + x;
-    var v = noise.perlin3d(xoff, yoff, zoff);
+	var a_ = a || 0, // defaults
+		r_ = r || 1,
+		cx_ = cx || 0,
+		cy_ = cy || 0,
+		cz_ = cz || 0;
+	var xoff = (Math.cos(a_) + 1) / 2 * r_ + cx_;
+	var yoff = (Math.sin(a_) + 1) / 2 * r_ + cy_;
+	var zoff = cz_ + x;
+	var v = noise.perlin3d(xoff, yoff, zoff);
     return v;
 }
 
+/**
+ * Calculates the simplex value for a 1D loopable noise.
+ *
+ * @param {number} a - The angle parameter.
+ * @param {number} r - The radius parameter.
+ * @param {number} x - The x-coordinate.
+ * @param {number} cx - The center x-coordinate.
+ * @param {number} cy - The center y-coordinate.
+ * @param {number} cz - The center z-coordinate.
+ * @return {number} The simplex noise value.
+ */
 noise.simplex1dLoopable = function(a, r, x, cx, cy, cz) { // not tested i hope it works
-	var xoff = (Math.cos(a) + 1 / 2) * r + cx;
-	var yoff = (Math.sin(a) + 1 / 2) * r + cy;
-    var zoff = cz + x;
-    var v = noise.perlin3d(xoff, yoff, zoff);
+	var a_ = a || 0, // defaults
+		r_ = r || 1,
+		cx_ = cx || 0,
+		cy_ = cy || 0,
+		cz_ = cz || 0;
+	var xoff = (Math.cos(a_) + 1) / 2 * r_ + cx_;
+	var yoff = (Math.sin(a_) + 1) / 2 * r_ + cy_;
+    var zoff = cz_ + x;
+    var v = noise.simplex3d(xoff, yoff, zoff);
     return v;
 }
-
+/**
+ * Calculates the simplex value for a 2D loopable noise.
+ *
+ * @param {number} a - the angle parameter
+ * @param {number} x - the x coordinate
+ * @param {number} y - the y coordinate
+ * @param {number} r - the radius parameter
+ * @param {number} cx - the x center coordinate
+ * @param {number} cy - the y center coordinate
+ * @param {number} cz - the z center coordinate
+ * @param {number} cw - the w center coordinate
+ * @return {number} the simplex value
+ */
 noise.simplex2dLoopable = function(a, x, y, r, cx, cy, cz, cw) {
     var a_ = a || 0, // defaults
         x_ = x || 0,
@@ -388,12 +457,11 @@ noise.simplex2dLoopable = function(a, x, y, r, cx, cy, cz, cw) {
         cy_ = cy || 0,
         cz_ = cz || 0,
         cw_ = cw || 0;
-	var xoff = (Math.cos(a_) + 1 / 2) * r_ + cx_;
-	var yoff = (Math.sin(a_) + 1 / 2) * r_ + cy_;
-	var zoff = (Math.cos(a_) + 1 / 2) * r_ + cz_;
-	var woff = (Math.sin(a_) + 1 / 2) * r_ + cw_;
+	var xoff = (Math.cos(a_) + 1) / 2 * r_ + cx_;
+	var yoff = (Math.sin(a_) + 1) / 2 * r_ + cy_;
+	var zoff = (Math.cos(a_) + 1) / 2 * r_ + cz_;
+	var woff = (Math.sin(a_) + 1) / 2 * r_ + cw_;
 	var v = noise.simplex4d(x_ + xoff, y_ + yoff, zoff, woff);
 	return v;
 }
-
 })(this);
