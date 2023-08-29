@@ -95,9 +95,9 @@
         function doesCircleHaveACollision(circle) {
             for (var i = 0; i < circles.length; i++) {
                 var otherCircle = circles[i];
-                var a = circle.radius + otherCircle.radius;
-                var x = circle.x - otherCircle.x + 1;
-                var y = circle.y - otherCircle.y + 1;
+                var a = circle.radius + otherCircle.radius + 1;
+                var x = circle.x - otherCircle.x;
+                var y = circle.y - otherCircle.y;
 
                 if (a >= Math.sqrt((x * x) + (y * y))) {
                     return true;
