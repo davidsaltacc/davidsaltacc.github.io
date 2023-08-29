@@ -49,7 +49,7 @@
 
         var circles = [];
         var minRadius = 1;
-        var maxRadius = 120;
+        var maxRadius = 150;
         var createCircleAttempts = 500;
 
         function createAndDrawCircle() {
@@ -96,8 +96,8 @@
             for (var i = 0; i < circles.length; i++) {
                 var otherCircle = circles[i];
                 var a = circle.radius + otherCircle.radius;
-                var x = circle.x - otherCircle.x;
-                var y = circle.y - otherCircle.y;
+                var x = circle.x - otherCircle.x + 1;
+                var y = circle.y - otherCircle.y + 1;
 
                 if (a >= Math.sqrt((x * x) + (y * y))) {
                     return true;
