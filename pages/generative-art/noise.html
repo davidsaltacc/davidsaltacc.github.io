@@ -17,7 +17,7 @@
 		
 		.slidercontainer {
 			position: absolute;
-			z-index: 999;
+			z-index: 2;
 			width: 25%;
 			background: rgba(50, 50, 50, 0.4);
 		}
@@ -56,6 +56,55 @@
 			margin-bottom: 5px;
 		}
 		.pointerCursor {
+			cursor: pointer;
+		}
+
+		#rerenderButton {
+			animation-name: blink;
+            animation-duration: 500ms;
+            animation-timing-function: ease;
+            animation-iteration-count: infinite;
+		}
+
+		@keyframes blink {
+            0% {
+                color: rgba(129, 129, 129, 0.588);;
+            }
+            100% {
+                color: rgb(255, 255, 255);
+            }
+        }
+
+		.helpmenumodal {
+			display: none;
+			position: fixed;
+			z-index: 3;
+			width: 100%;
+			height: 100%;
+			overflow: scroll;
+			background-color: rgb(0,0,0);
+			background-color: rgba(0,0,0,0.4);
+		}
+
+		.helpmenucontent {
+			background-color: #1d1d1d;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%;
+		}
+
+		#closehelp {
+			color: #555555;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		#closehelp:hover,
+		#closehelp:focus {
+			color: black;
+			text-decoration: none;
 			cursor: pointer;
 		}
     </style>
@@ -99,8 +148,9 @@
 			
 			<p>Seed: <span id="seedvalue"></span></p>
 			<p onclick="var value = Math.random();noise.seed(value);document.getElementById('seedvalue').innerHTML = Math.floor(value * 65536);" id="changeSeedButton" class="pointerCursor">Change Seed</p>
-			<p onclick="renderWithUpdates();", id="rerenderButton" class="pointerCursor">Rerender</p>
+			<p onclick="renderWithUpdates();", id="rerenderButton" class="pointerCursor">Render!</p>
 			<p onclick="exportCanvas();", id="exportButton" class="pointerCursor">Export as PNG</p>
+			<p onclick="showHelp();", id="helpButton" class="pointerCursor">I DUNT UNDERSZAND ANYTINGZ !!!11!!!!1</p>
 		</div>
 		<script>
 			var sliderIds = ["noisescale", "fbmamplitude", "fbmfrequency", "fbmoctavecount", "fbmpersistence", "fbmlacunarity", "dwarpnumwarps", "dwarpfalloff", "dwarpscale", "cmapred", "cmapgreen", "cmapblue"];
@@ -118,6 +168,72 @@
 				}
 			})
 		</script>
+	</div>
+	<script>
+		function showHelp() {
+			document.getElementsByClassName("helpmenumodal")[0].style.display = "block";
+		}
+		function closeHelp() {
+			document.getElementsByClassName("helpmenumodal")[0].style.display = "none";
+		}
+		window.onclick = function(event) {
+			if (event.target == document.getElementsByClassName("helpmenumodal")[0]) {
+				closeHelp();
+			}
+		}
+	</script>
+	<div class="helpmenumodal">
+		<div class="helpmenucontent">
+			<span id="closehelp" onclick="closeHelp();">&times;</span>
+			<h2>What do all these Sliders do? And how does the page work? HELP</h2>
+			<p>This page is for creating artistic images using two dimensional noise. </p>
+			<p>The sliders control the parameters of the noise function. </p>
+			<h3>How it works:</h3>
+			<p>First, a random noise gets generated. (Noise: randomess, but not completely random)</p>
+			<p>It just creates a smooth pattern. Then, Frequent Browniam Motion gets applied.</p>
+			<p>That just means, different frequencies (scales) of the same noise get overlayed together, N times.</p>
+			<p>After that, a concept called domain warping gets applied. Domain warping is a technique that changes the shape of the noise.</p>
+			<p>That's it.</p>
+			<h3>How you can use it:</h3>
+			<p>Change the Sliders to whatever Values you like.</p>
+			<p>Click the "Render!" button to see the result rendered.</p>
+			<p>Optinally, you can also export the image as a PNG file.</p>
+			<h3>What do the Sliders do?</h3>
+			<h4>Noise Scale:</h4>
+			<p>Noise Scale just modifies the scale of the output noise, higher values resulting in a more zoomed-out image.</p>
+			<h4>FBM Amplitude:</h4>
+			<p>Does pretty much nothing, yet I still keep it in the code.</p>
+			<h4>FBM Frequency:</h4>
+			<p>The Frequency is just the initial Frequency (mentioned above) the FBM algorithm starts with.</p>
+			<h4>FBM Octave Count:</h4>
+			<p>The Octave Count is the number of times a layer of noise gets applied (mentioned above).</p>
+			<h4>FBM Persistence:</h4>
+			<p>Every Octave, the Amplitude gets multipled with persistance, so persistance basically means how much parts of later Iterations get added.</p>
+			<p>Smaller Values; Later Octaves are not that visible in the final noise image.</p>
+			<h4>FBM Lacunarity:</h4>
+			<p>Every Iteration, the frequency (mentioned above) get multipled with lacunarity. So, the higher the lacunarity, the higher the frequency gets over time with every iteration.</p>
+			<h4>Domain Warping Number of Warps:</h4>
+			<p>This is the number of times the Domain Warping gets applied. Really, values dont need to be above 2, since there is no real difference in the output image.</p>
+			<h4>Domain Warping Falloff:</h4>
+			<p>Every time domain warping gets applied, the scale (next slider) gets multiplied by falloff.</p>
+			<h4>Domain Warping Scale:</h4>
+			<p>Really just how strong the domain warping effect is.</p>
+			<h4>Use Custom Colormap [button]</h4>
+			<p>If you want to use a custom colormap (not the default blue/pink colors, but a custom color), click this button to toggle.</p>
+			<h4>Custom Colormap Red/Green/Blue</h4>
+			<p>The red, green and blue values of the color. If unsure, use any online color picker like <a href="https://www.w3schools.com/colors/colors_picker.asp">here</a>, and just pick a color you want.</p>
+			<p>Then if you see any RGB or Red, Green and Blue values, (usually notated like <code>rgb(RED, GREEN, BLUE)</code> ) just copy them over to the sliders.</p>
+			<h4>Seed [label]</h4>
+			<p>This is the seed of the random noise generator. It is random every time, using the same seed will result in the same exact image every time.</p>
+			<h4>Change Seed [button]</h4>
+			<p>If you want to change the seed, click this button.</p>
+			<h4>Render! [button]</h4>
+			<p>This Button renders the image. Note that you can also change the sliders while it is rendering.</p>
+			<h4>Export as PNG [button]</h4>
+			<p>Exports the Image as a PNG file.</p>
+			<h4>Help [button]</h4>
+			<p>Shows this help menu!</p>
+		</div>
 	</div>
     <canvas id="canvas"></canvas>
     <script>
@@ -241,10 +357,10 @@
 			var falloff = falloff || sliderValues["dwarpfalloff"];
 			var scale = scale || sliderValues["dwarpscale"];
 			for (var i = 0; i < numWarps; i++) {
-				const d = scale * func(x, y, z);
-				x += d;
-				y += d;
-				z += d;
+				const dx = scale * func(x, y, z);
+				const dy = scale * func(-x, -y, z);
+				x += dx;
+				y += dy;
 				scale *= falloff;
 			}
 			return [x, y, z];
