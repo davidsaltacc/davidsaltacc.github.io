@@ -36,7 +36,7 @@
             width: 50%;
         }
 
-        h4 {
+        h4, h2 {
             padding: 0;
             color: white;
         }
@@ -45,7 +45,7 @@
 
 <body>
     <script src="https://cdn.jsdelivr.net/gh/gpujs/gpu.js/dist/gpu-browser.min.js"></script>
-    <br><input type="range" min="2" max="2000" value="500" id="size"> <span>size: <span id="sizevalue"></span></span>
+    <br><input type="range" min="2" max="3000" value="500" id="size"> <span>size: <span id="sizevalue"></span></span>
     <br><button type="button" onclick="toggleCustomConstants()">use custom constants: <span id="usecustom"></span></button>
     <br><input type="range" min="-2" max="2" step="0.0001" value="0" id="cx"> <span>cx: <span id="cxvalue"></span></span>
     <br><input type="range" min="-2" max="2" step="0.0001" value="0" id="cy"> <span>cy: <span id="cyvalue"></span></span>
@@ -53,6 +53,7 @@
     <br><span>cy: </span><input type="number" value="0" min="-2" max="2" step="0.0001" id="cyn"><span><button type="button" onclick="updateCyBtn()">submit</button></span>
     <br><p>Mandelbrot Set: <span class="math">f(z) = z<sup>2</sup>+c</span></p>
     <p>Juliaset: <span class="math">f(z) = z<sup>2</sup>+c</span> where <span class="math" id="juliasetC">c = (0 + 0i)</span></p>
+    <h2>READ</h2>
     <h4>Use custom Constants OFF: Click around the Mandelbrot fractal (on the right)</h4>
     <h4>Use custom Constants ON: Use the sliders or text fields</h4>
     <script>
