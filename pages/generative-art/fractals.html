@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Fractals</title>
+    <link rel="stylesheet" type="text/css" href="../../styles.css">
+    <style>
+        body {
+            background-color: black;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            background-color: black;
+        }
+
+        p,
+        a {
+            margin: 0px;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .math {
+            font-family: courier;
+        }
+
+        #cx, #cy, #size {
+            width: 50%;
+        }
+
+        h4 {
+            padding: 0;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/gh/gpujs/gpu.js/dist/gpu-browser.min.js"></script>
+    <br><input type="range" min="2" max="2000" value="500" id="size"> <span>size: <span id="sizevalue"></span></span>
+    <br><button type="button" onclick="toggleCustomConstants()">use custom constants: <span id="usecustom"></span></button>
+    <br><input type="range" min="-2" max="2" step="0.001" value="0" id="cx"> <span>cx: <span id="cxvalue"></span></span>
+    <br><input type="range" min="-2" max="2" step="0.001" value="0" id="cy"> <span>cy: <span id="cyvalue"></span></span>
+    <br><p>Mandelbrot Set: <span class="math">f(z) = z<sup>2</sup>+c</span></p>
+    <p>Juliaset: <span class="math">f(z) = z<sup>2</sup>+c</span> where <span class="math" id="juliasetC">c = (0 + 0i)</span></p>
+    <h4>Use custom Constants OFF: Click around the Mandelbrot fractal (on the right)</h4>
+    <h4>Use custom Constants ON: Use the sliders</h4>
+    <script>
+        var mandelbrotCanvas = document.createElement("canvas"),
+            juliasetCanvas = document.createElement("canvas"),
+            s = Math.min(window.innerWidth, window.innerHeight),
+            width = 500, // Math.floor(s / 2)
+            height = 500, // Math.floor(s / 2)
+            mandelbrotCtx = mandelbrotCanvas.getContext("2d"),
+            juliasetCtx = juliasetCanvas.getContext("2d"),
+            scale = 2.5,
+            usecustom = false;
+
+        document.body.prepend(juliasetCanvas);
+        document.body.prepend(mandelbrotCanvas);
+
+        mandelbrotCanvas.width = juliasetCanvas.width = width;
+        mandelbrotCanvas.height = juliasetCanvas.height = height;
+
+        const gpu = new GPU.GPU();
+
+        const renderFractal = gpu.createKernel(function(width, height, scale, cx, cy, jset) {
+            var x = this.thread.x;
+            var y = this.thread.y;
+            var a = x / width * (scale * 2) - scale;
+            var b = y / height * (scale * 2) - scale;
+            var ca = a;
+            var cb = b;
+            if (jset) {
+                ca = cx;
+                cb = cy;
+            }
+            var n = 0;
+            while (n < 100) {
+                var aa = a * a - b * b;
+                var bb = 2 * a * b;
+                a = aa + ca;
+                b = bb + cb;
+                if (a * a + b * b > 16) {
+                    break;
+                }
+                n++;
+            }
+            var nsmooth = n + 1 - Math.log2(Math.log2(Math.abs(a * a + b * b)) / 2);
+            var col = Math.sqrt(nsmooth / 100) * 255;
+            if (n == 100) {
+                col = 0;
+            }
+
+            return [col, col, col];
+        }).setDynamicOutput(true).setOutput([width, height]);
+
+        function toImageData(image) {
+            const data = mandelbrotCtx.createImageData(width, height);
+            for (var y = 0; y < height; y++) {
+                for (var x = 0; x < width; x++) {
+                    const index = (y * height + x) * 4;
+                    const color = image[y][x];
+                    data.data[index] = color[0];
+                    data.data[index + 1] = color[1];
+                    data.data[index + 2] = color[2];
+                    data.data[index + 3] = 255;
+                }
+            }
+            return data;
+        }
+
+        function renderMandelbrot() {
+            const mandelbrot = renderFractal(width, height, scale, 0, 0, false);
+            mandelbrotCtx.putImageData(toImageData(mandelbrot), 0, 0);
+        }
+
+        function renderJuliaset(normX, normY) {
+            const juliaset = renderFractal(width, height, scale, normX, normY, true);
+            juliasetCtx.putImageData(toImageData(juliaset), 0, 0);
+        }
+        
+        renderMandelbrot(0, 0);
+        renderJuliaset(0, 0);
+
+        mandelbrotCanvas.addEventListener("click", (evt) => {
+            if (usecustom) {
+                return;
+            }
+            var x = evt.pageX;
+            var y = evt.pageY;
+            var normX = ((x / width * 2 - 1) * scale).toFixed(4);
+            var normY = ((y / height * 2 - 1) * scale).toFixed(4);
+            document.getElementById("juliasetC").innerHTML = "c = (" + normX + " + " + normY + "i)";
+            renderJuliaset(normX, normY);
+        });
+
+        function toggleCustomConstants() {
+            usecustom = !usecustom;
+            document.getElementById("usecustom").innerHTML = usecustom;
+        }
+
+        document.getElementById("usecustom").innerHTML = false;
+        document.getElementById("cxvalue").innerHTML = 0;
+        document.getElementById("cyvalue").innerHTML = 0;
+        document.getElementById("cx").min = -scale;
+        document.getElementById("cx").max = scale;
+        document.getElementById("cy").min = -scale;
+        document.getElementById("cy").max = scale;
+
+        document.getElementById("cx").oninput = function() {
+            document.getElementById("cxvalue").innerHTML = this.value;
+            if (usecustom) {
+                renderJuliaset(this.value, document.getElementById("cy").value);
+                document.getElementById("juliasetC").innerHTML = "c = (" + this.value + " + " + document.getElementById("cy").value + "i)";
+            }
+        }
+        document.getElementById("cy").oninput = function() {
+            document.getElementById("cyvalue").innerHTML = this.value;
+            if (usecustom) {
+                renderJuliaset(document.getElementById("cx").value, this.value);
+                document.getElementById("juliasetC").innerHTML = "c = (" + document.getElementById("cx").value + " + " + this.value + "i)";
+            }
+        }
+        document.getElementById("size").oninput = function() {
+            document.getElementById("sizevalue").innerHTML = this.value;
+            width = height = this.value;
+            mandelbrotCanvas.width = juliasetCanvas.width = width;
+            mandelbrotCanvas.height = juliasetCanvas.height = height;
+            renderFractal.setOutput([width, height]);
+            renderMandelbrot();
+            renderJuliaset(document.getElementById("cx").value, document.getElementById("cy").value);
+        }
+
+    </script>
+</body>
+
+</html>
