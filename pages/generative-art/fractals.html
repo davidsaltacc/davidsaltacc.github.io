@@ -20,12 +20,12 @@
             background-color: black;
         }
 
-        p,
-        a {
+        p, h2, span {
             margin: 0px;
             font-family: system-ui;
             font-size: 20px;
-            margin-bottom: 5px;
+            margin-left: 10px;
+            margin-bottom: 2px;
         }
 
         .math {
@@ -36,9 +36,14 @@
             width: 50%;
         }
 
-        h4, h2 {
+        h4, h2, h1 {
             padding: 0;
             color: white;
+            margin-left: 10px;
+        }
+        
+        .btncontainer {
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -46,24 +51,66 @@
 <body>
     <script src="https://cdn.jsdelivr.net/gh/Stuk/jszip/dist/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/gpujs/gpu.js/dist/gpu-browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/timothygebhard/js-colormaps/js-colormaps.js"></script>
     <br><input type="range" min="2" max="3000" value="500" id="size"> <span>size: <span id="sizevalue"></span></span>
-    <br><button type="button" onclick="toggleCustomConstants()">use custom constants: <span id="usecustom"></span></button>
     <br><input type="range" min="-2" max="2" step="0.0001" value="0" id="cx"> <span>cx: <span id="cxvalue"></span></span>
     <br><input type="range" min="-2" max="2" step="0.0001" value="0" id="cy"> <span>cy: <span id="cyvalue"></span></span>
     <br><span>cx: </span><input type="number" value="0" min="-2" max="2" step="0.0001" id="cxn"><span><button type="button" onclick="updateCxBtn()">submit</button></span>
     <br><span>cy: </span><input type="number" value="0" min="-2" max="2" step="0.0001" id="cyn"><span><button type="button" onclick="updateCyBtn()">submit</button></span>
-    <br><p>Fractal: <span class="math">f(z) = z<sup>2</sup>+c</span></p>
-    <p>Juliaset: <span class="math">f(z) = z<sup>2</sup>+c</span> where <span class="math" id="juliasetC">c = (0 + 0i)</span></p>
-    <button type="button" onclick="renderMandelbrot()">Mandelbrot</button>
-    <button type="button" onclick="renderBurningShip()">Burning Ship</button>
-    <button type="button" onclick="renderTricorn()">Tricorn</button>
-    <button type="button" onclick="renderFeather()">Feather</button>
-    <button type="button" onclick="renderChirikov()">Chirikov</button>
-    <button type="button" onclick="renderIkeda()">Ikeda</button>
-    <h2>READ</h2>
-    <h4>Click the buttons above to change which fractal to render</h4>
-    <h4>Use custom Constants OFF: Click around the Main fractal (on the right)</h4>
-    <h4>Use custom Constants ON: Use the sliders or text fields</h4>
+    <br><p>Fractal: <span class="math">f(z) = z<sup id="fracPow">2</sup>+c</span> or some other equation</p>
+    <p>Juliaset: <span class="math">f(z) = z<sup id="julPow">2</sup>+c</span> where <span class="math" id="juliasetC">c = (0 + 0i)</span> or some other equation</p>
+    <h2>Fractal Selection:</h2>
+    <p>Mandelbrot Variants:</p>
+    <div class="btncontainer">
+        <button type="button" onclick="renderMandelbrot(2)">Mandelbrot</button>
+        <button type="button" onclick="renderBurningShip(2)">Burning Ship</button>
+        <button type="button" onclick="renderCeltic(2)">Celtic</button>
+        <button type="button" onclick="renderTricorn(2)">Tricorn</button>
+    </div>
+    <p>Multi Sets ^3:</p>
+    <div class="btncontainer">
+        <button type="button" onclick="renderMandelbrot(3)">Multibrot ^3</button>
+        <button type="button" onclick="renderBurningShip(3)">Multiship ^3</button>
+        <button type="button" onclick="renderCeltic(3)">Multiceltic ^3</button>
+        <button type="button" onclick="renderTricorn(3)">Multicorn ^3</button>
+    </div>
+    <p>Multi Sets ^4:</p>
+    <div class="btncontainer">
+        <button type="button" onclick="renderMandelbrot(4)">Multibrot ^4</button>
+        <button type="button" onclick="renderBurningShip(4)">Multiship ^4</button>
+        <button type="button" onclick="renderCeltic(4)">Multiceltic ^4</button>
+        <button type="button" onclick="renderTricorn(4)">Multicorn ^4</button>
+    </div>
+    <p>Multi Sets ^5:</p>
+    <div class="btncontainer">
+        <button type="button" onclick="renderMandelbrot(5)">Multibrot ^5</button>
+        <button type="button" onclick="renderBurningShip(5)">Multiship ^5</button>
+        <button type="button" onclick="renderCeltic(5)">Multiceltic ^5</button>
+        <button type="button" onclick="renderTricorn(5)">Multicorn ^5</button>
+    </div>
+    <p>Others:</p>
+    <div class="btncontainer">
+        <button type="button" onclick="renderFeather()">Feather</button>
+        <button type="button" onclick="renderChirikov()">Chirikov</button>
+        <button type="button" onclick="renderIkeda()">Ikeda</button>
+    </div>
+    <h2>Colormap Selection:</h2>
+    <div class="btncontainer">
+        <button type="button" onclick="cmapBlWhBn()">BlWhBn</button>
+        <button type="button" onclick="cmapWhBlRd()">WhBlRd</button>
+        <button type="button" onclick="cmapHSV()">HSV</button>
+        <button type="button" onclick="cmapFireIce()">FireIce</button>
+        <br><button type="button" onclick="reverseCmap()" style="margin-top: 5px;">Reverse Colormap</button><br>
+    </div>
+    <br><br><br>
+    <h1>READ</h1>
+    <p>Click around the Main fractal (on the right) or</p>
+    <p>use the sliders or text fields to chnage cx and cy for the julia sets.</p>
+    <p>Use the fractal selection to select different main Fractals.</p>
+    <p>You can also change the color of the fractals using the colormap selection.</p>
+    <p>It's also possible to reverse the colormap.</p>
+    <h1>PERSONAL TODO / COMING IN THE FUTURE</h1>
+    <p>merge all the multi fractals into singular power slider. add more fractals. add a method to toggle between gpu/cpu. add more settings like custom iterations amount. add more colormaps.</p>
     <script>
         var mandelbrotCanvas = document.createElement("canvas"),
             juliasetCanvas = document.createElement("canvas"),
@@ -71,7 +118,8 @@
             height = 500,
             mandelbrotCtx = mandelbrotCanvas.getContext("2d"),
             juliasetCtx = juliasetCanvas.getContext("2d"),
-            scale = 2.5,
+            julScale = 2.5,
+            manScale = 2.5,
             usecustom = false;
 
         document.body.prepend(juliasetCanvas);
@@ -83,35 +131,230 @@
         var ccx = 0;
         var ccy = 0;
 
+        var rightclickedMan = false;
+        var rightclickedJul = false;
+
+        var manOffsX = 0;
+        var manOffsY = 0;
+        var julOffsX = 0;
+        var julOffsY = 0;
+
         var mandelbrot = true;
         var burningShip = false;
-        var tricorn = false;
+        var celtic = false;
+        var corn = false;
         var feather = false;
         var chirikov = false;
         var ikeda = false;
+        var multi3 = false;
+        var multi4 = false;
+        var multi5 = false;
 
-        var colormap = [
-            [66, 30, 15],
-            [25, 7, 26],
+        var BlWhBn = [
             [9, 1, 47],
+            [7, 3, 60],
             [4, 4, 73],
+            [2, 6, 87],
             [0, 7, 100],
+            [6, 26, 119],
             [12, 44, 138],
+            [18, 44, 138],
             [24, 44, 138],
+            [41, 85, 174],
             [57, 125, 209],
+            [96, 153, 219],
             [134, 181, 229], 
+            [173, 209, 239],
             [211, 236, 248],
+            [226, 230, 220],
             [241, 233, 191],
+            [245, 217, 143],
             [248, 201, 95],
+            [252, 186, 48],
             [255, 170, 0],
+            [230, 149, 0],
             [204, 128, 0],
+            [179, 108, 0],
             [153, 87, 0],
-            [106, 52, 3]
+            [130, 70, 2],
+            [106, 52, 3],
+            [86, 41, 9],
+            [66, 30, 15],
+            [46, 19, 21],
+            [25, 7, 26]
         ];
+
+        var WhBlRd = [
+            [228, 224, 229],
+            [206, 211, 221],
+            [183, 198, 212],
+            [160, 185, 204],
+            [137, 172, 195],
+            [129, 164, 195],
+            [121, 156, 194],
+            [113, 148, 194],
+            [104, 140, 193],
+            [101, 117, 182],
+            [98, 93, 170],
+            [95, 70, 159],
+            [91, 46, 147],
+            [81, 39, 125],
+            [71, 31, 102],
+            [61, 24, 80],
+            [50, 16, 57],
+            [74, 24, 63],
+            [97, 31, 69],
+            [120, 39, 75],
+            [143, 46, 80],
+            [154, 59, 81],
+            [164, 71, 82],
+            [174, 84, 83],
+            [184, 96, 84],
+            [189, 112, 96],
+            [193, 128, 108],
+            [197, 144, 120],
+            [201, 159, 132],
+            [209, 176, 157],
+            [217, 193, 182],
+            [225, 210, 207],
+            [233, 226, 232]
+        ];
+
+        var HSV = [
+            [255, 0, 0],
+            [255, 153, 0],
+            [255, 230, 0],
+            [204, 255, 0],
+            [128, 255, 0],
+            [51, 255, 0],
+            [0, 255, 26],
+            [0, 255, 102],
+            [0, 255, 179],
+            [0, 255, 255],
+            [0, 179, 255],
+            [0, 102, 255],
+            [0, 26, 255],
+            [51, 0, 255],
+            [128, 0, 255],
+            [204, 0, 255],
+            [255, 0, 230],
+            [255, 0, 153],
+            [255, 0, 76]
+        ];
+
+        var FireIce = [
+            [0, 0, 0],
+            [39, 5, 0],
+            [77, 11, 0],
+            [116, 16, 0],
+            [154, 21, 0],
+            [167, 41, 0],
+            [180, 60, 0],
+            [192, 80, 0],
+            [205, 99, 0],
+            [212, 120, 4],
+            [219, 141, 9],
+            [225, 161, 13],
+            [232, 182, 17],
+            [233, 192, 52],
+            [233, 202, 88],
+            [234, 212, 123],
+            [234, 222, 158],
+            [234, 226, 174],
+            [233, 231, 190],
+            [233, 235, 206],
+            [232, 239, 222],
+            [206, 234, 225],
+            [181, 229, 228],
+            [155, 223, 230],
+            [129, 218, 233],
+            [104, 193, 220],
+            [79, 169, 207],
+            [54, 144, 194],
+            [29, 119, 181],
+            [22, 103, 169],
+            [15, 87, 156],
+            [7, 70, 144],
+            [0, 54, 131],
+            [0, 41, 98],
+            [0, 27, 66],
+            [0, 14, 33]
+        ];
+        
+        var FireIce = [
+            [0, 0, 0],
+            [39, 5, 0],
+            [77, 11, 0],
+            [116, 16, 0],
+            [154, 21, 0],
+            [167, 41, 0],
+            [180, 60, 0],
+            [192, 80, 0],
+            [205, 99, 0],
+            [212, 120, 4],
+            [219, 141, 9],
+            [225, 161, 13],
+            [232, 182, 17],
+            [233, 192, 52],
+            [233, 202, 88],
+            [234, 212, 123],
+            [234, 222, 158],
+            [234, 226, 174],
+            [233, 231, 190],
+            [233, 235, 206],
+            [232, 239, 222],
+            [206, 234, 225],
+            [181, 229, 228],
+            [155, 223, 230],
+            [129, 218, 233],
+            [104, 193, 220],
+            [79, 169, 207],
+            [54, 144, 194],
+            [29, 119, 181],
+            [22, 103, 169],
+            [15, 87, 156],
+            [7, 70, 144],
+            [0, 54, 131],
+            [0, 41, 98],
+            [0, 27, 66],
+            [0, 14, 33]
+        ];
+
+        var colormap = BlWhBn;
+
+        function cmapBlWhBn() {
+            colormap = BlWhBn;
+            renderFractal();
+            renderJuliaset(ccx, ccy);
+        }
+
+        function cmapWhBlRd() {
+            colormap = WhBlRd;
+            renderFractal();
+            renderJuliaset(ccx, ccy);
+        }
+
+        function cmapHSV() {
+            colormap = HSV;
+            renderFractal();
+            renderJuliaset(ccx, ccy);
+        }
+
+        function cmapFireIce() {
+            colormap = FireIce;
+            renderFractal();
+            renderJuliaset(ccx, ccy);
+        }
+
+        function reverseCmap() {
+            colormap = colormap.reverse();
+            renderFractal();
+            renderJuliaset(ccx, ccy);
+        }
 
         const gpu = new GPU.GPU();
 
-        const renderFractal_ = gpu.createKernel(function(width, height, scale, cx, cy, jset, brot, ship, corn, feather, chirikov, ikeda, cmap, cl) {
+        const renderFractal_ = gpu.createKernel(function(width, height, scale, cx, cy, jset, brot, ship, celtic, corn, feather, chirikov, ikeda, multi3, multi4, multi5, cmap, cl, offsx, offsy) {
             var x = this.thread.x;
             var y = this.thread.y;
             var scale_m = 1;
@@ -121,8 +364,11 @@
             if (chirikov) {
                 scale_m = 2;
             }
-            var a = x / width * (scale * 2 * scale_m) - scale * scale_m;   // FOR ZOOOMING (?): * zoom + camera offset x/y
-            var b = y / height * (scale * 2 * scale_m) - scale * scale_m;
+            if (multi3 || multi4 || multi5) {
+                scale_m = 0.6;
+            }
+            var a = x / width * (scale * 2 * scale_m) - scale * scale_m + offsx; 
+            var b = y / height * (scale * 2 * scale_m) - scale * scale_m + offsy;
             var ca = a;
             var cb = b;
             if (jset) {
@@ -131,39 +377,87 @@
             }
             var n = 0;
             while (n < 100) {
-                if (brot || ship || corn) {
-                    var aa = a * a - b * b;
-                    var bb = a * b;
-                    if (corn) {
-                        bb *= -2; 
+                if (brot || ship || corn || celtic) {
+                    if (multi3) {
+                        var aaa = a ** 3 - 3 * a * b * b;
+                        if (celtic) {
+                            aaa = Math.abs(aaa);
+                        }
+                        var bbb = 0;
+                        if (corn) {
+                            bbb = -3 * a * a * b + b ** 3;
+                        } else {
+                            bbb = 3 * a * a * b - b ** 3;
+                        }
+                        a = aaa + ca;
+                        if (ship) {
+                            b = Math.abs(bbb) + cb;
+                        } else {
+                            b = bbb + cb;
+                        }
+                    } else if (multi4) {
+                        var aaaa = a ** 4 - 6 * a * a * b * b + b ** 4;
+                        if (celtic) {
+                            aaaa = Math.abs(aaaa);
+                        }
+                        var bbbb = 0;
+                        if (corn) {
+                            bbbb = -4 * a ** 3 * b + 4 * a * b ** 3;
+                        } else {
+                            bbbb = 4 * a ** 3 * b - 4 * a * b ** 3;
+                        }
+                        a = aaaa + ca;
+                        if (ship) {
+                            b = Math.abs(bbbb) + cb;
+                        } else {
+                            b = bbbb + cb;
+                        }
+                    } else if (multi5) {
+                        var aaaaa = a ** 5 - 10 * a ** 3 * b ** 2 + 5 * a * b ** 4;
+                        if (celtic) {
+                            aaaaa = Math.abs(aaaaa);
+                        }
+                        var bbbbb = 0;
+                        if (corn) {
+                            bbbbb = -5 * a ** 4 * b + 10 * a ** 2 * b ** 3 - b ** 5;
+                        } else {
+                            bbbbb = 5 * a ** 4 * b - 10 * a ** 2 * b ** 3 + b ** 5;
+                        }
+                        a = aaaaa + ca;
+                        if (ship) {
+                            b = Math.abs(bbbbb) + cb;
+                        } else {
+                            b = bbbbb + cb;
+                        }
                     } else {
-                        bb *= 2;
-                    }
-                    a = aa + ca;
-                    if (ship) {
-                        b = Math.abs(bb) + cb;
-                    } else {
-                        b = bb + cb;
+                        var aa = a * a - b * b;
+                        if (celtic) {
+                            aa = Math.abs(aa);
+                        }
+                        var bb = a * b;
+                        if (corn) {
+                            bb *= -2; 
+                        } else {
+                            bb *= 2;
+                        }
+                        a = aa + ca;
+                        if (ship) {
+                            b = Math.abs(bb) + cb;
+                        } else {
+                            b = bb + cb;
+                        }
                     }
                 } else if (feather) {
-                    let z_real = a;
-                    let z_imag = b;
-                    let z2_real = a * a;
-                    let z2_imag = b * b;
-                    let c_real = ca;
-                    let c_imag = cb;
-
-                    let denom_real = 1.0 + z2_real;
-                    let denom_imag = z2_imag;
-
-                    let z_cube_real = z_real * z_real * z_real - 3 * z_real * z_imag * z_imag;
-                    let z_cube_imag = 3 * z_real * z_real * z_imag - z_imag * z_imag * z_imag;
-
-                    let div_real = (z_cube_real * denom_real + z_cube_imag * denom_imag) / (denom_real * denom_real + denom_imag * denom_imag);
-                    let div_imag = (z_cube_imag * denom_real - z_cube_real * denom_imag) / (denom_real * denom_real + denom_imag * denom_imag);
-
-                    a = div_real + c_real;
-                    b = div_imag + c_imag;
+                    var aa = a * a;
+                    var bb = b * b;
+                    var dr = 1.0 + aa;
+                    var di = bb;
+                    var z3r = a * a * a - 3 * a * b * b;
+                    var z3i = 3 * a * a * b - b * b * b;
+                    var dvr = (z3r * dr + z3i * di) / (dr * dr + di * di);
+                    var dvi = (z3i * dr - z3r * di) / (dr * dr + di * di);
+                    a = dvr + ca;
+                    b = dvi + cb;
                 } else if (chirikov) {
                     a = a + ca * b;
                     b = b + cb * Math.sin(a);
@@ -172,7 +466,7 @@
                     var sin_t = Math.sin(t);
                     var cos_t = Math.cos(t);
                     a = 1 + ca * (a * cos_t - b * sin_t);
-                    b = cb * (a * sin_t + b * cos_t)
+                    b = cb * (a * sin_t + b * cos_t);
                 }
                 if (a * a + b * b > 16) {
                     break;
@@ -182,7 +476,6 @@
             if (n == 100) {
                 return [0, 0, 0];
             }
-            var nsmooth = (n + 1 - Math.log2(Math.log2(Math.abs(a * a + b * b)) / 2));
             // var col = Math.sqrt(nsmooth / 100) * 255;
             // if (n == 100) {
             //     col = 0;
@@ -201,10 +494,10 @@
 
             // FOR MODULO
 
-            var i = Math.floor(nsmooth + 2) % 16; // + 2 for coloring purposes
+            var i = Math.floor(n) % cl;
             return [cmap[i][0], cmap[i][1], cmap[i][2]];
 
-        }).setDynamicOutput(true).setOutput([width, height]);
+        }).setDynamicOutput(true).setDynamicArguments(true).setPipeline(true).setPrecision("single").setOutput([width, height]);
 
         function toImageData(image) {
             const data = mandelbrotCtx.createImageData(width, height);
@@ -222,130 +515,307 @@
         }
 
         function renderFractal() {
-            const mandelbrot_ = renderFractal_(width, height, scale, 0, 0, false, mandelbrot, burningShip, tricorn, feather, chirikov, ikeda, colormap, colormap.length);
+            if (multi3) {
+                document.getElementById("fracPow").innerHTML = "3";
+            } else if (multi4) {
+                document.getElementById("fracPow").innerHTML = "4";
+            } else if (multi5) {
+                document.getElementById("fracPow").innerHTML = "5";
+            } else {
+                document.getElementById("fracPow").innerHTML = "2";
+            } 
+            const mandelbrot_ = renderFractal_(width, height, manScale, 0, 0, false, mandelbrot, burningShip, celtic, corn, feather, chirikov, ikeda, multi3, multi4, multi5, colormap, colormap.length, manOffsX, manOffsY).toArray();
             mandelbrotCtx.putImageData(toImageData(mandelbrot_), 0, 0);
         }
 
         function renderJuliaset(normX, normY) {
-            const juliaset = renderFractal_(width, height, scale, normX, normY, true, mandelbrot, burningShip, tricorn, feather, chirikov, ikeda, colormap, colormap.length);
+            if (multi3) {
+                document.getElementById("julPow").innerHTML = "3";
+            } else if (multi4) {
+                document.getElementById("julPow").innerHTML = "4";
+            } else if (multi5) {
+                document.getElementById("julPow").innerHTML = "5";
+            } else {
+                document.getElementById("julPow").innerHTML = "2";
+            } 
+            const juliaset = renderFractal_(width, height, julScale, normX, normY, true, mandelbrot, burningShip, celtic, corn, feather, chirikov, ikeda, multi3, multi4, multi5, colormap, colormap.length, julOffsX, julOffsY).toArray();
             juliasetCtx.putImageData(toImageData(juliaset), 0, 0);
         }
 
-        function renderMandelbrot() {
+        function setMulti(n) {
+            multi3 = n == 3;
+            multi4 = n == 4;
+            multi5 = n == 5;
+        }
+
+        function renderMandelbrot(n) {
             burningShip = false;
-            tricorn = false;
+            celtic = false;
+            corn = false;
             feather = false;
             chirikov = false;
             ikeda = false;
             mandelbrot = true;
+            setMulti(n);
             renderFractal();
-            renderJuliaset(0, 0);
+            renderJuliaset(ccx, ccy);
         }
 
-        function renderBurningShip() {
+        function renderBurningShip(n) {
             mandelbrot = false;
-            tricorn = false;
+            celtic = false;
+            corn = false;
             feather = false;
             chirikov = false;
             ikeda = false;
             burningShip = true;
+            setMulti(n);
             renderFractal();
-            renderJuliaset(0, 0);
+            renderJuliaset(ccx, ccy);
         } 
-        
-        function renderTricorn() {
+
+        function renderCeltic(n) {
             mandelbrot = false;
             burningShip = false;
+            corn = false;
             feather = false;
             chirikov = false;
             ikeda = false;
-            tricorn = true;
+            celtic = true;
+            setMulti(n);
             renderFractal();
-            renderJuliaset(0, 0);
+            renderJuliaset(ccx, ccy);
+        }
+        
+        function renderTricorn(n) {
+            mandelbrot = false;
+            burningShip = false;
+            celtic = false;
+            feather = false;
+            chirikov = false;
+            ikeda = false;
+            corn = true;
+            setMulti(n);
+            renderFractal();
+            renderJuliaset(ccx, ccy);
         } 
         
         function renderFeather() {
             mandelbrot = false;
             burningShip = false;
-            tricorn = false;
+            celtic = false;
+            corn = false;
             chirikov = false;
             ikeda = false;
             feather = true;
+            setMulti(2);
             renderFractal();
-            renderJuliaset(0, 0);
+            renderJuliaset(ccx, ccy);
         }
 
         function renderChirikov() {
             mandelbrot = false;
             burningShip = false;
-            tricorn = false;
+            celtic = false;
+            corn = false;
             feather = false;
             ikeda = false;
             chirikov = true;
+            setMulti(2);
             renderFractal();
-            renderJuliaset(0, 0);
+            renderJuliaset(ccx, ccy);
         }
 
         function renderIkeda() {
             mandelbrot = false;
             burningShip = false;
-            tricorn = false;
+            celtic = false;
+            corn = false;
             feather = false;
             chirikov = false;
             ikeda = true;
+            setMulti(2);
             renderFractal();
-            renderJuliaset(0, 0);
+            renderJuliaset(ccx, ccy);
         }
-        
+
         renderMandelbrot();
 
         mandelbrotCanvas.addEventListener("click", (evt) => {
-            if (usecustom) {
-                return;
-            }
             var x = evt.pageX;
             var y = evt.pageY;
-            var normX = ((x / width * 2 - 1) * scale).toFixed(4);
-            var normY = ((y / height * 2 - 1) * scale).toFixed(4);
+            evt.preventDefault();
+            var scale_m = 1;
+            if (feather) {
+                scale_m = 1.5;
+            }
+            if (chirikov) {
+                scale_m = 2;
+            }
+            if (multi3 || multi4 || multi5) {
+                scale_m = 0.6;
+            }
+            var normX = ((x / width * 2 - 1) * manScale * scale_m + manOffsX).toFixed(10);
+            var normY = ((y / height * 2 - 1) * manScale * scale_m + manOffsY).toFixed(10);
             document.getElementById("juliasetC").innerHTML = "c = (" + normX + " + " + normY + "i)";
+            ccx = normX;
+            ccy = normY;
             renderJuliaset(normX, normY);
         });
 
-        function toggleCustomConstants() {
-            usecustom = !usecustom;
-            document.getElementById("usecustom").innerHTML = usecustom;
-            if (usecustom) {
+        mandelbrotCanvas.addEventListener("contextmenu", evt => {
+            evt.preventDefault();
+        });
+
+        juliasetCanvas.addEventListener("contextmenu", evt => {
+            evt.preventDefault();
+        });
+
+        mandelbrotCanvas.addEventListener("wheel", (evt) => {
+            manScale *= (1 + evt.deltaY / 1000);
+            evt.preventDefault();
+            renderFractal();
+            renderJuliaset(ccx, ccy);
+        });
+
+        juliasetCanvas.addEventListener("wheel", (evt) => {
+            julScale *= (1 + evt.deltaY / 1000);
+            evt.preventDefault();
+            renderFractal();
+            renderJuliaset(ccx, ccy);
+        });
+
+        var manPrevX = 0;
+        var manPrevY = 0;
+        var manPrevI = false;
+        var manMoveI = 0;
+        mandelbrotCanvas.addEventListener("mousemove", (evt) => {
+            if (!rightclickedMan) {
+                return;
+            }
+            if (!manPrevI) {
+                manPrevI = true;
+                manPrevX = evt.offsetX;
+                manPrevY = evt.offsetY;
+                return;
+            }
+            var scale_m = 1;
+            if (feather) {
+                scale_m = 1.5;
+            }
+            if (chirikov) {
+                scale_m = 2;
+            }
+            if (multi3 || multi4 || multi5) {
+                scale_m = 0.6;
+            }
+            var mx = evt.offsetX - manPrevX;
+            var my = evt.offsetY - manPrevY;
+            manPrevX = evt.offsetX;
+            manPrevY = evt.offsetY;
+            manOffsX -= ((mx / 200 * 2 - mx / 200) * manScale * scale_m);
+            manOffsY -= ((my / 200 * 2 - my / 200) * manScale * scale_m);
+            manMoveI++;
+            if (manMoveI % 3 == 0) { // REDUCE LAG (lmao idc)
+                renderFractal();
+            }
+        });
+
+        var julPrevX = 0;
+        var julPrevY = 0;
+        var julPrevI = false;
+        var julMoveI = 0;
+        juliasetCanvas.addEventListener("mousemove", (evt) => {
+            if (!rightclickedJul) {
+                return;
+            }
+            if (!julPrevI) {
+                julPrevI = true;
+                julPrevX = evt.offsetX;
+                julPrevY = evt.offsetY;
+                return;
+            }
+            var scale_m = 1;
+            if (feather) {
+                scale_m = 1.5;
+            }
+            if (chirikov) {
+                scale_m = 2;
+            }
+            if (multi3 || multi4 || multi5) {
+                scale_m = 0.6;
+            }
+            var jx = evt.offsetX - julPrevX;
+            var jy = evt.offsetY - julPrevY;
+            julPrevX = evt.offsetX;
+            julPrevY = evt.offsetY;
+            julOffsX -= ((jx / 200 * 2 - jx / 200) * julScale * scale_m);
+            julOffsY -= ((jy / 200 * 2 - jy / 200) * julScale * scale_m);
+            julMoveI++;
+            if (julMoveI % 3 == 0) { // REDUCE LAG (lmao idc)
                 renderJuliaset(ccx, ccy);
             }
-        }
+        });
 
-        document.getElementById("usecustom").innerHTML = false;
+        mandelbrotCanvas.addEventListener("mousedown", (evt) => {
+            if (evt.button == 2) {
+                rightclickedMan = true;
+            } 
+        });
+
+        mandelbrotCanvas.addEventListener("mouseup", (evt) => {
+            if (evt.button == 2) {
+                rightclickedMan = false;
+                manPrevI = false;
+            } 
+        });
+
+        mandelbrotCanvas.addEventListener("mouseleave", (evt) => {
+            rightclickedMan = false;
+            manPrevI = false;
+        });
+
+        juliasetCanvas.addEventListener("mousedown", (evt) => {
+            if (evt.button == 2) {
+                rightclickedJul = true;
+            } 
+        });
+
+        juliasetCanvas.addEventListener("mouseup", (evt) => {
+            if (evt.button == 2) {
+                rightclickedJul = false;
+                julPrevI = false;
+            } 
+        });
+
+        juliasetCanvas.addEventListener("mouseleave", (evt) => {
+            rightclickedJul = false;
+                julPrevI = false;
+        });
+
         document.getElementById("cxvalue").innerHTML = 0;
         document.getElementById("cyvalue").innerHTML = 0;
-        document.getElementById("cx").min = -scale;
-        document.getElementById("cx").max = scale;
-        document.getElementById("cy").min = -scale;
-        document.getElementById("cy").max = scale;
-        document.getElementById("cxn").min = -scale;
-        document.getElementById("cxn").max = scale;
-        document.getElementById("cyn").min = -scale;
-        document.getElementById("cyn").max = scale;
+        document.getElementById("sizevalue").innerHTML = width;
+        document.getElementById("cx").min = -julScale;
+        document.getElementById("cx").max = julScale;
+        document.getElementById("cy").min = -julScale;
+        document.getElementById("cy").max = julScale;
+        document.getElementById("cxn").min = -julScale;
+        document.getElementById("cxn").max = julScale;
+        document.getElementById("cyn").min = -julScale;
+        document.getElementById("cyn").max = julScale;
 
         document.getElementById("cx").oninput = function() {
             document.getElementById("cxvalue").innerHTML = this.value;
-            if (usecustom) {
-                ccx = this.value;
-                renderJuliaset(ccx, ccy);
-                document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
-            }
+            ccx = this.value;
+            renderJuliaset(ccx, ccy);
+            document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
         }
         document.getElementById("cy").oninput = function() {
             document.getElementById("cyvalue").innerHTML = this.value;
-            if (usecustom) {
-                ccy = this.value;
-                renderJuliaset(ccx, ccy);
-                document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
-            }
+            ccy = this.value;
+            renderJuliaset(ccx, ccy);
+            document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
         }
         document.getElementById("size").oninput = function() {
             document.getElementById("sizevalue").innerHTML = this.value;
@@ -359,15 +829,13 @@
 
         function updateCxBtn() {
             ccx = document.getElementById("cxn").value;
-            if (usecustom) {
-                renderJuliaset(ccx, ccy);
-            }
+            document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
+            renderJuliaset(ccx, ccy);
         }
         function updateCyBtn() {
             ccy = document.getElementById("cyn").value;
-            if (usecustom) {
-                renderJuliaset(ccx, ccy);
-            }
+            document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
+            renderJuliaset(ccx, ccy);
         }
 
         // UNUSED ANIMATION CODE BEGIN
@@ -376,12 +844,12 @@
         var vy = -2.5;
         var images = [];
         var dataURLs = []; 
-        var increase = 0.01;
+        var increase = 0.005;
 
         // width = height = 1000;
-        // mandelbrotCanvas.width = juliasetCanvas.width = width;
-        // mandelbrotCanvas.height = juliasetCanvas.height = height;
-        // renderFractal.setOutput([width, height]);
+        // juliasetCanvas.width = width;
+        // juliasetCanvas.height = height;
+        // renderFractal_.setOutput([width, height]);
 
         function saveFrames() {
             var zip = new JSZip();
@@ -425,7 +893,7 @@
         function renderFrames() {
             const vxfromangle = 0.7885 * Math.cos(angle);
             const vyfromangle = 0.7885 * Math.sin(angle);
-            const juliaset = renderFractal_(width, height, 2.5, vxfromangle, vyfromangle, true, false, false, false, false, false, colormap, colormap.length);
+            const juliaset = renderFractal_(width, height, 2.5, vxfromangle, vyfromangle, true, false, false, false, false, true, false, false, false, colormap, colormap.length).toArray();
             var vimg = toImageData(juliaset);
             images.push(vimg);
             juliasetCtx.putImageData(vimg, 0, 0);
