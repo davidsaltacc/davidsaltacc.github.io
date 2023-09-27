@@ -32,50 +32,88 @@
 		<canvas id="canvas"></canvas>
 		<audio id="audio"></audio>
 		<script>
-			
+
+			var WAVEFORM_AMPLIFIER = 1;
+			var FFT_SIZE = 1024;
+			var WAVEFORM_LINEWIDTH = 3;
+			var FADEOUT = 1;
+
 			navigator.mediaDevices.getUserMedia({ "audio": true }).then((microphone) => {
-			
+
 				var container = document.getElementById("container");
 				var canvas = document.getElementById("canvas");
+				var ctx = canvas.getContext("2d");
 				canvas.width = window.innerWidth;
 				canvas.height = window.innerHeight;
-				
-				var ctx = canvas.getContext("2d");
 				
 				var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 				var audioSource = audioCtx.createMediaStreamSource(microphone);
 				var analyser = audioCtx.createAnalyser();
 				audioSource.connect(analyser);
 				
-				analyser.fftSize = 1024;
+				analyser.fftSize = FFT_SIZE;
+				
 				var bufferLength = analyser.frequencyBinCount;
 				var dataArray = new Uint8Array(bufferLength);
 				var barWidth = canvas.width / bufferLength;
-				
-				var x;
-				function frame() {
-					x = 0;
-					
-					
-					// ctx.clearRect(0, 0, canvas.width, canvas.height); // CLEAR
-					
-					ctx.fillStyle = "rgba(0, 0, 0, 0.2)"; // FADE, last number: 0 = dont fade, 1, fade immediatly
-					ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				function frequencybars() {
 					
 					analyser.getByteFrequencyData(dataArray);
+					var x = 0;
 					for (var i = 0; i < bufferLength; i++) {
 						var barHeight = dataArray[i] * 3;
-						var red = (i * barHeight) / 5;
-						var green = i;
-						var blue = barHeight / 2;
-						ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+						ctx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
 						ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
 						x += barWidth;
 					}
-					requestAnimationFrame(frame);
 				}
-			
-				frame();
+
+				function waveform() {
+
+					analyser.getByteTimeDomainData(dataArray);
+					
+					ctx.beginPath();
+					ctx.lineWidth = WAVEFORM_LINEWIDTH;
+					ctx.strokeStyle = "rgba(200, 200, 200, 1)";
+
+					var s = Math.min(canvas.width, canvas.height);
+					var radius = s / 2 - s / 8;
+					var centerX = canvas.width / 2;
+					var centerY = canvas.height / 2;
+
+					for (var i = 0; i < dataArray.length; i++) {
+						var v = (dataArray[i] / 128) ** WAVEFORM_AMPLIFIER;
+						var angle = (Math.PI * 2 * i) / dataArray.length;
+						var r = radius * v;
+						var x = centerX + r * Math.cos(angle + Math.PI / 2);
+						var y = centerY + r * Math.sin(angle + Math.PI / 2);
+
+						if (i === 0) {
+							ctx.moveTo(x, y);
+						} else {
+							ctx.lineTo(x, y);
+						}
+					}
+
+					var x = centerX + r * Math.cos(Math.PI * 2 + Math.PI / 2);
+					var y = centerY + r * Math.sin(Math.PI * 2 + Math.PI / 2);
+					ctx.lineTo(x, y);
+					ctx.closePath();
+					ctx.strokeStyle = "rgba(200, 50, 50)";
+					ctx.stroke();
+				}
+
+				function visualize() {
+					requestAnimationFrame(visualize);
+
+					ctx.fillStyle = `rgba(0, 0, 0, ${FADEOUT})`;
+					ctx.fillRect(0, 0, canvas.width, canvas.height);
+					frequencybars();
+					waveform();
+				}
+
+				visualize();
 			});
 		</script>
 	</div>
