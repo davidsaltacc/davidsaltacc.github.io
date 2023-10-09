@@ -1,3 +1,10 @@
+* {
+	border-radius: 20px;
+}
+
+canvas {
+	border-radius: 0;
+}
 
 body {
     font-family: Arial, sans-serif;
