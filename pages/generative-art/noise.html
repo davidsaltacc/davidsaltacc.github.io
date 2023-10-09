@@ -137,7 +137,7 @@
 			<p>Domain Warp: scale: <span id="dwarpscalevalue"></span></p>
 			<input type="range" min="1" max="200" value="60" step="1" class="slider" id="dwarpscale">
 			
-			<p onclick="usecustomcmap = !usecustomcmap;setCustomColormap(usecustomcmap);document.getElementById('usecustomcmap').innerHTML = usecustomcmap;" id="usecustomcmapbutton" class="pointerCursor">Use Custom Colormap: <span id="usecustomcmap"></span></p>
+			<!-- <p onclick="usecustomcmap = !usecustomcmap;setCustomColormap(usecustomcmap);document.getElementById('usecustomcmap').innerHTML = usecustomcmap;" id="usecustomcmapbutton" class="pointerCursor">Use Custom Colormap: <span id="usecustomcmap"></span></p> -->
 			
 			<p>Custom Colormap: red: <span id="cmapredvalue"></span></p>
 			<input type="range" min="0" max="255" value="255" step="1" class="slider" id="cmapred">
@@ -243,7 +243,7 @@
             height = canvas.height = window.innerHeight;
 
 		var usecustomcmap = false;
-		document.getElementById('usecustomcmap').innerHTML = usecustomcmap;
+		// document.getElementById('usecustomcmap').innerHTML = usecustomcmap;
 		var seed = Math.random()
 		document.getElementById("seedvalue").innerHTML = Math.floor(seed * 65536); 
         noise.seed(seed);
@@ -251,6 +251,9 @@
 		var colormap = BuPu_r;
 		var defaultcolormap = colormap;
 		var rendering = false;
+
+		usecustomcmap = true;
+		setCustomColormap(true);
 
         function render() {
 			if (rendering) {
@@ -375,9 +378,6 @@
 		}
 		
     </script>
-	<div class="backbutton">
-		<a href="../../">&#10094; Back</a>
-	</div>
 </body>
 
 </html>

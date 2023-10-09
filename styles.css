@@ -3,21 +3,17 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #252323;
-    color: #a99985;
-}
-
-h1, h2, h3, h4 {
-    color: #a99985;
+    background-color: #0d0d16;
+    color: #cadeff;
 }
 
 a {
-    color: #a99985;
+    color: #81aefc;
     text-decoration: none;
 }
 
 hr {
-	border-color: #2E2C2C;
+	border-color: #0d0d16;
 	border-radius: 50%;
 }
 
@@ -25,7 +21,7 @@ hr {
     max-width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #2E2C2C;
+    background-color: #141422;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -35,7 +31,7 @@ hr {
 	left: 20px;
 	display: flex;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	background-color: #272525;
+	background-color: #0d0d16;
 }
 
 .backbutton a {
@@ -100,7 +96,7 @@ hr {
 	width: auto;
 	margin-top: -22px;
 	padding: 16px;
-	color: white;
+	color: #e6f4ff;
 	font-weight: bold;
 	font-size: 18px;
 	transition: 0.6s ease;
@@ -115,11 +111,11 @@ hr {
 }
 
 .prev:hover, .next:hover {
-	background-color: rgba(0,0,0,0.8);
+	background-color: rgba(20, 20, 20, 0.7);
 }
 
 .text {
-	color: #f2f2f2;
+	color: #dadef2;
 	font-size: 15px;
 	padding: 8px 12px;
 	position: absolute;
@@ -129,7 +125,7 @@ hr {
 }
 
 .numbertext {
-	color: #f2f2f2;
+	color: #dadef2;
 	font-size: 12px;
 	padding: 8px 12px;
 	position: absolute;
@@ -141,22 +137,12 @@ hr {
 	height: 15px;
 	width: 15px;
 	margin: 8 2px;
-	background-color: #bbb;
+	background-color: #a9b4d5;
 	border-radius: 50%;
 	display: inline-block;
-	transition: background-color 0.6s ease;
+	transition: background-color 0.5s ease;
 }
 
 .active, .dot:hover {
-	background-color: #717171;
-}
-
-.fade {
-	animation-name: fade;
-	animation-duration: 1.5s;
-}
-
-@keyframes fade {
-	from {opacity: .4}
-	to {opacity: 1}
+	background-color: #69748d;
 }

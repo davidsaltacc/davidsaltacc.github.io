@@ -52,8 +52,9 @@
 			context.clearRect(0, 0, width, height)
             for (var i = 0; i < points.length; i++) {
 				var p = points[i];
-				var offset = getValue(p.x, p.y) * spacing;
-				context.fillRect(p.x + offset * offsetX - spacing / 4, p.y + offset * offsetY - spacing / 4, spacing / 4, spacing / 4);
+				var xoffset = getValue(p.x * -1, p.y) * spacing;
+				var yoffset = getValue(p.x, p.y * -1) * spacing;
+				context.fillRect(p.x + xoffset * offsetX - spacing / 4, p.y + yoffset * offsetY - spacing / 4, spacing / 4, spacing / 4);
 			}
 			z += 0.01;
             requestAnimationFrame(render);
@@ -67,9 +68,6 @@
 		
         render();
     </script>
-	<div class="backbutton">
-		<a href="../../">&#10094; Back</a>
-	</div>
 </body>
 
 </html>
