@@ -1,920 +1,781 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Fractals</title>
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Fractals">
-    <meta property="og:description" content="A (small (really?)) fractal generator">
-    <meta property="og:image" content="/assets/thumbnail_fractals.html.png">
-    <meta property="og:url" content="https://davidsaltacc.github.io/generative-art/fractals">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Fractals">
-    <meta name="twitter:description" content="A (small (really?)) fractal generator">
-    <meta name="twitter:image" content="/assets/thumbnail_fractals.html.png">
-    <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
-    <link rel="stylesheet" type="text/css" href="../../styles.css">
+    <link rel="stylesheet" href="../../styles.css"></link>
     <style>
-        body {
-            background-color: black;
+        * {
+            border-radius: 2px;
+            border-style: none;
         }
-
-        html,
         body {
             margin: 0;
             padding: 0;
         }
-
-        canvas {
-            background-color: black;
+        p {
+            margin: 1px;
         }
-
-        p, h2, span {
-            margin: 0px;
-            font-family: system-ui;
-            font-size: 20px;
-            margin-left: 10px;
-            margin-bottom: 2px;
+        .container {
+            max-width: 98%;
         }
-
-        .math {
-            font-family: courier;
-        }
-
-        #cx, #cy, #size, #power {
+        input {
             width: 50%;
         }
-
-        h4, h2, h1 {
-            padding: 0;
-            color: white;
-            margin-left: 10px;
+        #constantRe, #constantIm {
+            width: 25%;
         }
-        
-        .btncontainer {
-            margin-left: 10px;
+        #url {
+            word-wrap: break-word;
         }
     </style>
 </head>
+    <div class="container">
+        <br>
+        <h3>Fractal Selection</h3>
+        <button onclick="setFractal('mandelbrot')">Mandelbrot</button>
+        <button onclick="setFractal('burning ship')">Burning ship</button>
+        <button onclick="setFractal('celtic')">Celtic</button>
+        <button onclick="setFractal('tricorn')">Tricorn</button>
+        <button onclick="setFractal('duck')">Duck</button>
+        <button onclick="setFractal('butt')">Ass</button>
+        <button onclick="setFractal('sine')">Sine Juliaset</button>
+        <button onclick="setFractal('popcorn')">Popcorn</button>
+        <button onclick="setFractal('thorn')">Thorn</button>
+        <button onclick="setFractal('tan mandelbrot')">Tan Mandelbrot</button>
+        <button onclick="setFractal('henon')">Henon</button>
+        <button onclick="setFractal('duffing')">Duffing</button>
+        <button onclick="setFractal('chirikov')">Chirikov</button>
+        <button onclick="setFractal('ikeda')">Ikeda</button>
+        <button onclick="setFractal('feather')">Feather</button>
+        <h3>Colormap Selection</h3>
+        <button onclick="setColormap('classic')">Classic</button>
+        <button onclick="setColormap('ultra fractal')">Ultra Fractal Default</button>
+        <button onclick="setColormap('red and blue')">Red and Blue</button>
+        <h3>Color Method Selection</h3>
+        <button onclick="setColormethod('terraced')">Terraced</button>
+        <button onclick="setColormethod('smooth')">Smooth</button>
+        <button onclick="setColormethod('rings')">Rings</button>
+        <button onclick="setColormethod('stripes')">Stripes</button>
+        <button onclick="setColormethod('interior')">Interior</button>
+        <h3>Settings</h3>
+        <p>Escape Radius:</p>
+        <input type="number" id="radius" value="2"><button type="submit" onclick="updateSettings();">Submit</button>
+        <p>Iterations:</p>
+        <input type="number" id="iterations" value="200"><button type="submit" onclick="updateSettings();">Submit</button>
+        <p>Canvas Size:</p>
+        <input type="number" id="size" value="500"><button type="submit" onclick="updateSize(parseInt(document.getElementById('size').value));">Submit</button>
+        <p>Juliaset Constant:</p>
+        <input type="number" id="constantRe" value="0">
+        <input type="number" id="constantIm" value="0"><button type="submit" onclick="updateSettings();">Submit</button>
+        <h3>Save Settings:</h3>
+        <a id="url" href="">_</a>
+        <h3>Visit the old version:</h3>
+        <a href="https://davidsaltacc.github.io/pages/generative-art/fractals-old">davidsaltacc.github.io/pages/generative-art/fractals-old</a>
+        <h3>Side Note:</h3>
+        <p>This project is still very early in development. This means, new features will be added in the future. Until everything is finished, bugs might occur, things might break. </p>
+        <h3>Special Thanks:</h3>
+        <p><a href="https://nathansolomon1678.github.io/fractals">This</a> project by nathansolomon1678 on github, where I got a lot of insipration (and maybe code ;) from</p>
+        <p>Paul Bourke, especially his website page on fractals <a href="http://www.paulbourke.net/fractals/">here</a>, where I got lots of the fractals and insipration from</p>
+        <p>CodeParade (HackerPoet on github) for <a href="https://github.com/HackerPoet/FractalSoundExplorer">this</a> project, where I got the code for the feather fractal from</p>
+        <p>All the amazing people who discovered all of these fractals and made this project possible</p>
+        <p>My friends (they did nothing for this project but still thanks)</p>
+        <p>You, for visiting and testing my project!</p>
+    </div>
+    <script type="x-shader/x-vertex" id="vert-shader">#version 300 es
+        precision highp float;
+        in vec2 position;
+        out vec2 vertex_position;
+        void main() {
+            gl_Position = vec4(position, 0., 1.);
+            vertex_position = position;
+        }
+    </script>
+    <script type="x-shader/x-fragment" id="frag-shader">#version 300 es
+        precision highp float;
+        in vec2 vertex_position;
+        out vec4 fragmentColor;
 
-<body>
-    <script src="https://cdn.jsdelivr.net/gh/Stuk/jszip/dist/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gpujs/gpu.js/dist/gpu-browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/timothygebhard/js-colormaps/js-colormaps.js"></script>
-    <br><input type="range" min="2" max="3000" value="500" id="size"> <span>size: <span id="sizevalue"></span></span>
-    <br><input type="range" min="-2" max="2" step="0.0001" value="0" id="cx"> <span>cx: <span id="cxvalue"></span></span>
-    <br><input type="range" min="-2" max="2" step="0.0001" value="0" id="cy"> <span>cy: <span id="cyvalue"></span></span>
-    <br><span>cx: </span><input type="number" value="0" min="-2" max="2" step="0.0001" id="cxn"><span><button type="button" onclick="updateCxBtn()">submit</button></span>
-    <br><span>cy: </span><input type="number" value="0" min="-2" max="2" step="0.0001" id="cyn"><span><button type="button" onclick="updateCyBtn()">submit</button></span>
-    <br><p>Fractal: <span class="math">f(z) = z<sup id="fracPow">2</sup>+c</span> or some other equation</p>
-    <p>Juliaset: <span class="math">f(z) = z<sup id="julPow">2</sup>+c</span> where <span class="math" id="juliasetC">c = (0 + 0i)</span> or some other equation</p>
-    <h2>Fractal Selection:</h2>
-    <input type="range" min="0" max="16" value="2" id="power"> <span>Power: <span id="powervalue"></span></span>
-    <p>Mandelbrot Variants:</p>
-    <div class="btncontainer">
-        <button type="button" onclick="renderMandelbrot(2)">Mandelbrot</button>
-        <button type="button" onclick="renderBurningShip(2)">Burning Ship</button>
-        <button type="button" onclick="renderCeltic(2)">Celtic</button>
-        <button type="button" onclick="renderTricorn(2)">Tricorn</button>
-    </div>
-    <p>Others:</p>
-    <div class="btncontainer">
-        <button type="button" onclick="renderFeather()">Feather</button>
-        <button type="button" onclick="renderChirikov()">Chirikov</button>
-        <button type="button" onclick="renderIkeda()">Ikeda</button>
-    </div>
-    <h2>Colormap Selection:</h2>
-    <p>Terraced:</p>
-    <div class="btncontainer">
-        <button type="button" onclick="cmapBlWhBn()">BlWhBn</button>
-        <button type="button" onclick="cmapWhBlRd()">WhBlRd</button>
-        <button type="button" onclick="cmapHSV()">HSV</button>
-        <button type="button" onclick="cmapFireIce()">FireIce</button>
-        <br><button type="button" onclick="reverseCmap()" style="margin-top: 5px;">Reverse Colormap</button><br>
-    </div>
-    <p>Smooth:</p>
-    <div class="btncontainer">
-        <button type="button" onclick="classicCmap()">"Classic" Colormap</button>
-        <button type="button" onclick="rainbowCmap()">Rainbow Colormap</button>
-    </div>
-    <br><br><br>
-    <h1>READ</h1>
-    <p>Click around the Main fractal (on the right) or</p>
-    <p>use the sliders or text fields to chnage cx and cy for the julia sets.</p>
-    <p>Use the fractal selection to select different main Fractals.</p>
-    <p>You can also change the color of the fractals using the colormap selection.</p>
-    <p>It's also possible to reverse the colormap.</p>
-    <h1>PERSONAL TODO / COMING IN THE FUTURE</h1>
-    <p>add more fractals. add a method to toggle between gpu/cpu. add more settings like custom iterations amount. add more colormaps.</p>
+        uniform vec2 canvas_dimensions;
+        uniform vec2 center;
+        uniform vec2 julia_constant;
+        uniform float scale_factor;
+        uniform float radius;
+        uniform int juliaset;
+        uniform int max_iterations;
+        uniform int fractal_type;
+        uniform int color_method;
+        uniform int colorscheme;
+
+        #define pi 3.141592653589793
+
+        float square(float x) {
+            return x * x;
+        }
+        float magnitude(vec2 z) {
+            return sqrt(square(z.x) + square(z.y));
+        }
+        float power(float n, float p) {
+            if (p == 1.) {
+                return n;
+            }
+            if (p == 2.) {
+                return n * n;
+            }
+            return pow(n, p);
+        }
+
+        float weierstrass(float x) {
+            x *= 2.;
+            return cos(x) + cos(3. * x) / 2. + cos(9. * x) / 4. + cos(27. * x) / 8. + cos(81. * x) / 16.;
+        }
+
+        float cubic_interpolation(float a, float b, float c, float d, float x) {
+            return b +
+                   x * (.5 * c - .5 * a) +
+                   x * x * (a - 2.5 * b + 2. * c - .5 * d) +
+                   x * x * x * (-.5 * a + 1.5 * b - 1.5 * c + .5 * d);
+        }
+
+        vec4 mix_cubic(vec3 color0, vec3 color1, vec3 color2, vec3 color3, float x) {
+            return vec4(
+                cubic_interpolation(color0.r, color1.r, color2.r, color3.r, x),
+                cubic_interpolation(color0.g, color1.g, color2.g, color3.g, x),
+                cubic_interpolation(color0.b, color1.b, color2.b, color3.b, x),
+                1.
+            );
+        }
+
+        vec4 classic_colorscheme(float x) {
+            x *= pi * 2.;
+            return vec4(
+                .5 + sin(x) / 2.,
+                .5 + sin(x + 1.) / 2.,
+                .5 + sin(x + 2.) / 2.,
+                1.
+            );
+        }
+
+        vec4 wikipedia_colorscheme(float x) {
+            vec3 blue = vec3(0., 0.03, 0.39);
+            vec3 lightblue = vec3(0.12, 0.42, 0.8);
+            vec3 white = vec3(0.93, 1., 1.);
+            vec3 orange = vec3(1., 0.66, 0.);
+            vec3 black = vec3(0., 0.1, 0.007);
+            x = fract(x) * 5.;
+            if (x < 1.) {
+                return mix_cubic(blue, lightblue, white, orange, fract(x));
+            }
+            if (x < 2.) {
+                return mix_cubic(lightblue, white, orange, black, fract(x));
+            }
+            if (x < 3.) {
+                return mix_cubic(white, orange, black, blue, fract(x));
+            }
+            if (x < 4.) {
+                return mix_cubic(orange, black, blue, lightblue, fract(x));
+            }
+            if (x < 5.) {
+                return mix_cubic(black, blue, lightblue, white, fract(x));
+            }
+            return vec4(black, 1.);
+        }
+
+        vec4 red_blue_colorscheme(float x) {
+            vec3 red = vec3(1., .3, 0.);
+            vec3 white = vec3(1., 1., 1.);
+            vec3 blue = vec3(0.2, 0.4, 1.);
+            vec3 black = vec3(0., 0., 0.);
+            x = fract(x) * 4.;
+            if (x < 1.) {
+                return mix_cubic(black, red, white, blue, fract(x));
+            }
+            if (x < 2.) {
+                return mix_cubic(red, white, blue, black, fract(x));
+            }
+            if (x < 3.) {
+                return mix_cubic(white, blue, black, red, fract(x));
+            }
+            if (x < 4.) {
+                return mix_cubic(blue, black, red, white, fract(x));
+            }
+            return vec4(black, 1.);
+        }
+
+        vec4 color(float x) {
+            if (colorscheme == 0) {
+                return classic_colorscheme(x);
+            }
+            if (colorscheme == 1) {
+                return wikipedia_colorscheme(x);
+            } 
+            if (colorscheme == 2) {
+                return red_blue_colorscheme(x);
+            }
+        }
+
+        vec2 iteration(vec2 z, vec2 c_, int type) {
+            vec2 c = c_;
+            if (juliaset == 1) {
+                c = vec2(c.x, c.y * -1.); // it gets inverted for some reason
+            }
+            if (type == 0) {
+                // Mandelbrot
+                return c + vec2(z.x * z.x - z.y * z.y, 2. * z.x * z.y);
+            } 
+            if (type == 1) {
+                // Burning ship
+                return c + vec2(z.x * z.x - z.y * z.y, abs(2. * z.x * z.y));
+            }
+            if (type == 2) {
+                // Celtic
+                return c + vec2(abs(z.x * z.x - z.y * z.y), 2. * z.x * z.y);
+            }
+            if (type == 3) {
+                // Tricorn
+                return c + vec2(z.x * z.x - z.y * z.y, -2. * z.x * z.y);
+            }
+            if (type == 4) {
+                // Duck
+                return c + vec2(power(abs(z.x), 2.) - power(abs(z.y), 2.), 2. * z.x * abs(z.y));
+            }
+            if (type == 5) {
+                // Butt
+                return c + vec2(z.x * z.x * z.x - z.y * z.y * abs(z.y), 2. * z.x * z.y);
+            }
+            if (type == 6) {
+                // Juliaset Sine (very high radius required)
+                return c * vec2(sin(z.x) * cosh(z.y), cos(z.x) * sinh(z.y));
+            }
+            if (type == 7) {
+                // Popcorn (ideal radius ca ~2)
+                return vec2(z.x - c.x * (z.y + tan(3. * z.y)), z.y - c.y * (z.x + tan(3. * z.x)));
+            }
+            if (type == 8) {
+                // Thorn (very high radius required)
+                return vec2(z.x / cos(z.y), z.y / sin(z.x)) + c;
+            }
+            if (type == 9) {
+                // Tan Mandelbrot (ideal radius ca ~1.5)
+                vec2 mand = c + vec2(power(abs(z.x), 2.) - power(abs(z.y), 2.), 2. * z.x * z.y);
+                float cosx = cos(mand.x);
+                float sinx = sin(mand.x);
+                float sinhy = sinh(mand.y);
+                float coshy = cosh(mand.y);
+                float d = (cosx * coshy - sinx * sinhy);
+                float re = (sinx * coshy) / d;
+                float im = (cosx * sinhy) / d;
+                return vec2(re, im);
+            }
+            if (type == 10) {
+                // Henon (radius rather high, ~20000)
+                return vec2(1. - c.x * z.x * z.x + z.y, c.y * z.x);
+            }
+            if (type == 11) {
+                // Duffing (radius not too important, ~200)
+                return vec2(z.y, -1. * c.y * z.x + c.x * z.y - z.y * z.y * z.y);
+            }
+            if (type == 12) {
+                // Chirikov (low radius, ~3)
+                return vec2(z.x + c.x * z.y, c.y + c.y * sin(z.x));
+            }
+            if (type == 13) {
+                // Ikeda (radius rather high, ~20000)
+                float t = 0.4 - 6. / (1. + square(z.x) + square(z.y));
+                float sin_t = sin(t);
+                float cos_t = cos(t);
+                return vec2(1. + c.x * (z.x * cos_t - z.y * sin_t), c.y * (z.x * sin_t + z.y * cos_t));
+            }
+            if (type == 14) {
+                // Feather (radius around ~200 or lower)
+                float dr = 1. + z.x * z.x;
+                float di = z.y * z.y;
+                float zr = z.x * z.x * z.x - 3. * z.x * z.y * z.y;
+                float zi = 3. * z.x * z.x * z.y - z.y * z.y * z.y;
+                float dvr = (zr * dr + zi * di) / (dr * dr + di * di);
+                float dvi = (zi * dr - zr * di) / (dr * dr + di * di);
+                return vec2(dvr, dvi) + c;
+            }
+        }
+
+        void main() {
+            vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
+            vec2 original_z = vertex_position * window / scale_factor + center;
+            original_z = vec2(original_z.x, original_z.y * -1.); // its upside down somehow?
+            vec2 last_z = original_z;
+            vec2 z = original_z;
+            vec2 c = original_z;
+            if (juliaset == 1) {
+                c = julia_constant;
+            }
+            float distance_to_orbit_trap = 100000000.;
+            float color_v = 0.;
+            bool color_black = false;
+            float stripe = 0.;
+            
+            for (int i = 0; i <= max_iterations; i++) {
+                z = iteration(z, c, fractal_type);
+                if (color_method == 0) {
+                    if (magnitude(z) > radius) {
+                        color_v = float(i) / float(max_iterations);
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    }
+                } else if (color_method == 1) {
+                    if (magnitude(z) > radius) {
+                        float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+                        color_v = float_iters / float(max_iterations);
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    }
+                } else if (color_method == 2) {
+                    if (magnitude(z) > radius) {
+                        color_black = true;
+                        break;
+                    } else {
+                        color_v = log(magnitude(z));
+                    }
+                } else if (color_method == 3) {
+                    distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - radius));
+                    color_v = -log(distance_to_orbit_trap);
+                } else if (color_method == 4) {
+                    if (magnitude(z) > radius) {
+                        float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+                        stripe += weierstrass(atan(z.y, z.x)) * fract(float_iters);
+                        color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
+                        color_v /= float(max_iterations);
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    } else {
+                        stripe += weierstrass(atan(z.y, z.x));
+                    }
+                }
+                last_z = z;
+            }
+            if (color_black) {
+                fragmentColor = vec4(0., 0., 0., 1.);
+            } else {
+                fragmentColor = color(color_v);
+            }
+        }
+    </script>
     <script>
-        var mandelbrotCanvas = document.createElement("canvas"),
-            juliasetCanvas = document.createElement("canvas"),
-            width = 500,
-            height = 500,
-            mandelbrotCtx = mandelbrotCanvas.getContext("2d"),
-            juliasetCtx = juliasetCanvas.getContext("2d"),
-            julScale = 2.5,
-            manScale = 2.5,
-            usecustom = false;
+        var canvasMain = document.createElement("canvas");
+        var canvasJul = document.createElement("canvas");
+        var container = document.getElementsByClassName("container")[0];
+        container.prepend(canvasJul);
+        container.prepend(canvasMain);
+        canvasMain.width = 500;
+        canvasMain.height = 500;
+        canvasJul.width = 500;
+        canvasJul.height = 500;
+        var glmain = canvasMain.getContext("webgl2");
+        var gljul = canvasJul.getContext("webgl2");
 
-        document.body.prepend(juliasetCanvas);
-        document.body.prepend(mandelbrotCanvas);
+        function loadShaders(gl) {
+            if (!gl) {
+                alert("Your browser does not support WebGL.");
+                return null;
+            }
+            gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+            gl.clearColor(0., 0., 0., 1.);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            var source = document.getElementById("vert-shader").innerText;
+            var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+            gl.shaderSource(vertexShader, source);
+            gl.compileShader(vertexShader);
+            var vertShaderLog = gl.getShaderInfoLog(vertexShader);
+            source = document.getElementById("frag-shader").innerText;
+            var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+            gl.shaderSource(fragmentShader, source);
+            gl.compileShader(fragmentShader);
+            var fragShaderLog = gl.getShaderInfoLog(fragmentShader);
+            var program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            gl.detachShader(program, vertexShader);
+            gl.detachShader(program, fragmentShader);
+            gl.deleteShader(vertexShader);
+            gl.deleteShader(fragmentShader);
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                alert(gl.getProgramInfoLog(program));
+                console.log(vertShaderLog);
+                console.log(fragShaderLog);
+                return null;
+            }
+            var vertexArray = new Float32Array([-1., -1., 1., -1., 1., 1., -1., 1.]);
+            var vertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            var aVertexPosition = gl.getAttribLocation(program, "position");
+            gl.enableVertexAttribArray(aVertexPosition);
+            gl.vertexAttribPointer(aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+            gl.useProgram(program);
+            return program;
+        }
 
-        mandelbrotCanvas.width = juliasetCanvas.width = width;
-        mandelbrotCanvas.height = juliasetCanvas.height = height;
+        var programMain = loadShaders(glmain);
+        var programJul = loadShaders(gljul);
 
-        var ccx = 0;
-        var ccy = 0;
+        var julia_constant = [0, 0];
 
-        var rightclickedMan = false;
-        var rightclickedJul = false;
+        function uniform(gl, program,
+            canvas_dimensions,
+            center,
+            julia_constant,
+            scale_factor,
+            radius,
+            juliaset,
+            max_iterations,
+            fractal_type,
+            color_method,
+            colorscheme
+        ) {
+            gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), canvas_dimensions);
+            gl.uniform2fv(gl.getUniformLocation(program, "center"), center);
+            gl.uniform2fv(gl.getUniformLocation(program, "julia_constant"), julia_constant);
+            gl.uniform1f(gl.getUniformLocation(program, "scale_factor"), scale_factor);
+            gl.uniform1f(gl.getUniformLocation(program, "radius"), radius);
+            gl.uniform1i(gl.getUniformLocation(program, "juliaset"), juliaset);
+            gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
+            gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
+            gl.uniform1i(gl.getUniformLocation(program, "color_method"), color_method);
+            gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), colorscheme);
+        }
 
-        var manOffsX = 0;
-        var manOffsY = 0;
-        var julOffsX = 0;
-        var julOffsY = 0;
+        var radius = 2000000;
+        var max_iterations = 200;
+        var fractal_type = 0;
+        var color_method = 1;
+        var colorscheme = 0;
 
-        var power = 2;
+        var presets_colormethods = {
+            "terraced": {
+                "id": 0
+            },
+            "smooth": {
+                "id": 1
+            },
+            "interior": {
+                "id": 2
+            },
+            "rings": {
+                "id": 3
+            },
+            "stripes": {
+                "id": 4
+            }
+        };
 
-        var mandelbrot = true;
-        var burningShip = false;
-        var celtic = false;
-        var corn = false;
-        var feather = false;
-        var chirikov = false;
-        var ikeda = false;
+        var presets_colormaps = {
+            "classic": {
+                "id": 0
+            },
+            "ultra fractal": {
+                "id": 1
+            },
+            "red and blue": {
+                "id": 2
+            }
+        };
+
+        var presets_fractals = {
+            "mandelbrot": {
+                "id": 0,
+                "radius": 10000000
+            },
+            "burning ship": {
+                "id": 1,
+                "radius": 10000000
+            },
+            "celtic": {
+                "id": 2,
+                "radius": 10000000
+            },
+            "tricorn": {
+                "id": 3,
+                "radius": 10000000
+            },
+            "duck": {
+                "id": 4,
+                "radius": 10000000
+            },
+            "butt": {
+                "id": 5,
+                "radius": 10000000
+            },
+            "sine": {
+                "id": 6,
+                "radius": 100
+            },
+            "popcorn": {
+                "id": 7,
+                "radius": 2
+            },
+            "thorn": {
+                "id": 8,
+                "radius": 10000000
+            },
+            "tan mandelbrot": {
+                "id": 9,
+                "radius": 1.5
+            },
+            "henon": {
+                "id": 10,
+                "radius": 20000
+            },
+            "duffing": {
+                "id": 11,
+                "radius": 200
+            },
+            "chirikov": {
+                "id": 12,
+                "radius": 3
+            },
+            "ikeda": {
+                "id": 13,
+                "radius": 20000
+            },
+            "feather": {
+                "id": 14,
+                "radius": 100
+            },
+        }
+
+        function updateSize(size) {
+            canvasMain.width = canvasMain.height = size;
+            canvasJul.width = canvasJul.height = size;
+            programMain = loadShaders(glmain);
+            programJul = loadShaders(gljul);
+            drawMain();
+            drawJul();
+        }
+
+        function updateSettings() {
+            radius = parseFloat(document.getElementById("radius").value);
+            max_iterations = parseInt(document.getElementById("iterations").value);
+            julia_constant[0] = parseFloat(document.getElementById("constantRe").value);
+            julia_constant[1] = parseFloat(document.getElementById("constantIm").value);
+
+            drawMain();
+            drawJul();
+        }
+
+        function setFractal(type) {
+            fractal_type = presets_fractals[type]["id"];
+            radius = presets_fractals[type]["radius"];
+            document.getElementById("radius").value = radius;
+            drawMain();
+            drawJul();
+        }
+
+        function setColormap(name) {
+            colorscheme = presets_colormaps[name]["id"];
+            drawMain();
+            drawJul();
+        }
+
+        function setColormethod(name) {
+            color_method = presets_colormethods[name]["id"];
+            drawMain();
+            drawJul();
+        }
+
+        function drawMain() {
+            create_url_params();
+            uniform(glmain, programMain,
+                [canvasMain.clientWidth, canvasMain.clientHeight],
+                [center_x_main, center_y_main],
+                [0, 0],
+                scale_factor_main,
+                radius,
+                0,
+                max_iterations,
+                fractal_type,
+                color_method,
+                colorscheme
+            );
+
+            glmain.drawArrays(glmain.TRIANGLE_FAN, 0, 4);
+        }
+
+        function drawJul() {
+            create_url_params();
+            uniform(gljul, programJul,
+                [canvasJul.clientWidth, canvasJul.clientHeight],
+                [center_x_jul, center_y_jul],
+                julia_constant,
+                scale_factor_jul,
+                radius,
+                1,
+                max_iterations,
+                fractal_type,
+                color_method,
+                colorscheme
+            );
+
+            gljul.drawArrays(gljul.TRIANGLE_FAN, 0, 4);
+        }
+
+        var center_x_main = 0;
+        var center_y_main = 0;
+        var scale_factor_main = 1 / 2.5;
+        var mouse_x_main = 0;
+        var mouse_y_main = 0;
+        var mouse_clicked_main = false;
+        var mouse_moved_main = false;
+        function updateMouseCoords_main(e) {
+            mouse_x_main = (2 * (e.pageX - e.target.offsetLeft) - canvasMain.clientWidth ) / Math.min(canvasMain.clientWidth, canvasMain.clientHeight);
+            mouse_y_main = (2 * (e.pageY - e.target.offsetTop ) - canvasMain.clientHeight) / Math.min(canvasMain.clientWidth, canvasMain.clientHeight);
+            mouse_y_main *= -1;
+            mouse_x_main = mouse_x_main / scale_factor_main + center_x_main;
+            mouse_y_main = mouse_y_main / scale_factor_main + center_y_main;
+        }
+        function on_zoom_main(e) {
+            e.preventDefault();
+            var zoom = Math.exp(-e.deltaY / 500);
+            updateMouseCoords_main(e);
+            center_x_main = mouse_x_main + (center_x_main - mouse_x_main) / zoom;
+            center_y_main = mouse_y_main + (center_y_main - mouse_y_main) / zoom;
+            scale_factor_main *= zoom;
+            drawMain();
+        }
+        function mouse_down_main(e) {
+            if (e.button == 0) {
+                mouse_clicked_main = true;
+                mouse_moved_main = false;
+            }
+            updateMouseCoords_main(e);
+        }
+        function mouse_up_main(e) {
+            mouse_clicked_main = false;
+            if (e.button == 0 && !mouse_moved_main) {
+                updateMouseCoords_main(e);
+                julia_constant[0] = mouse_x_main;
+                julia_constant[1] = mouse_y_main;
+                document.getElementById("constantRe").value = mouse_x_main;
+                document.getElementById("constantIm").value = mouse_y_main;
+                drawJul();
+            }
+        }
+        function mouse_move_main(e) {
+            if (mouse_clicked_main) {
+                mouse_moved_main = true;
+                var old_x = mouse_x_main;
+                var old_y = mouse_y_main;
+                updateMouseCoords_main(e);
+                center_x_main += old_x - mouse_x_main;
+                center_y_main += old_y - mouse_y_main;
+                updateMouseCoords_main(e);
+                drawMain();
+            }
+        }
+
+        var center_x_jul = 0;
+        var center_y_jul = 0;
+        var scale_factor_jul = 1 / 2.5;
+        var mouse_x_jul = 0;
+        var mouse_y_jul = 0;
+        var mouse_clicked_jul = false;
+        var mouse_moved_jul = false;
+        function updateMouseCoords_jul(e) {
+            mouse_x_jul = (2 * (e.pageX - e.target.offsetLeft) - canvasJul.clientWidth ) / Math.min(canvasJul.clientWidth, canvasJul.clientHeight);
+            mouse_y_jul = (2 * (e.pageY - e.target.offsetTop ) - canvasJul.clientHeight) / Math.min(canvasJul.clientWidth, canvasJul.clientHeight);
+            mouse_y_jul *= -1;
+            mouse_x_jul = mouse_x_jul / scale_factor_jul + center_x_jul;
+            mouse_y_jul = mouse_y_jul / scale_factor_jul + center_y_jul;
+        }
+        function on_zoom_jul(e) {
+            e.preventDefault();
+            var zoom = Math.exp(-e.deltaY / 500);
+            updateMouseCoords_jul(e);
+            center_x_jul = mouse_x_jul + (center_x_jul - mouse_x_jul) / zoom;
+            center_y_jul = mouse_y_jul + (center_y_jul - mouse_y_jul) / zoom;
+            scale_factor_jul *= zoom;
+            drawJul();
+        }
+        function mouse_down_jul(e) {
+            if (e.button == 0) {
+                mouse_clicked_jul = true;
+                mouse_moved_jul = false;
+            }
+            updateMouseCoords_jul(e);
+        }
+        function mouse_up_jul(e) {
+            mouse_clicked_jul = false;
+        }
+        function mouse_move_jul(e) {
+            if (mouse_clicked_jul) {
+                mouse_moved_jul = true;
+                var old_x = mouse_x_jul;
+                var old_y = mouse_y_jul;
+                updateMouseCoords_jul(e);
+                center_x_jul += old_x - mouse_x_jul;
+                center_y_jul += old_y - mouse_y_jul;
+                updateMouseCoords_jul(e);
+                drawJul();
+            }
+        }
+
+        function create_url_params() {
+            var url = new URL("https://davidsaltacc.github.io/pages/generative-art/fractals");
+            var params = url.searchParams;
+            params.append("cxm", center_x_main);
+            params.append("cym", center_y_main);
+            params.append("cxj", center_x_jul);
+            params.append("cyj", center_y_jul);
+            params.append("cx", julia_constant[0]);
+            params.append("cy", julia_constant[1]);
+            params.append("scm", scale_factor_main);
+            params.append("scj", scale_factor_jul);
+            params.append("r", radius);
+            params.append("i", max_iterations);
+            params.append("cm", color_method);
+            params.append("cs", colorscheme);
+            params.append("f", fractal_type);
+            document.getElementById("url").innerText = document.getElementById("url").href = url.href;
+        }
+
+        function apply_url_params() {
+            var params = (new URL(window.location.href)).searchParams;
+            center_x_main = parseFloat(params.get("cxm")) || center_x_main;
+            center_y_main = parseFloat(params.get("cym")) || center_y_main;
+            center_x_jul = parseFloat(params.get("cxj")) || center_x_jul;
+            center_y_jul = parseFloat(params.get("cyj")) || center_y_jul;
+            julia_constant[0] = parseFloat(params.get("cx")) || julia_constant[0];
+            julia_constant[1] = parseFloat(params.get("cy")) || julia_constant[1];
+            scale_factor_main = parseFloat(params.get("scm")) || scale_factor_main;
+            scale_factor_jul = parseFloat(params.get("scj")) || scale_factor_jul;
+            radius = parseInt(params.get("r")) || radius;
+            max_iterations = parseInt(params.get("i")) || max_iterations;
+            color_method = parseInt(params.get("cm")) || color_method;
+            colorscheme = parseInt(params.get("cs")) || colorscheme;
+            fractal_type = parseInt(params.get("f")) || fractal_type;
+
+            document.getElementById("radius").value = radius;
+            document.getElementById("iterations").value = max_iterations;
+            document.getElementById("constantRe").value = julia_constant[0];
+            document.getElementById("constantIm").value = julia_constant[1];
+        }
+
+        canvasMain.onwheel = on_zoom_main;
+        canvasMain.onmousedown = mouse_down_main;
+        canvasMain.onmouseup = mouse_up_main;
+        canvasMain.onmousemove = mouse_move_main;
         
-        var smoothcmap = false;
-        
-        var classiccmap = true;
-        var rainbowcmap = false;
+        canvasJul.onwheel = on_zoom_jul;
+        canvasJul.onmousedown = mouse_down_jul;
+        canvasJul.onmouseup = mouse_up_jul;
+        canvasJul.onmousemove = mouse_move_jul;
 
-        var BlWhBn = [
-            [9, 1, 47],
-            [7, 3, 60],
-            [4, 4, 73],
-            [2, 6, 87],
-            [0, 7, 100],
-            [6, 26, 119],
-            [12, 44, 138],
-            [18, 44, 138],
-            [24, 44, 138],
-            [41, 85, 174],
-            [57, 125, 209],
-            [96, 153, 219],
-            [134, 181, 229], 
-            [173, 209, 239],
-            [211, 236, 248],
-            [226, 230, 220],
-            [241, 233, 191],
-            [245, 217, 143],
-            [248, 201, 95],
-            [252, 186, 48],
-            [255, 170, 0],
-            [230, 149, 0],
-            [204, 128, 0],
-            [179, 108, 0],
-            [153, 87, 0],
-            [130, 70, 2],
-            [106, 52, 3],
-            [86, 41, 9],
-            [66, 30, 15],
-            [46, 19, 21],
-            [25, 7, 26]
-        ];
-
-        var WhBlRd = [
-            [228, 224, 229],
-            [206, 211, 221],
-            [183, 198, 212],
-            [160, 185, 204],
-            [137, 172, 195],
-            [129, 164, 195],
-            [121, 156, 194],
-            [113, 148, 194],
-            [104, 140, 193],
-            [101, 117, 182],
-            [98, 93, 170],
-            [95, 70, 159],
-            [91, 46, 147],
-            [81, 39, 125],
-            [71, 31, 102],
-            [61, 24, 80],
-            [50, 16, 57],
-            [74, 24, 63],
-            [97, 31, 69],
-            [120, 39, 75],
-            [143, 46, 80],
-            [154, 59, 81],
-            [164, 71, 82],
-            [174, 84, 83],
-            [184, 96, 84],
-            [189, 112, 96],
-            [193, 128, 108],
-            [197, 144, 120],
-            [201, 159, 132],
-            [209, 176, 157],
-            [217, 193, 182],
-            [225, 210, 207],
-            [233, 226, 232]
-        ];
-
-        var HSV = [
-            [255, 0, 0],
-            [255, 153, 0],
-            [255, 230, 0],
-            [204, 255, 0],
-            [128, 255, 0],
-            [51, 255, 0],
-            [0, 255, 26],
-            [0, 255, 102],
-            [0, 255, 179],
-            [0, 255, 255],
-            [0, 179, 255],
-            [0, 102, 255],
-            [0, 26, 255],
-            [51, 0, 255],
-            [128, 0, 255],
-            [204, 0, 255],
-            [255, 0, 230],
-            [255, 0, 153],
-            [255, 0, 76]
-        ];
-
-        var FireIce = [
-            [0, 0, 0],
-            [39, 5, 0],
-            [77, 11, 0],
-            [116, 16, 0],
-            [154, 21, 0],
-            [167, 41, 0],
-            [180, 60, 0],
-            [192, 80, 0],
-            [205, 99, 0],
-            [212, 120, 4],
-            [219, 141, 9],
-            [225, 161, 13],
-            [232, 182, 17],
-            [233, 192, 52],
-            [233, 202, 88],
-            [234, 212, 123],
-            [234, 222, 158],
-            [234, 226, 174],
-            [233, 231, 190],
-            [233, 235, 206],
-            [232, 239, 222],
-            [206, 234, 225],
-            [181, 229, 228],
-            [155, 223, 230],
-            [129, 218, 233],
-            [104, 193, 220],
-            [79, 169, 207],
-            [54, 144, 194],
-            [29, 119, 181],
-            [22, 103, 169],
-            [15, 87, 156],
-            [7, 70, 144],
-            [0, 54, 131],
-            [0, 41, 98],
-            [0, 27, 66],
-            [0, 14, 33]
-        ];
-        
-        var FireIce = [
-            [0, 0, 0],
-            [39, 5, 0],
-            [77, 11, 0],
-            [116, 16, 0],
-            [154, 21, 0],
-            [167, 41, 0],
-            [180, 60, 0],
-            [192, 80, 0],
-            [205, 99, 0],
-            [212, 120, 4],
-            [219, 141, 9],
-            [225, 161, 13],
-            [232, 182, 17],
-            [233, 192, 52],
-            [233, 202, 88],
-            [234, 212, 123],
-            [234, 222, 158],
-            [234, 226, 174],
-            [233, 231, 190],
-            [233, 235, 206],
-            [232, 239, 222],
-            [206, 234, 225],
-            [181, 229, 228],
-            [155, 223, 230],
-            [129, 218, 233],
-            [104, 193, 220],
-            [79, 169, 207],
-            [54, 144, 194],
-            [29, 119, 181],
-            [22, 103, 169],
-            [15, 87, 156],
-            [7, 70, 144],
-            [0, 54, 131],
-            [0, 41, 98],
-            [0, 27, 66],
-            [0, 14, 33]
-        ];
-
-        var colormap = BlWhBn;
-
-        function cmapBlWhBn() {
-            smoothcmap = false;
-            colormap = BlWhBn;
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function cmapWhBlRd() {
-            smoothcmap = false;
-            colormap = WhBlRd;
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function cmapHSV() {
-            smoothcmap = false;
-            colormap = HSV;
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function cmapFireIce() {
-            smoothcmap = false;
-            colormap = FireIce;
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function reverseCmap() {
-            colormap = colormap.reverse();
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function classicCmap() {
-            smoothcmap = true;
-            rainbowcmap = false;
-            classiccmap = true;
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function rainbowCmap() {
-            smoothcmap = true;
-            classiccmap = false;
-            rainbowcmap = true;
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        const gpu = new GPU.GPU();
-
-        const renderFractal_ = gpu.createKernel(function(width, height, scale, cx, cy, jset, brot, ship, celtic, corn, feather, chirikov, ikeda, pow, cmap, cl, offsx, offsy, radius, smoothcmap, classiccmap, rainbowcmap) {
-            var x = this.thread.x;
-            var y = this.thread.y;
-            var scale_m = 1;
-            if (feather) {
-                scale_m = 1.5;
-            }
-            if (chirikov) {
-                scale_m = 2;
-            }
-            if (pow > 2) {
-                scale_m = 0.6;
-            }
-            var a = x / width * (scale * 2 * scale_m) - scale * scale_m + offsx; 
-            var b = y / height * (scale * 2 * scale_m) - scale * scale_m + offsy;
-            var ca = a;
-            var cb = b;
-            if (jset) {
-                ca = cx;
-                cb = cy;
-            }
-            var lastA = 1;
-            var lastB = 0;
-            var str = 0;
-            var col = 0;
-            var nsm = 0;
-            var n = 0;
-
-            // MAGNET:
-            // z(n+1) = ((z(n)^2 + c - 1) / (2*z(n) + c - 2)) ^ 2
-
-            while (n < 200) {
-                if (brot || ship || corn || celtic) {
-                    var aa = 1;
-                    var bb = 0;
-                    for (var i = 0; i < pow; i++) {
-                        var temp = aa; 
-                        aa = aa * a - bb * b;
-                        bb = temp * b + bb * a;
-                    }
-                    if (celtic) {
-                        aa = Math.abs(aa);
-                    }
-                    if (corn) {
-                        bb *= -1;
-                    }
-                    a = aa + ca;
-                    b = bb + cb;
-                    if (ship) {
-                        b = Math.abs(bb) + cb;
-                    }
-                } else if (feather) {
-                    var aa = a * a;
-                    var bb = b * b;
-                    var dr = 1.0 + aa;
-                    var di = bb;
-                    var z3r = a * a * a - 3 * a * b * b;
-                    var z3i = 3 * a * a * b - b * b * b;
-                    var dvr = (z3r * dr + z3i * di) / (dr * dr + di * di);
-                    var dvi = (z3i * dr - z3r * di) / (dr * dr + di * di);
-                    a = dvr + ca;
-                    b = dvi + cb;
-                } else if (chirikov) {
-                    a = a + ca * b;
-                    b = b + cb * Math.sin(a);
-                } else if (ikeda) {
-                    var t = 0.4 - 6 / (1 + a * a + b * b);
-                    var sin_t = Math.sin(t);
-                    var cos_t = Math.cos(t);
-                    a = 1 + ca * (a * cos_t - b * sin_t);
-                    b = cb * (a * sin_t + b * cos_t);
-                } else if (false) { // heart, todo fix
-                    var aa = 2 * a * b;
-                    var bb = Math.pow(Math.abs(b), -98) - Math.pow(Math.abs(a), -98);
-                    a = aa + ca;
-                    b = bb + cb;
-                } else if (false) { // magnet 1, todo fix
-                    var zsqr = a * a - b * b;
-                    var zsqi = 2 * a * b;
-                    var numr = zsqr + ca - 1;
-                    var numi = zsqi + cb;
-                    var z2r = 2 * a;
-                    var z2i = 2 * b;
-                    var denr = z2r + ca - 2;
-                    var deni = z2i + cb;
-                    var dmag = denr * denr + deni * deni;
-                    var divr = (numr * denr + numi * deni) / dmag;
-                    var divi = (numi * denr - numr * deni) / dmag;
-                    var resr = divr * divr - divi * divi;
-                    var resi = 2 * divr * divi;
-                    a = resr;
-                    b = resi;
-                };
-                nsm = Math.fround(n + 1) - Math.log(Math.log(Math.abs(Math.sqrt(a * a + b * b))));
-                if (a * a + b * b > radius) {
-                    break;
-                }
-                n++;
-                lastA = a;
-                lastB = b;
-            }
-            if (n == 200) {
-                return [0, 0, 0];
-            }
-            if (smoothcmap) {
-                if (classiccmap) {
-                    nsm = nsm / 100 * Math.PI * 2; // "CLASSIC" COLORMAP
-
-                    return [
-                        Math.floor((0.5 + Math.sin(nsm    ) / 2) * 255),
-                        Math.floor((0.5 + Math.sin(nsm + 1) / 2) * 255),
-                        Math.floor((0.5 + Math.sin(nsm + 2) / 2) * 255)
-                    ]; 
-                } else if (rainbowcmap) {
-                    nsm = nsm / 100 * Math.PI * 2;
-                    return [
-                        Math.floor(Math.sin(nsm) * 127 + 128),
-                        Math.floor(Math.sin(nsm + 2 * Math.PI / 3) * 127 + 128),
-                        Math.floor(Math.sin(nsm + 4 * Math.PI / 3) * 127 + 128)
-                    ];
-                }
-                
-            } else {
-                var index = n % cl; 
-                return [cmap[index][0], cmap[index][1], cmap[index][2]];
-            }
-            
-            
-
-        }).setDynamicOutput(true).setDynamicArguments(true).setTactic("balanced").setPrecision("single").setOutput([width, height]);
-
-        function toImageData(image) {
-            const data = mandelbrotCtx.createImageData(width, height);
-            for (var y = 0; y < height; y++) {
-                for (var x = 0; x < width; x++) {
-                    const index = (y * height + x) * 4;
-                    const color = image[y][x];
-                    data.data[index] = color[0];
-                    data.data[index + 1] = color[1];
-                    data.data[index + 2] = color[2];
-                    data.data[index + 3] = 255;
-                }
-            }
-            return data;
-        }
-
-        function renderFractal() {
-            const mandelbrot_ = renderFractal_(width, height, manScale, 0, 0, false, mandelbrot, burningShip, celtic, corn, feather, chirikov, ikeda, power, colormap, colormap.length, manOffsX, manOffsY, 100000000, smoothcmap, classiccmap, rainbowcmap);
-            mandelbrotCtx.putImageData(toImageData(mandelbrot_), 0, 0);
-        }
-
-        function renderJuliaset(normX, normY) {
-            const juliaset = renderFractal_(width, height, julScale, normX, normY, true, mandelbrot, burningShip, celtic, corn, feather, chirikov, ikeda, power, colormap, colormap.length, julOffsX, julOffsY, 100000000, smoothcmap, classiccmap, rainbowcmap);
-            juliasetCtx.putImageData(toImageData(juliaset), 0, 0);
-        }
-
-        function setPower(n) {
-            power = n;
-        }
-
-        function renderMandelbrot(n) {
-            burningShip = false;
-            celtic = false;
-            corn = false;
-            feather = false;
-            chirikov = false;
-            ikeda = false;
-            mandelbrot = true;
-            setPower(n);
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function renderBurningShip(n) {
-            mandelbrot = false;
-            celtic = false;
-            corn = false;
-            feather = false;
-            chirikov = false;
-            ikeda = false;
-            burningShip = true;
-            setPower(n);
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        } 
-
-        function renderCeltic(n) {
-            mandelbrot = false;
-            burningShip = false;
-            corn = false;
-            feather = false;
-            chirikov = false;
-            ikeda = false;
-            celtic = true;
-            setPower(n);
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-        
-        function renderTricorn(n) {
-            mandelbrot = false;
-            burningShip = false;
-            celtic = false;
-            feather = false;
-            chirikov = false;
-            ikeda = false;
-            corn = true;
-            setPower(n);
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        } 
-        
-        function renderFeather() {
-            mandelbrot = false;
-            burningShip = false;
-            celtic = false;
-            corn = false;
-            chirikov = false;
-            ikeda = false;
-            feather = true;
-            setPower(2);
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function renderChirikov() {
-            mandelbrot = false;
-            burningShip = false;
-            celtic = false;
-            corn = false;
-            feather = false;
-            ikeda = false;
-            chirikov = true;
-            setPower(2);
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        function renderIkeda() {
-            mandelbrot = false;
-            burningShip = false;
-            celtic = false;
-            corn = false;
-            feather = false;
-            chirikov = false;
-            ikeda = true;
-            setPower(2);
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        renderMandelbrot(2);
-
-        mandelbrotCanvas.addEventListener("click", (evt) => {
-            var x = evt.pageX;
-            var y = evt.pageY;
-            evt.preventDefault();
-            var scale_m = 1;
-            if (feather) {
-                scale_m = 1.5;
-            }
-            if (chirikov) {
-                scale_m = 2;
-            }
-            if (power > 2) {
-                scale_m = 0.6;
-            }
-            var normX = ((x / width * 2 - 1) * manScale * scale_m + manOffsX).toFixed(10);
-            var normY = ((y / height * 2 - 1) * manScale * scale_m + manOffsY).toFixed(10);
-            document.getElementById("juliasetC").innerHTML = "c = (" + normX + " + " + normY + "i)";
-            ccx = normX;
-            ccy = normY;
-            renderJuliaset(normX, normY);
-        });
-
-        mandelbrotCanvas.addEventListener("contextmenu", evt => {
-            evt.preventDefault();
-        });
-
-        juliasetCanvas.addEventListener("contextmenu", evt => {
-            evt.preventDefault();
-        });
-
-        mandelbrotCanvas.addEventListener("wheel", (evt) => {
-            manScale *= (1 + evt.deltaY / 1000);
-            evt.preventDefault();
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        });
-
-        juliasetCanvas.addEventListener("wheel", (evt) => {
-            julScale *= (1 + evt.deltaY / 1000);
-            evt.preventDefault();
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        });
-
-        var manPrevX = 0;
-        var manPrevY = 0;
-        var manPrevI = false;
-        var manMoveI = 0;
-        mandelbrotCanvas.addEventListener("mousemove", (evt) => {
-            if (!rightclickedMan) {
-                return;
-            }
-            if (!manPrevI) {
-                manPrevI = true;
-                manPrevX = evt.offsetX;
-                manPrevY = evt.offsetY;
-                return;
-            }
-            var scale_m = 1;
-            if (feather) {
-                scale_m = 1.5;
-            }
-            if (chirikov) {
-                scale_m = 2;
-            }
-            if (power > 2) {
-                scale_m = 0.6;
-            }
-            var mx = evt.offsetX - manPrevX;
-            var my = evt.offsetY - manPrevY;
-            manPrevX = evt.offsetX;
-            manPrevY = evt.offsetY;
-            manOffsX -= ((mx / 200 * 2 - mx / 200) * manScale * scale_m);
-            manOffsY -= ((my / 200 * 2 - my / 200) * manScale * scale_m);
-            manMoveI++;
-            if (manMoveI % 3 == 0) { // REDUCE LAG (lmao idc)
-                renderFractal();
-            }
-        });
-
-        var julPrevX = 0;
-        var julPrevY = 0;
-        var julPrevI = false;
-        var julMoveI = 0;
-        juliasetCanvas.addEventListener("mousemove", (evt) => {
-            if (!rightclickedJul) {
-                return;
-            }
-            if (!julPrevI) {
-                julPrevI = true;
-                julPrevX = evt.offsetX;
-                julPrevY = evt.offsetY;
-                return;
-            }
-            var scale_m = 1;
-            if (feather) {
-                scale_m = 1.5;
-            }
-            if (chirikov) {
-                scale_m = 2;
-            }
-            if (power > 2) {
-                scale_m = 0.6;
-            }
-            var jx = evt.offsetX - julPrevX;
-            var jy = evt.offsetY - julPrevY;
-            julPrevX = evt.offsetX;
-            julPrevY = evt.offsetY;
-            julOffsX -= ((jx / 200 * 2 - jx / 200) * julScale * scale_m);
-            julOffsY -= ((jy / 200 * 2 - jy / 200) * julScale * scale_m);
-            julMoveI++;
-            if (julMoveI % 3 == 0) { // REDUCE LAG (lmao idc)
-                renderJuliaset(ccx, ccy);
-            }
-        });
-
-        mandelbrotCanvas.addEventListener("mousedown", (evt) => {
-            if (evt.button == 2) {
-                rightclickedMan = true;
-            } 
-        });
-
-        mandelbrotCanvas.addEventListener("mouseup", (evt) => {
-            if (evt.button == 2) {
-                rightclickedMan = false;
-                manPrevI = false;
-            } 
-        });
-
-        mandelbrotCanvas.addEventListener("mouseleave", (evt) => {
-            rightclickedMan = false;
-            manPrevI = false;
-        });
-
-        juliasetCanvas.addEventListener("mousedown", (evt) => {
-            if (evt.button == 2) {
-                rightclickedJul = true;
-            } 
-        });
-
-        juliasetCanvas.addEventListener("mouseup", (evt) => {
-            if (evt.button == 2) {
-                rightclickedJul = false;
-                julPrevI = false;
-            } 
-        });
-
-        juliasetCanvas.addEventListener("mouseleave", (evt) => {
-            rightclickedJul = false;
-                julPrevI = false;
-        });
-
-        document.getElementById("cxvalue").innerHTML = 0;
-        document.getElementById("cyvalue").innerHTML = 0;
-        document.getElementById("sizevalue").innerHTML = width;
-        document.getElementById("powervalue").innerHTML = 2;
-        document.getElementById("cx").min = -julScale;
-        document.getElementById("cx").max = julScale;
-        document.getElementById("cy").min = -julScale;
-        document.getElementById("cy").max = julScale;
-        document.getElementById("cxn").min = -julScale;
-        document.getElementById("cxn").max = julScale;
-        document.getElementById("cyn").min = -julScale;
-        document.getElementById("cyn").max = julScale;
-
-        document.getElementById("cx").oninput = function() {
-            document.getElementById("cxvalue").innerHTML = this.value;
-            ccx = this.value;
-            renderJuliaset(ccx, ccy);
-            document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
-        }
-
-        document.getElementById("cy").oninput = function() {
-            document.getElementById("cyvalue").innerHTML = this.value;
-            ccy = this.value;
-            renderJuliaset(ccx, ccy);
-            document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
-        }
-        
-        document.getElementById("size").oninput = function() {
-            document.getElementById("sizevalue").innerHTML = this.value;
-            width = height = this.value;
-            mandelbrotCanvas.width = juliasetCanvas.width = width;
-            mandelbrotCanvas.height = juliasetCanvas.height = height;
-            renderFractal_.setOutput([width, height]);
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-        }
-
-        document.getElementById("power").oninput = function() {
-            document.getElementById("powervalue").innerHTML = this.value;
-            power = this.value;
-            renderFractal();
-            renderJuliaset(ccx, ccy);
-            document.getElementById("julPow").innerHTML = power;
-            document.getElementById("fracPow").innerHTML = power;
-        }
-
-        function updateCxBtn() {
-            ccx = document.getElementById("cxn").value;
-            document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
-            renderJuliaset(ccx, ccy);
-        }
-        function updateCyBtn() {
-            ccy = document.getElementById("cyn").value;
-            document.getElementById("juliasetC").innerHTML = "c = (" + ccx + " + " + ccy + "i)";
-            renderJuliaset(ccx, ccy);
-        }
-
-        // UNUSED ANIMATION CODE BEGIN
-
-        var vx = -2.5;
-        var vy = -2.5;
-        var images = [];
-        var dataURLs = []; 
-        var increase = 0.005;
-
-        // width = height = 1000;
-        // juliasetCanvas.width = width;
-        // juliasetCanvas.height = height;
-        // renderFractal_.setOutput([width, height]);
-
-        function saveFrames() {
-            var zip = new JSZip();
-            var vfi = 0;
-            dataURLs.forEach((url) => {
-                zip.file("frame_" + vfi.toString().padStart(4, "0") + ".png", url.split(",")[1], { base64: true });
-                vfi++;
-            });
-            zip.generateAsync({ type: "blob" }).then((content) => {
-                var a = document.createElement("a");
-                a.href = URL.createObjectURL(content);
-                a.download = "fractal_frames.zip";
-                a.click();
-                URL.revokeObjectURL(a.href);
-                a.remove();
-            });
-        }
-
-        var vi = 0;
-        function toDataURLs() {
-            juliasetCtx.putImageData(images[vi], 0, 0);
-            var dataURL = juliasetCanvas.toDataURL();
-            dataURLs.push(dataURL);
-            vi++;
-            if (vi == images.length - 1) {
-                saveFrames();
-                return;
-            }
-            requestAnimationFrame(toDataURLs);
-        }
-
-        function outInEasing(t) {
-            if (t < 0.5) {
-                return 2 * t * t;
-            } else {
-                return 1 - 2 * (1 - t) * (1 - t);
-            }
-        }
-
-        var angle = 0;
-        function renderFrames() {
-            const vxfromangle = 0.7885 * Math.cos(angle);
-            const vyfromangle = 0.7885 * Math.sin(angle);
-            const juliaset = renderFractal_(width, height, 2.5, vxfromangle, vyfromangle, true, false, false, false, false, true, false, false, false, colormap, colormap.length).toArray();
-            var vimg = toImageData(juliaset);
-            images.push(vimg);
-            juliasetCtx.putImageData(vimg, 0, 0);
-            // vx += increase;
-            // vy += increase;
-            angle += increase;
-            console.log(angle);
-            // if (vx >= 2.5 || vy >= 2.5) {
-            //     toDataURLs();
-            //     return;
-            // }
-            if (angle >= Math.PI * 2) {
-                toDataURLs();
-                return;
-            }
-            requestAnimationFrame(renderFrames);
-        }
-
-        // renderFrames();
-
-        // UNUSED ANIMATION CODE END
-
+        apply_url_params();
+        drawMain();
+        drawJul();
     </script>
 </body>
-
 </html>
