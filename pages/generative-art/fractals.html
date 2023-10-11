@@ -753,19 +753,19 @@
 
         function apply_url_params() {
             var params = (new URL(window.location.href)).searchParams;
-            center_x_main = parseFloat(params.get("cxm")) || center_x_main;
-            center_y_main = parseFloat(params.get("cym")) || center_y_main;
-            center_x_jul = parseFloat(params.get("cxj")) || center_x_jul;
-            center_y_jul = parseFloat(params.get("cyj")) || center_y_jul;
-            julia_constant[0] = parseFloat(params.get("cx")) || julia_constant[0];
-            julia_constant[1] = parseFloat(params.get("cy")) || julia_constant[1];
-            scale_factor_main = parseFloat(params.get("scm")) || scale_factor_main;
-            scale_factor_jul = parseFloat(params.get("scj")) || scale_factor_jul;
-            radius = parseInt(params.get("r")) || radius;
-            max_iterations = parseInt(params.get("i")) || max_iterations;
-            color_method = parseInt(params.get("cm")) || color_method;
-            colorscheme = parseInt(params.get("cs")) || colorscheme;
-            fractal_type = parseInt(params.get("f")) || fractal_type;
+            center_x_main = parseFloat(params.get("cxm")) ?? center_x_main;
+            center_y_main = parseFloat(params.get("cym")) ?? center_y_main;
+            center_x_jul = parseFloat(params.get("cxj")) ?? center_x_jul;
+            center_y_jul = parseFloat(params.get("cyj")) ?? center_y_jul;
+            julia_constant[0] = parseFloat(params.get("cx")) ?? julia_constant[0];
+            julia_constant[1] = parseFloat(params.get("cy")) ?? julia_constant[1];
+            scale_factor_main = parseFloat(params.get("scm")) ?? scale_factor_main;
+            scale_factor_jul = parseFloat(params.get("scj")) ?? scale_factor_jul;
+            radius = parseInt(params.get("r")) ?? radius;
+            max_iterations = parseInt(params.get("i")) ?? max_iterations;
+            color_method = parseInt(params.get("cm")) ?? color_method;
+            colorscheme = parseInt(params.get("cs")) ?? colorscheme;
+            fractal_type = parseInt(params.get("f")) ?? fractal_type;
 
             document.getElementById("radius").value = radius;
             document.getElementById("iterations").value = max_iterations;
