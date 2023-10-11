@@ -38,8 +38,21 @@
         #url {
             word-wrap: break-word;
         }
+        #unsupported {
+            display: none;
+            position: fixed;
+            z-index: 99;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
     </style>
 </head>
+    <div id="unsupported">
+        <h1>You have been detected as a mobile user. Sadly, this website can only be viewed on Desktop browsers.</h1>
+    </div>
     <div class="container">
         <br>
         <h3>Fractal Selection</h3>
@@ -58,10 +71,15 @@
         <button onclick="setFractal('chirikov')">Chirikov</button>
         <button onclick="setFractal('ikeda')">Ikeda</button>
         <button onclick="setFractal('feather')">Feather</button>
+        <button onclick="setFractal('heart')">Heart</button>
+        <button onclick="setFractal('ass 2')">Ass 2</button>
+        <button onclick="setFractal('triangle')">Triangle</button>
         <h3>Colormap Selection</h3>
         <button onclick="setColormap('classic')">Classic</button>
         <button onclick="setColormap('ultra fractal')">Ultra Fractal Default</button>
         <button onclick="setColormap('red and blue')">Red and Blue</button>
+        <p>Color offset:</p>
+        <input type="range" min="0" max="1" step="0.001" value="0" id="coloroffset" oninput="updateSettings();">
         <h3>Color Method Selection</h3>
         <button onclick="setColormethod('terraced')">Terraced</button>
         <button onclick="setColormethod('smooth')">Smooth</button>
@@ -70,20 +88,28 @@
         <button onclick="setColormethod('interior')">Interior</button>
         <h3>Settings</h3>
         <p>Escape Radius:</p>
-        <input type="number" id="radius" value="2"><button type="submit" onclick="updateSettings();">Submit</button>
+        <input type="number" id="radius" value="2" onchange="updateSettings();">
         <p>Iterations:</p>
-        <input type="number" id="iterations" value="200"><button type="submit" onclick="updateSettings();">Submit</button>
+        <input type="number" id="iterations" value="200" onchange="updateSettings();">
         <p>Canvas Size:</p>
-        <input type="number" id="size" value="500"><button type="submit" onclick="updateSize(parseInt(document.getElementById('size').value));">Submit</button>
+        <input type="number" id="size" value="500" onchange="updateSize(parseInt(document.getElementById('size').value));">
         <p>Juliaset Constant:</p>
-        <input type="number" id="constantRe" value="0">
-        <input type="number" id="constantIm" value="0"><button type="submit" onclick="updateSettings();">Submit</button>
+        <input type="number" id="constantRe" value="0" onchange="updateSettings();">
+        <input type="number" id="constantIm" value="0" onchange="updateSettings();">
+        <p>Interpolate between normal and juliaset:</p>
+        <input type="range" id="nji" value="1" min="0" max="1" step="0.001" oninput="updateSettings();">
         <h3>Save Settings:</h3>
         <a id="url" href="">_</a>
         <h3>Visit the old version:</h3>
         <a href="https://davidsaltacc.github.io/pages/generative-art/fractals-old">davidsaltacc.github.io/pages/generative-art/fractals-old</a>
         <h3>Side Note:</h3>
         <p>This project is still very early in development. This means, new features will be added in the future. Until everything is finished, bugs might occur, things might break. If you find anything, please <a href="https://github.com/davidsaltacc/davidsaltacc.github.io/issues/new">open a issue on github.</a></p>
+        <h3>What are fractals and what is this?</h3>
+        <a href="https://en.wikipedia.org/wiki/Fractal">https://en.wikipedia.org/wiki/Fractal</a><br>
+        <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">https://en.wikipedia.org/wiki/Mandelbrot_set</a><br>
+        <a href="https://en.wikipedia.org/wiki/Julia_set">https://en.wikipedia.org/wiki/Julia_set</a><br>
+        <a href="https://blinry.org/mandelbrot/">https://blinry.org/mandelbrot</a><br>
+        <a href="https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b">https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b</a>
         <h3>Special Thanks:</h3>
         <p><a href="https://nathansolomon1678.github.io/fractals">This</a> project by nathansolomon1678 on github, where I got a lot of insipration (and maybe code ;) from</p>
         <p>Paul Bourke, especially his website page on fractals <a href="http://www.paulbourke.net/fractals/">here</a>, where I got lots of the fractals and insipration from</p>
@@ -114,10 +140,13 @@
         uniform int juliaset;
         uniform int max_iterations;
         uniform int fractal_type;
-        uniform int color_method;
         uniform int colorscheme;
+        uniform float color_offset;
+        uniform int color_method;
+        uniform float main_juliaset_lerp;
 
         #define pi 3.141592653589793
+        #define e 2.718281828459045
 
         float square(float x) {
             return x * x;
@@ -213,6 +242,7 @@
         }
 
         vec4 color(float x) {
+            x += color_offset;
             if (colorscheme == 0) {
                 return classic_colorscheme(x);
             }
@@ -224,11 +254,7 @@
             }
         }
 
-        vec2 iteration(vec2 z, vec2 c_, int type) {
-            vec2 c = c_;
-            if (juliaset == 1) {
-                c = vec2(c.x, c.y * -1.); // it gets inverted for some reason
-            }
+        vec2 iteration(vec2 z, vec2 c, int type) {
             if (type == 0) {
                 // Mandelbrot
                 return c + vec2(z.x * z.x - z.y * z.y, 2. * z.x * z.y);
@@ -306,6 +332,18 @@
                 float dvi = (zi * dr - zr * di) / (dr * dr + di * di);
                 return vec2(dvr, dvi) + c;
             }
+            if (type == 15) {
+                // Heart
+                return vec2(c.x, c.y * -1.) + vec2(2. * z.x * z.y, abs(z.y) - abs(z.x));
+            }
+            if (type == 16) {
+                // Ass 2
+                return c + vec2(sinh(z.x) * sin(z.y), cosh(z.y) * cos(z.x));
+            }
+            if (type == 17) {
+                // Triangle
+                return c + vec2(sin(z.x) * sinh(z.y), cos(z.y) * cosh(z.x));
+            }
         }
 
         void main() {
@@ -316,7 +354,13 @@
             vec2 z = original_z;
             vec2 c = original_z;
             if (juliaset == 1) {
-                c = julia_constant;
+                if (main_juliaset_lerp == 1.) {
+                    c = vec2(julia_constant.x, julia_constant.y * -1.); // it gets inverted for some reason;
+                } else if (main_juliaset_lerp == 0.) {
+                    c = original_z;
+                } else {
+                    c = (1. - main_juliaset_lerp) * original_z + main_juliaset_lerp * vec2(julia_constant.x, julia_constant.y * -1.);;
+                }
             }
             float distance_to_orbit_trap = 100000000.;
             float color_v = 0.;
@@ -373,6 +417,19 @@
         }
     </script>
     <script>
+        function unsupported_device() {
+            let check = false;
+            (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+            return check;
+        };
+
+        if (unsupported_device()) {
+            document.getElementById("unsupported").style.display = "block";
+            
+            // crash, best way to stop the rest from executing at all
+            throw new Error("unsupported device detected");
+        }
+
         var canvasMain = document.createElement("canvas");
         var canvasJul = document.createElement("canvas");
         var container = document.getElementsByClassName("container")[0];
@@ -443,8 +500,10 @@
             juliaset,
             max_iterations,
             fractal_type,
+            colorscheme,
+            color_offset,
             color_method,
-            colorscheme
+            main_juliaset_lerp
         ) {
             gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), canvas_dimensions);
             gl.uniform2fv(gl.getUniformLocation(program, "center"), center);
@@ -454,15 +513,19 @@
             gl.uniform1i(gl.getUniformLocation(program, "juliaset"), juliaset);
             gl.uniform1i(gl.getUniformLocation(program, "max_iterations"), max_iterations);
             gl.uniform1i(gl.getUniformLocation(program, "fractal_type"), fractal_type);
-            gl.uniform1i(gl.getUniformLocation(program, "color_method"), color_method);
             gl.uniform1i(gl.getUniformLocation(program, "colorscheme"), colorscheme);
+            gl.uniform1f(gl.getUniformLocation(program, "color_offset"), color_offset);
+            gl.uniform1i(gl.getUniformLocation(program, "color_method"), color_method);
+            gl.uniform1f(gl.getUniformLocation(program, "main_juliaset_lerp"), main_juliaset_lerp);
         }
 
         var radius = 2000000;
         var max_iterations = 200;
         var fractal_type = 0;
-        var color_method = 1;
+        var color_method = 0;
         var colorscheme = 0;
+        var color_offset = 0;
+        var main_jul_lerp = 1;
 
         var presets_colormethods = {
             "terraced": {
@@ -555,6 +618,18 @@
                 "id": 14,
                 "radius": 100
             },
+            "heart": {
+                "id": 15,
+                "radius": 10000000
+            },
+            "ass 2": {
+                "id": 16,
+                "radius": 10000000
+            },
+            "triangle": {
+                "id": 17,
+                "radius": 10000000
+            }
         }
 
         function updateSize(size) {
@@ -571,6 +646,8 @@
             max_iterations = parseInt(document.getElementById("iterations").value);
             julia_constant[0] = parseFloat(document.getElementById("constantRe").value);
             julia_constant[1] = parseFloat(document.getElementById("constantIm").value);
+            color_offset = parseFloat(document.getElementById("coloroffset").value);
+            main_jul_lerp = parseFloat(document.getElementById("nji").value);
 
             drawMain();
             drawJul();
@@ -607,8 +684,10 @@
                 0,
                 max_iterations,
                 fractal_type,
+                colorscheme,
+                color_offset,
                 color_method,
-                colorscheme
+                main_jul_lerp
             );
 
             glmain.drawArrays(glmain.TRIANGLE_FAN, 0, 4);
@@ -625,8 +704,10 @@
                 1,
                 max_iterations,
                 fractal_type,
+                colorscheme,
+                color_offset,
                 color_method,
-                colorscheme
+                main_jul_lerp
             );
 
             gljul.drawArrays(gljul.TRIANGLE_FAN, 0, 4);
@@ -747,7 +828,9 @@
             params.append("i", max_iterations);
             params.append("cm", color_method);
             params.append("cs", colorscheme);
+            params.append("co", color_offset);
             params.append("f", fractal_type);
+            params.append("nji", main_jul_lerp);
             document.getElementById("url").innerText = document.getElementById("url").href = url.href;
         }
 
@@ -765,12 +848,16 @@
             max_iterations = parseInt(params.get("i") ?? max_iterations);
             color_method = parseInt(params.get("cm") ?? color_method);
             colorscheme = parseInt(params.get("cs") ?? colorscheme);
+            color_offset = parseFloat(params.get("co") ?? color_offset);
             fractal_type = parseInt(params.get("f") ?? fractal_type);
+            main_jul_lerp = parseInt(params.get("nji") ?? main_jul_lerp);
 
             document.getElementById("radius").value = radius;
             document.getElementById("iterations").value = max_iterations;
             document.getElementById("constantRe").value = julia_constant[0];
             document.getElementById("constantIm").value = julia_constant[1];
+            document.getElementById("coloroffset").value = color_offset;
+            document.getElementById("nji").value = main_jul_lerp;
         }
 
         canvasMain.onwheel = on_zoom_main;
@@ -786,13 +873,6 @@
         apply_url_params();
         drawMain();
         drawJul();
-
-
-        // window.mobileAndTabletCheck = function() {
-        // let check = false;
-        // (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
-        // return check;
-        // };
 
     </script>
 </body>
