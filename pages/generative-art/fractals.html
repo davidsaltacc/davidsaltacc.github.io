@@ -850,7 +850,7 @@
             colorscheme = parseInt(params.get("cs") ?? colorscheme);
             color_offset = parseFloat(params.get("co") ?? color_offset);
             fractal_type = parseInt(params.get("f") ?? fractal_type);
-            main_jul_lerp = parseInt(params.get("nji") ?? main_jul_lerp);
+            main_jul_lerp = parseFloat(params.get("nji") ?? main_jul_lerp);
 
             document.getElementById("radius").value = radius;
             document.getElementById("iterations").value = max_iterations;

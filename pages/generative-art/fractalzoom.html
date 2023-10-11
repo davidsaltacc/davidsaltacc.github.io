@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Infinite Fractal Zoom</title>
+    <link rel="stylesheet" type="text/css" href="../../styles.css">
+    <style>
+        body {
+            background-color: black;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            display: block;
+            background-color: black;
+        }
+
+        p,
+        a {
+            margin: 0px;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/gh/gpujs/gpu.js/dist/gpu-browser.min.js"></script>
+    <script>
+        var canvas = document.createElement("canvas"),
+            width = window.innerWidth,
+            height = window.innerHeight,
+            ctx = canvas.getContext("2d"),
+            scale = 1,
+            quality = 0.8,
+            size = canvas.height = canvas.width = Math.min(width, height);
+
+        document.body.appendChild(canvas);
+
+        const gpu = new GPU.GPU();
+        const getColorGPU = gpu.createKernel(function(scale, size) { // todo make zooming possible
+            var x = this.thread.x;
+            var y = this.thread.y;
+            var cx = (x - size / 2) / (size / 4);
+            var cy = (y - size / 2) / (size / 4);
+            var cz = 0.5;
+            var cr = 0.5;
+            var t = 100;
+            for (var i = 0; i <= 20; i++) {
+                var r2 = cx ** 2 + cy ** 2 + cz ** 2;
+                if (r2 > t) {
+                    break;
+                }
+                var th = Math.atan2(Math.sqrt(cx ** 2 + cy ** 2), cz);
+                var ph = Math.atan2(cy, cx);
+                var r = cr * Math.pow(r2, 0.125);
+                var s1 = th * 8 + i / 4;
+                var s2 = ph * 8 + i / 4;
+                cx = r * Math.sin(s1) * Math.cos(s2) + cx;
+                cy = r * Math.sin(s1) * Math.sin(s2) + cy;
+                cz = r * Math.cos(s1) + cz;
+            }
+            var r = Math.floor(cx * 255);
+            var g = Math.floor(cy * 255);
+            var b = Math.floor(cz * 255);
+            return [r, g, b];
+        }).setOutput([Math.floor(size * quality), Math.floor(size * quality)]);
+
+        function render(x1, y1, x2, y2) {
+            const imageData = ctx.createImageData(Math.floor(size * quality), Math.floor(size * quality), { colorSpace: "display-p3" });
+            const result = getColorGPU(1, Math.floor(size * quality));
+            for (var y = 0; y < Math.floor(size * quality); y++) {
+                for (var x = 0; x < Math.floor(size * quality); x++) {
+                    const index = (y * Math.floor(size * quality) + x) * 4;
+                    const color = result[x][y];
+                    imageData.data[index] = color[0];
+                    imageData.data[index + 1] = color[1];
+                    imageData.data[index + 2] = color[2];
+                    imageData.data[index + 3] = 255;
+                }
+            }
+            
+            canvas.height = canvas.width = Math.floor(size * quality);
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        render();
+
+    </script>
+</body>
+
+</html>
