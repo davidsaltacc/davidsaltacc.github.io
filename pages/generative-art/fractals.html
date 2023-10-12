@@ -80,6 +80,11 @@
         <button onclick="setFractal('ass 2')">Sunglasses</button>
         <button onclick="setFractal('triangle')">Triangle</button>
         <button onclick="setFractal('shark fin')">Shark fin</button>
+        <h3>Mandelbrot Power:</h3>
+        <p>Float slider:</p>
+        <input type="range" id="powerfloat" value="2" min="0" max="20" step="0.001" oninput="updatePowerFloat();">
+        <p>Integer slider:</p>
+        <input type="range" id="powerint" value="2" min="0" max="20" step="1" oninput="updatePowerInt();">
         <h3>Colormap Selection</h3>
         <button onclick="setColormap('classic')">Classic</button>
         <button onclick="setColormap('ultra fractal')">Ultra Fractal Default</button>
@@ -165,6 +170,7 @@
         uniform float color_offset;
         uniform int color_method;
         uniform float main_juliaset_lerp;
+        uniform float mandelbrot_power;
 
         #define pi 3.141592653589793
         #define e 2.718281828459045
@@ -183,6 +189,21 @@
                 return n * n;
             }
             return pow(n, p);
+        }
+        vec2 c_sin(vec2 z) {
+            return vec2(sin(z.x) * cosh(z.y), cos(z.x) * sinh(z.y));
+        }
+        
+        vec2 to_polar(vec2 z) {
+            float r = length(z);
+            float theta = atan(z.y, z.x);
+            return vec2(r, theta);
+        }
+        vec2 mand_power(vec2 z, float n) {
+            vec2 polar = to_polar(z);
+            float r = pow(polar.x, n);
+            float theta = n * polar.y;
+            return r * vec2(cos(theta), sin(theta));
         }
 
         float weierstrass(float x) {
@@ -334,27 +355,35 @@
         vec2 iteration(vec2 z, vec2 c, int type) {
             if (type == 0) {
                 // Mandelbrot
-                return c + vec2(z.x * z.x - z.y * z.y, 2. * z.x * z.y);
+                return c + mand_power(z, mandelbrot_power);
             } 
             if (type == 1) {
                 // Burning ship
-                return c + vec2(z.x * z.x - z.y * z.y, abs(2. * z.x * z.y));
+                vec2 power = mand_power(z, mandelbrot_power);
+                return c + vec2(power.x, abs(power.y));
             }
             if (type == 2) {
                 // Celtic
-                return c + vec2(abs(z.x * z.x - z.y * z.y), 2. * z.x * z.y);
+                vec2 power = mand_power(z, mandelbrot_power);
+                return c + vec2(abs(power.x), power.y);
             }
             if (type == 3) {
                 // Buffalo
-                return c + vec2(abs(z.x * z.x - z.y * z.y), abs(2. * z.x * z.y));
+                vec2 power = mand_power(z, mandelbrot_power);
+                return c + vec2(abs(power.x), abs(power.y));
             }
             if (type == 4) {
                 // Tricorn
-                return c + vec2(z.x * z.x - z.y * z.y, -2. * z.x * z.y);
+                vec2 power = mand_power(z, mandelbrot_power);
+                return c + vec2(power.x, -power.y);
             }
             if (type == 5) {
                 // Duck
-                return c + vec2(power(abs(z.x), 2.) - power(abs(z.y), 2.), 2. * z.x * abs(z.y));
+                // own custom polar coordinate formula, because it needs to be modified
+                vec2 polar = to_polar(z);
+                float r = pow(polar.x, mandelbrot_power);
+                float theta = mandelbrot_power * abs(polar.y);
+                return c + r * vec2(cos(theta), sin(theta));
             }
             if (type == 6) {
                 // Butt
@@ -362,7 +391,7 @@
             }
             if (type == 7) {
                 // Juliaset Sine (very high radius required)
-                return c * vec2(sin(z.x) * cosh(z.y), cos(z.x) * sinh(z.y));
+                return c * c_sin(z);
             }
             if (type == 8) {
                 // Popcorn (ideal radius ca ~2)
@@ -374,7 +403,7 @@
             }
             if (type == 10) {
                 // Tan Mandelbrot (ideal radius ca ~1.5)
-                vec2 mand = c + vec2(power(abs(z.x), 2.) - power(abs(z.y), 2.), 2. * z.x * z.y);
+                vec2 mand = c + mand_power(z, mandelbrot_power);
                 float cosx = cos(mand.x);
                 float sinx = sin(mand.x);
                 float sinhy = sinh(mand.y);
@@ -515,19 +544,22 @@
             throw new Error("unsupported device detected");
         }
 
+        var container = document.getElementsByClassName("container")[0];
+        var statusbar = document.createElement("h1"); // status bar in case of it being slow
         var canvasMain = document.createElement("canvas");
         var canvasJul = document.createElement("canvas");
-        var container = document.getElementsByClassName("container")[0];
         container.prepend(canvasJul);
         container.prepend(canvasMain);
+        container.prepend(statusbar);
+        statusbar.innerText = "Setting up canvases...";
         canvasMain.width = 500;
         canvasMain.height = 500;
         canvasJul.width = 500;
         canvasJul.height = 500;
         canvasMain.oncontextmenu = function(e) { e.preventDefault() };
         canvasJul.oncontextmenu = function(e) { e.preventDefault() };
-        var glmain = canvasMain.getContext("webgl2", {preserveDrawingBuffer: true});
-        var gljul = canvasJul.getContext("webgl2", {preserveDrawingBuffer: true});
+        var glmain = canvasMain.getContext("webgl2", { preserveDrawingBuffer: true });
+        var gljul = canvasJul.getContext("webgl2", { preserveDrawingBuffer: true });
 
         function loadShaders(gl) {
             if (!gl) {
@@ -573,8 +605,11 @@
             return program;
         }
 
+        statusbar.innerText = "Compiling and loading shaders...";
         var programMain = loadShaders(glmain);
         var programJul = loadShaders(gljul);
+
+        statusbar.innerText = "Finishing...";
 
         var julia_constant = [0, 0];
 
@@ -590,7 +625,8 @@
             colorscheme,
             color_offset,
             color_method,
-            main_juliaset_lerp
+            main_juliaset_lerp,
+            mandelbrot_power
         ) {
             gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), canvas_dimensions);
             gl.uniform2fv(gl.getUniformLocation(program, "center"), center);
@@ -604,6 +640,7 @@
             gl.uniform1f(gl.getUniformLocation(program, "color_offset"), color_offset);
             gl.uniform1i(gl.getUniformLocation(program, "color_method"), color_method);
             gl.uniform1f(gl.getUniformLocation(program, "main_juliaset_lerp"), main_juliaset_lerp);
+            gl.uniform1f(gl.getUniformLocation(program, "mandelbrot_power"), mandelbrot_power);
         }
 
         var radius = 2000000;
@@ -613,6 +650,8 @@
         var colorscheme = 0;
         var color_offset = 0;
         var main_jul_lerp = 1;
+        var mandelbrot_power = 2;
+        var power_slider_float = 0;
 
         var presets_colormethods = {
             "terraced": {
@@ -754,6 +793,21 @@
             drawJul();
         }
 
+        function updatePowerFloat() {
+            power_slider_float = 1;
+            mandelbrot_power = parseFloat(document.getElementById("powerfloat").value);
+
+            drawMain();
+            drawJul();
+        }
+        function updatePowerInt() {
+            power_slider_float = 0;
+            mandelbrot_power = parseFloat(document.getElementById("powerint").value);
+
+            drawMain();
+            drawJul();
+        }
+
         function setFractal(type) {
             fractal_type = presets_fractals[type]["id"];
             radius = presets_fractals[type]["radius"];
@@ -788,7 +842,8 @@
                 colorscheme,
                 color_offset,
                 color_method,
-                main_jul_lerp
+                main_jul_lerp,
+                mandelbrot_power
             );
 
             glmain.drawArrays(glmain.TRIANGLE_FAN, 0, 4);
@@ -808,7 +863,8 @@
                 colorscheme,
                 color_offset,
                 color_method,
-                main_jul_lerp
+                main_jul_lerp,
+                mandelbrot_power
             );
 
             gljul.drawArrays(gljul.TRIANGLE_FAN, 0, 4);
@@ -973,6 +1029,8 @@
             params.append("co", color_offset);
             params.append("f", fractal_type);
             params.append("nji", main_jul_lerp);
+            params.append("mp", mandelbrot_power);
+            params.append("pf", power_slider_float);
             document.getElementById("url").innerText = document.getElementById("url").href = url.href;
         }
         
@@ -994,6 +1052,8 @@
             color_offset = parseFloat(params.get("co") ?? color_offset);
             fractal_type = parseInt(params.get("f") ?? fractal_type);
             main_jul_lerp = parseFloat(params.get("nji") ?? main_jul_lerp);
+            mandelbrot_power = parseFloat(params.get("mp") ?? mandelbrot_power);
+            power_slider_float = parseInt(params.get("pf") ?? power_slider_float);
 
             document.getElementById("radius").value = radius;
             document.getElementById("iterations").value = max_iterations;
@@ -1001,6 +1061,15 @@
             document.getElementById("constantIm").value = julia_constant[1];
             document.getElementById("coloroffset").value = color_offset;
             document.getElementById("nji").value = main_jul_lerp;
+
+            if (power_slider_float == 1) {
+                document.getElementById("powerfloat").value = mandelbrot_power;
+                document.getElementById("powerint").value = Math.round(mandelbrot_power);
+            }
+            if (power_slider_float == 0) {
+                document.getElementById("powerint").value = mandelbrot_power;
+                document.getElementById("powerfloat").value = mandelbrot_power;
+            }
         }
 
         canvasMain.onwheel = on_zoom_main;
@@ -1016,6 +1085,9 @@
         apply_url_params();
         drawMain();
         drawJul();
+
+        statusbar.innerText = "Done"; // why does this exist?
+        statusbar.remove();
 
     </script>
 </body>
