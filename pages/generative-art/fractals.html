@@ -99,7 +99,11 @@
         <p>Interpolate between normal and juliaset:</p>
         <input type="range" id="nji" value="1" min="0" max="1" step="0.001" oninput="updateSettings();">
         <h3>Save Settings:</h3>
-        <a id="url" href="">_</a>
+        <a id="url" href="">_</a><br>
+        <button onclick="exportMain()">Export Main as PNG</button>
+        <button onclick="exportJul()">Export Juliaset as PNG</button>
+        <h3>Reset Settings:</h3>
+        <a href="fractals">Click here</a>
         <h3>Visit the old version:</h3>
         <a href="https://davidsaltacc.github.io/pages/generative-art/fractals-old">davidsaltacc.github.io/pages/generative-art/fractals-old</a>
         <h3>Side Note:</h3>
@@ -109,10 +113,11 @@
         <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">https://en.wikipedia.org/wiki/Mandelbrot_set</a><br>
         <a href="https://en.wikipedia.org/wiki/Julia_set">https://en.wikipedia.org/wiki/Julia_set</a><br>
         <a href="https://blinry.org/mandelbrot/">https://blinry.org/mandelbrot</a><br>
-        <a href="https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b">https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b</a>
+        <a href="https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b">https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b</a><br>
+        <a href="http://www.paulbourke.net/fractals/">http://www.paulbourke.net/fractals/</a>
         <h3>Special Thanks:</h3>
         <p><a href="https://nathansolomon1678.github.io/fractals">This</a> project by nathansolomon1678 on github, where I got a lot of insipration (and maybe code ;) from</p>
-        <p>Paul Bourke, especially his website page on fractals <a href="http://www.paulbourke.net/fractals/">here</a>, where I got lots of the fractals and insipration from</p>
+        <p>Paul Bourke, especially their website page on fractals <a href="http://www.paulbourke.net/fractals/">here</a>, where I got lots of the fractals and insipration from</p>
         <p>CodeParade (HackerPoet on github) for <a href="https://github.com/HackerPoet/FractalSoundExplorer">this</a> project, where I got the code for the feather fractal from</p>
         <p>All the amazing people who discovered all of these fractals and made this project possible</p>
         <p>My friends (they did nothing for this project but still thanks)</p>
@@ -439,8 +444,10 @@
         canvasMain.height = 500;
         canvasJul.width = 500;
         canvasJul.height = 500;
-        var glmain = canvasMain.getContext("webgl2");
-        var gljul = canvasJul.getContext("webgl2");
+        canvasMain.oncontextmenu = function(e) { e.preventDefault() };
+        canvasJul.oncontextmenu = function(e) { e.preventDefault() };
+        var glmain = canvasMain.getContext("webgl2", {preserveDrawingBuffer: true});
+        var gljul = canvasJul.getContext("webgl2", {preserveDrawingBuffer: true});
 
         function loadShaders(gl) {
             if (!gl) {
@@ -719,7 +726,7 @@
         var mouse_x_main = 0;
         var mouse_y_main = 0;
         var mouse_clicked_main = false;
-        var mouse_moved_main = false;
+        var mouse_clicked_right_main = false;
         function updateMouseCoords_main(e) {
             mouse_x_main = (2 * (e.pageX - e.target.offsetLeft) - canvasMain.clientWidth ) / Math.min(canvasMain.clientWidth, canvasMain.clientHeight);
             mouse_y_main = (2 * (e.pageY - e.target.offsetTop ) - canvasMain.clientHeight) / Math.min(canvasMain.clientWidth, canvasMain.clientHeight);
@@ -739,13 +746,6 @@
         function mouse_down_main(e) {
             if (e.button == 0) {
                 mouse_clicked_main = true;
-                mouse_moved_main = false;
-            }
-            updateMouseCoords_main(e);
-        }
-        function mouse_up_main(e) {
-            mouse_clicked_main = false;
-            if (e.button == 0 && !mouse_moved_main) {
                 updateMouseCoords_main(e);
                 julia_constant[0] = mouse_x_main;
                 julia_constant[1] = mouse_y_main;
@@ -753,10 +753,30 @@
                 document.getElementById("constantIm").value = mouse_y_main;
                 drawJul();
             }
+            if (e.button == 2) {
+                mouse_clicked_right_main = true;
+            }
+            updateMouseCoords_main(e);
+        }
+        function mouse_up_main(e) {
+            if (e.button == 0) {
+                mouse_clicked_main = false;
+                
+            }
+            if (e.button == 2) {
+                mouse_clicked_right_main = false;
+            }
         }
         function mouse_move_main(e) {
             if (mouse_clicked_main) {
-                mouse_moved_main = true;
+                updateMouseCoords_main(e);
+                julia_constant[0] = mouse_x_main;
+                julia_constant[1] = mouse_y_main;
+                document.getElementById("constantRe").value = mouse_x_main;
+                document.getElementById("constantIm").value = mouse_y_main;
+                drawJul();
+            }
+            if (mouse_clicked_right_main) {
                 var old_x = mouse_x_main;
                 var old_y = mouse_y_main;
                 updateMouseCoords_main(e);
@@ -772,8 +792,8 @@
         var scale_factor_jul = 1 / 2.5;
         var mouse_x_jul = 0;
         var mouse_y_jul = 0;
-        var mouse_clicked_jul = false;
         var mouse_moved_jul = false;
+        var mouse_clicked_right_jul = false;
         function updateMouseCoords_jul(e) {
             mouse_x_jul = (2 * (e.pageX - e.target.offsetLeft) - canvasJul.clientWidth ) / Math.min(canvasJul.clientWidth, canvasJul.clientHeight);
             mouse_y_jul = (2 * (e.pageY - e.target.offsetTop ) - canvasJul.clientHeight) / Math.min(canvasJul.clientWidth, canvasJul.clientHeight);
@@ -791,18 +811,18 @@
             drawJul();
         }
         function mouse_down_jul(e) {
-            if (e.button == 0) {
-                mouse_clicked_jul = true;
-                mouse_moved_jul = false;
+            if (e.button == 2) {
+                mouse_clicked_right_jul = true;
             }
             updateMouseCoords_jul(e);
         }
         function mouse_up_jul(e) {
-            mouse_clicked_jul = false;
+            if (e.button == 2) {
+                mouse_clicked_right_jul = false;
+            }
         }
         function mouse_move_jul(e) {
-            if (mouse_clicked_jul) {
-                mouse_moved_jul = true;
+            if (mouse_clicked_right_jul) {
                 var old_x = mouse_x_jul;
                 var old_y = mouse_y_jul;
                 updateMouseCoords_jul(e);
@@ -811,6 +831,34 @@
                 updateMouseCoords_jul(e);
                 drawJul();
             }
+        }
+
+        function exportMain() {
+            var canvas = document.createElement("canvas");
+            canvas.width = canvasMain.width;
+            canvas.height = canvasMain.height;
+            canvas.getContext("2d").drawImage(canvasMain, 0, 0);
+            var image = canvas.toDataURL("image/png");
+            var a = document.createElement("a");
+            a.href = image;
+            a.download = "fractal.png";
+            a.click();
+            a.remove();
+            canvas.remove();
+        }
+        
+        function exportJul() {
+            var canvas = document.createElement("canvas");
+            canvas.width = canvasJul.width;
+            canvas.height = canvasJul.height;
+            canvas.getContext("2d").drawImage(canvasJul, 0, 0);
+            var image = canvas.toDataURL("image/png");
+            var a = document.createElement("a");
+            a.href = image;
+            a.download = "fractal.png";
+            a.click();
+            a.remove();
+            canvas.remove();
         }
 
         function create_url_params() {
