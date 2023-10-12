@@ -63,6 +63,7 @@
         <button onclick="setFractal('mandelbrot')">Mandelbrot</button>
         <button onclick="setFractal('burning ship')">Burning ship</button>
         <button onclick="setFractal('celtic')">Celtic</button>
+        <button onclick="setFractal('buffalo')">Buffalo</button>
         <button onclick="setFractal('tricorn')">Tricorn</button>
         <button onclick="setFractal('duck')">Duck</button>
         <button onclick="setFractal('ass')">B fractal</button>
@@ -78,11 +79,13 @@
         <button onclick="setFractal('heart')">Heart</button>
         <button onclick="setFractal('ass 2')">Sunglasses</button>
         <button onclick="setFractal('triangle')">Triangle</button>
+        <button onclick="setFractal('shark fin')">Shark fin</button>
         <h3>Colormap Selection</h3>
         <button onclick="setColormap('classic')">Classic</button>
         <button onclick="setColormap('ultra fractal')">Ultra Fractal Default</button>
         <button onclick="setColormap('red and blue')">Red and Blue</button>
         <button onclick="setColormap('sand')">Sand</button>
+        <button onclick="setColormap('rainbow')">Rainbow</button>
         <p>Color offset:</p>
         <input type="range" min="0" max="1" step="0.001" value="0" id="coloroffset" oninput="updateSettings();">
         <h3>Color Method Selection</h3>
@@ -129,7 +132,11 @@
         <p>You, for visiting and testing my project!</p>
     </div>
     <script type="x-shader/x-vertex" id="vert-shader">#version 300 es
-        precision highp float;
+        #ifdef GL_FRAGMENT_PRECISION_HIGH
+            precision highp float;
+        #else
+            precision mediump float;
+        #endif
         in vec2 position;
         out vec2 vertex_position;
         void main() {
@@ -138,7 +145,11 @@
         }
     </script>
     <script type="x-shader/x-fragment" id="frag-shader">#version 300 es
-        precision highp float;
+        #ifdef GL_FRAGMENT_PRECISION_HIGH
+            precision highp float;
+        #else
+            precision mediump float;
+        #endif
         in vec2 vertex_position;
         out vec4 fragmentColor;
 
@@ -186,7 +197,7 @@
                    x * x * x * (-.5 * a + 1.5 * b - 1.5 * c + .5 * d);
         }
 
-        vec4 mix_cubic(vec3 color0, vec3 color1, vec3 color2, vec3 color3, float x) {
+        vec4 color_interpolate(vec3 color0, vec3 color1, vec3 color2, vec3 color3, float x) {
             return vec4(
                 cubic_interpolation(color0.r, color1.r, color2.r, color3.r, x),
                 cubic_interpolation(color0.g, color1.g, color2.g, color3.g, x),
@@ -213,19 +224,19 @@
             vec3 black     = vec3(0., 0.1, 0.007);
             x = fract(x) * 5.;
             if (x < 1.) {
-                return mix_cubic(blue, lightblue, white, orange, fract(x));
+                return color_interpolate(blue, lightblue, white, orange, fract(x));
             }
             if (x < 2.) {
-                return mix_cubic(lightblue, white, orange, black, fract(x));
+                return color_interpolate(lightblue, white, orange, black, fract(x));
             }
             if (x < 3.) {
-                return mix_cubic(white, orange, black, blue, fract(x));
+                return color_interpolate(white, orange, black, blue, fract(x));
             }
             if (x < 4.) {
-                return mix_cubic(orange, black, blue, lightblue, fract(x));
+                return color_interpolate(orange, black, blue, lightblue, fract(x));
             }
             if (x < 5.) {
-                return mix_cubic(black, blue, lightblue, white, fract(x));
+                return color_interpolate(black, blue, lightblue, white, fract(x));
             }
             return vec4(black, 1.);
         }
@@ -237,16 +248,16 @@
             vec3 black = vec3(0., 0., 0.);
             x = fract(x) * 4.;
             if (x < 1.) {
-                return mix_cubic(black, red, white, blue, fract(x));
+                return color_interpolate(black, red, white, blue, fract(x));
             }
             if (x < 2.) {
-                return mix_cubic(red, white, blue, black, fract(x));
+                return color_interpolate(red, white, blue, black, fract(x));
             }
             if (x < 3.) {
-                return mix_cubic(white, blue, black, red, fract(x));
+                return color_interpolate(white, blue, black, red, fract(x));
             }
             if (x < 4.) {
-                return mix_cubic(blue, black, red, white, fract(x));
+                return color_interpolate(blue, black, red, white, fract(x));
             }
             return vec4(black, 1.);
         }
@@ -258,16 +269,45 @@
             vec3 blue   = vec3(0.27, 0.32, 0.39);
             x = fract(x) * 4.;
             if (x < 1.) {
-                return mix_cubic(blue, yellow, orange, cyan, fract(x));
+                return color_interpolate(blue, yellow, orange, cyan, fract(x));
             }
             if (x < 2.) {
-                return mix_cubic(yellow, orange, cyan, blue, fract(x));
+                return color_interpolate(yellow, orange, cyan, blue, fract(x));
             }
             if (x < 3.) {
-                return mix_cubic(orange, cyan, blue, yellow, fract(x));
+                return color_interpolate(orange, cyan, blue, yellow, fract(x));
             }
             if (x < 4.) {
-                return mix_cubic(cyan, blue, yellow, orange, fract(x));
+                return color_interpolate(cyan, blue, yellow, orange, fract(x));
+            }
+            return vec4(0., 0., 0., 1.);
+        }
+
+        vec4 rainbow_colorscheme(float x) {
+            vec3 red       = vec3(1., 0., 0.);
+            vec3 yellow    = vec3(1., 1., 0.);
+            vec3 green     = vec3(0., 1., 0.);
+            vec3 lightblue = vec3(0., 1., 1.);
+            vec3 blue      = vec3(0., 0., 1.);
+            vec3 pink      = vec3(1., 0., 1.);
+            x = fract(x) * 6.;
+            if (x < 1.) {
+                return color_interpolate(pink, red, yellow, green, fract(x));
+            }
+            if (x < 2.) {
+                return color_interpolate(red, yellow, green, lightblue, fract(x));
+            }
+            if (x < 3.) {
+                return color_interpolate(yellow, green, lightblue, blue, fract(x));
+            }
+            if (x < 4.) {
+                return color_interpolate(green, lightblue, blue, pink, fract(x));
+            }
+            if (x < 5.) {
+                return color_interpolate(lightblue, blue, pink, red, fract(x));
+            }
+            if (x < 6.) {
+                return color_interpolate(blue, pink, red, yellow, fract(x));
             }
             return vec4(0., 0., 0., 1.);
         }
@@ -286,6 +326,9 @@
             if (colorscheme == 3) {
                 return sand_colorscheme(x);
             }
+            if (colorscheme == 4) {
+                return rainbow_colorscheme(x);
+            }
         }
 
         vec2 iteration(vec2 z, vec2 c, int type) {
@@ -302,30 +345,34 @@
                 return c + vec2(abs(z.x * z.x - z.y * z.y), 2. * z.x * z.y);
             }
             if (type == 3) {
+                // Buffalo
+                return c + vec2(abs(z.x * z.x - z.y * z.y), abs(2. * z.x * z.y));
+            }
+            if (type == 4) {
                 // Tricorn
                 return c + vec2(z.x * z.x - z.y * z.y, -2. * z.x * z.y);
             }
-            if (type == 4) {
+            if (type == 5) {
                 // Duck
                 return c + vec2(power(abs(z.x), 2.) - power(abs(z.y), 2.), 2. * z.x * abs(z.y));
             }
-            if (type == 5) {
+            if (type == 6) {
                 // Butt
                 return c + vec2(z.x * z.x * z.x - z.y * z.y * abs(z.y), 2. * z.x * z.y);
             }
-            if (type == 6) {
+            if (type == 7) {
                 // Juliaset Sine (very high radius required)
                 return c * vec2(sin(z.x) * cosh(z.y), cos(z.x) * sinh(z.y));
             }
-            if (type == 7) {
+            if (type == 8) {
                 // Popcorn (ideal radius ca ~2)
                 return vec2(z.x - c.x * (z.y + tan(3. * z.y)), z.y - c.y * (z.x + tan(3. * z.x)));
             }
-            if (type == 8) {
+            if (type == 9) {
                 // Thorn (very high radius required)
                 return vec2(z.x / cos(z.y), z.y / sin(z.x)) + c;
             }
-            if (type == 9) {
+            if (type == 10) {
                 // Tan Mandelbrot (ideal radius ca ~1.5)
                 vec2 mand = c + vec2(power(abs(z.x), 2.) - power(abs(z.y), 2.), 2. * z.x * z.y);
                 float cosx = cos(mand.x);
@@ -337,26 +384,26 @@
                 float im = (cosx * sinhy) / d;
                 return vec2(re, im);
             }
-            if (type == 10) {
+            if (type == 11) {
                 // Henon (radius rather high, ~20000)
                 return vec2(1. - c.x * z.x * z.x + z.y, c.y * z.x);
             }
-            if (type == 11) {
+            if (type == 12) {
                 // Duffing (radius not too important, ~200)
                 return vec2(z.y, -1. * c.y * z.x + c.x * z.y - z.y * z.y * z.y);
             }
-            if (type == 12) {
+            if (type == 13) {
                 // Chirikov (low radius, ~3)
                 return vec2(z.x + c.x * z.y, c.y + c.y * sin(z.x));
             }
-            if (type == 13) {
+            if (type == 14) {
                 // Ikeda (radius rather high, ~20000)
                 float t = 0.4 - 6. / (1. + square(z.x) + square(z.y));
                 float sin_t = sin(t);
                 float cos_t = cos(t);
                 return vec2(1. + c.x * (z.x * cos_t - z.y * sin_t), c.y * (z.x * sin_t + z.y * cos_t));
             }
-            if (type == 14) {
+            if (type == 15) {
                 // Feather (radius around ~200 or lower)
                 float dr = 1. + z.x * z.x;
                 float di = z.y * z.y;
@@ -366,17 +413,21 @@
                 float dvi = (zi * dr - zr * di) / (dr * dr + di * di);
                 return vec2(dvr, dvi) + c;
             }
-            if (type == 15) {
+            if (type == 16) {
                 // Heart
                 return vec2(c.x, c.y * -1.) + vec2(2. * z.x * z.y, abs(z.y) - abs(z.x));
             }
-            if (type == 16) {
+            if (type == 17) {
                 // Ass 2
                 return c + vec2(sinh(z.x) * sin(z.y), cosh(z.y) * cos(z.x));
             }
-            if (type == 17) {
+            if (type == 18) {
                 // Triangle
                 return c + vec2(sin(z.x) * sinh(z.y), cos(z.y) * cosh(z.x));
+            }
+            if (type == 19) {
+                // Shark fin
+                return c + vec2(z.x * z.x - abs(z.y) * z.y, z.x * z.y * 2.);
             }
         }
 
@@ -593,6 +644,9 @@
             },
             "sand": {
                 "id": 3
+            },
+            "rainbow": {
+                "id": 4
             }
         };
 
@@ -609,64 +663,72 @@
                 "id": 2,
                 "radius": 10000000
             },
-            "tricorn": {
+            "buffalo": {
                 "id": 3,
                 "radius": 10000000
             },
-            "duck": {
+            "tricorn": {
                 "id": 4,
                 "radius": 10000000
             },
-            "ass": {
+            "duck": {
                 "id": 5,
                 "radius": 10000000
             },
-            "sine": {
+            "ass": {
                 "id": 6,
+                "radius": 10000000
+            },
+            "sine": {
+                "id": 7,
                 "radius": 100
             },
             "popcorn": {
-                "id": 7,
+                "id": 8,
                 "radius": 2
             },
             "thorn": {
-                "id": 8,
+                "id": 9,
                 "radius": 10000000
             },
             "tan mandelbrot": {
-                "id": 9,
+                "id": 10,
                 "radius": 1.5
             },
             "henon": {
-                "id": 10,
+                "id": 11,
                 "radius": 20000
             },
             "duffing": {
-                "id": 11,
+                "id": 12,
                 "radius": 200
             },
             "chirikov": {
-                "id": 12,
+                "id": 13,
                 "radius": 3
             },
             "ikeda": {
-                "id": 13,
+                "id": 14,
                 "radius": 20000
             },
             "feather": {
-                "id": 14,
+                "id": 15,
                 "radius": 100
             },
             "heart": {
-                "id": 15,
-                "radius": 10000000
-            },
-            "ass 2": {
                 "id": 16,
                 "radius": 10000000
             },
-            "triangle": {
+            "ass 2": {
                 "id": 17,
+                "radius": 10000000
+            },
+            "triangle": {
+                "id": 18,
+                "radius": 10000000
+            },
+            "shark fin": {
+                "id": 19,
                 "radius": 10000000
             }
         }
