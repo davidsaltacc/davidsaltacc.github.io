@@ -99,6 +99,7 @@
         <button onclick="setColormethod('rings')">Rings</button>
         <button onclick="setColormethod('stripes')">Stripes</button>
         <button onclick="setColormethod('interior')">Interior</button>
+        <button onclick="setColormethod('accurate')">Accurate</button>
         <h3>Settings</h3>
         <p>Escape Radius:</p>
         <input type="number" id="radius" value="2" onchange="updateSettings();">
@@ -520,6 +521,13 @@
                     } else {
                         stripe += weierstrass(atan(z.y, z.x));
                     }
+                } else if (color_method == 5) {
+                    if (magnitude(z) > radius) {
+                        color_v = 0.;
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    }
                 }
                 last_z = z;
             }
@@ -668,6 +676,9 @@
             },
             "stripes": {
                 "id": 4
+            },
+            "accurate": {
+                "id": 5
             }
         };
 
