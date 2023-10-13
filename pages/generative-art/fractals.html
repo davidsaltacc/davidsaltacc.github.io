@@ -55,10 +55,13 @@
     </div>
     <div class="container">
         <br>
+        <h1 id="statusbar">Compiling Shaders. This might take a second...</h1>
         <h3>Controls</h3>
         <p>Drag around the canvases with the right mouse button pressed to move</p>
         <p>Use the scroll wheel to zoom</p>
         <p>Click or drag the left mouse button on the main (first) canvas, to render the juliasets for that mouse position</p>
+        <h3>Formula</h3>
+        <p id="formula"></p>
         <h3>Fractal Selection</h3>
         <button onclick="setFractal('mandelbrot')">Mandelbrot</button>
         <button onclick="setFractal('burning ship')">Burning ship</button>
@@ -70,7 +73,6 @@
         <button onclick="setFractal('sine')">Sine Juliaset</button>
         <button onclick="setFractal('popcorn')">Popcorn</button>
         <button onclick="setFractal('thorn')">Thorn</button>
-        <button onclick="setFractal('tan mandelbrot')">Tan Mandelbrot</button>
         <button onclick="setFractal('henon')">Henon</button>
         <button onclick="setFractal('duffing')">Duffing</button>
         <button onclick="setFractal('chirikov')">Chirikov</button>
@@ -85,6 +87,15 @@
         <input type="range" id="powerfloat" value="2" min="0" max="20" step="0.001" oninput="updatePowerFloat();">
         <p>Integer slider:</p>
         <input type="range" id="powerint" value="2" min="0" max="20" step="1" oninput="updatePowerInt();">
+        <h3>After fractal function:</h3>
+        <button onclick="update_post_function('none')">None</button>
+        <button onclick="update_post_function('sin')">Sine</button>
+        <button onclick="update_post_function('sinh')">Hyperbolic sine</button>
+        <button onclick="update_post_function('sin')">Cosine</button>
+        <button onclick="update_post_function('sinh')">Hyperbolic cosine</button>
+        <button onclick="update_post_function('tan')">Tangent</button>
+        <button onclick="update_post_function('tanh')">Hyperbolic tangent</button>
+        <button onclick="update_post_function('log')">Logarithm</button>
         <h3>Colormap Selection</h3>
         <button onclick="setColormap('classic')">Classic</button>
         <button onclick="setColormap('ultra fractal')">Ultra Fractal Default</button>
@@ -136,6 +147,8 @@
         <p>All the amazing people who discovered all of these fractals and made this project possible</p>
         <p>My friends (they did nothing for this project but still thanks)</p>
         <p>You, for visiting and testing my project!</p>
+        <h3>TODO</h3>
+        <p>add explanation (important), add more fractals, add more colormaps, ...</p>
     </div>
     <script type="x-shader/x-vertex" id="vert-shader">#version 300 es
         #ifdef GL_FRAGMENT_PRECISION_HIGH
@@ -172,6 +185,7 @@
         uniform int color_method;
         uniform float main_juliaset_lerp;
         uniform float mandelbrot_power;
+        uniform int post_function;
 
         #define pi 3.141592653589793
         #define e 2.718281828459045
@@ -191,8 +205,45 @@
             }
             return pow(n, p);
         }
+
+        vec2 c_multiplication(vec2 a, vec2 b) {
+            return vec2(a.x*b.x - a.y*b.y, a.x*b.y + a.y*b.x);
+        }
+        vec2 c_division(vec2 a, vec2 b) {
+            return vec2(((a.x * b.x + a.y * b.y) / (b.x * b.x + b.y * b.y)), ((a.y * b.x - a.x * b.y) / (b.x * b.x + b.y * b.y)));
+        }
         vec2 c_sin(vec2 z) {
             return vec2(sin(z.x) * cosh(z.y), cos(z.x) * sinh(z.y));
+        }
+        vec2 c_sinh(vec2 z) {
+            return vec2(sinh(z.x) * cos(z.y), cosh(z.x) * sin(z.y)); 
+        }
+        vec2 c_cos(vec2 z) {
+            return vec2(cos(z.x) * cosh(z.y), -sin(z.x) * sinh(z.y));
+        }
+        vec2 c_cosh(vec2 z) {
+            return vec2(cosh(z.x) * cos(z.y), sinh(z.x) * sin(z.y)); 
+        }
+        vec2 c_tan(vec2 z) {
+            float cosx = cos(z.x);
+            float sinx = sin(z.x);
+            float sinhy = sinh(z.y);
+            float coshy = cosh(z.y);
+            float d = (cosx * coshy - sinx * sinhy);
+            float re = (sinx * coshy) / d;
+            float im = (cosx * sinhy) / d;
+            return vec2(re, im);
+        }
+        vec2 c_tanh(vec2 z) {
+            return c_division(c_sinh(z), c_cosh(z));
+        }
+        vec2 c_log(vec2 z) {
+            float re = sqrt((z.x * z.x) + (z.y * z.y));
+            float im = atan(z.y, z.x);
+            if (im > pi) {
+                im = im - (2. * pi);
+            }
+            return vec2(log(re), im);
         }
         
         vec2 to_polar(vec2 z) {
@@ -353,30 +404,55 @@
             }
         }
 
+        vec2 apply_post_function(vec2 z) {
+            if (post_function == 1) {
+                return c_sin(z);
+            }
+            if (post_function == 2) {
+                return c_sinh(z);
+            }
+            if (post_function == 3) {
+                return c_cos(z);
+            }
+            if (post_function == 4) {
+                return c_cosh(z);
+            }
+            if (post_function == 5) {
+                return c_tan(z);
+            }
+            if (post_function == 6) {
+                return c_tanh(z);
+            }
+            if (post_function == 7) {
+                return c_log(z);
+            }
+            return z;
+        }
+
         vec2 iteration(vec2 z, vec2 c, int type) {
             if (type == 0) {
                 // Mandelbrot
-                return c + mand_power(z, mandelbrot_power);
+                return c + apply_post_function(mand_power(z, mandelbrot_power));
             } 
             if (type == 1) {
                 // Burning ship
                 vec2 power = mand_power(z, mandelbrot_power);
-                return c + vec2(power.x, abs(power.y));
+                return c + apply_post_function(vec2(power.x, abs(power.y)));
             }
             if (type == 2) {
                 // Celtic
                 vec2 power = mand_power(z, mandelbrot_power);
-                return c + vec2(abs(power.x), power.y);
+                return c + apply_post_function(vec2(abs(power.x), power.y));
             }
             if (type == 3) {
                 // Buffalo
                 vec2 power = mand_power(z, mandelbrot_power);
-                return c + vec2(abs(power.x), abs(power.y));
+                return c + apply_post_function(vec2(abs(power.x), abs(power.y)));
             }
             if (type == 4) {
                 // Tricorn
                 vec2 power = mand_power(z, mandelbrot_power);
-                return c + vec2(power.x, -power.y);
+                return c + apply_post_function(vec2(power.x, -power.y));
             }
             if (type == 5) {
                 // Duck
@@ -384,80 +460,69 @@
                 vec2 polar = to_polar(z);
                 float r = pow(polar.x, mandelbrot_power);
                 float theta = mandelbrot_power * abs(polar.y);
-                return c + r * vec2(cos(theta), sin(theta));
+                return c + apply_post_function(r * vec2(cos(theta), sin(theta)));
             }
             if (type == 6) {
                 // Butt
-                return c + vec2(z.x * z.x * z.x - z.y * z.y * abs(z.y), 2. * z.x * z.y);
+                return c + apply_post_function(vec2(z.x * z.x * z.x - z.y * z.y * abs(z.y), 2. * z.x * z.y));
             }
             if (type == 7) {
                 // Juliaset Sine (very high radius required)
-                return c * c_sin(z);
+                return apply_post_function(c * c_sin(z));
             }
             if (type == 8) {
                 // Popcorn (ideal radius ca ~2)
-                return vec2(z.x - c.x * (z.y + tan(3. * z.y)), z.y - c.y * (z.x + tan(3. * z.x)));
+                return apply_post_function(vec2(z.x - c.x * (z.y + tan(3. * z.y)), z.y - c.y * (z.x + tan(3. * z.x))));
             }
             if (type == 9) {
                 // Thorn (very high radius required)
-                return vec2(z.x / cos(z.y), z.y / sin(z.x)) + c;
+                return apply_post_function(vec2(z.x / cos(z.y), z.y / sin(z.x))) + c;
             }
             if (type == 10) {
-                // Tan Mandelbrot (ideal radius ca ~1.5)
-                vec2 mand = c + mand_power(z, mandelbrot_power);
-                float cosx = cos(mand.x);
-                float sinx = sin(mand.x);
-                float sinhy = sinh(mand.y);
-                float coshy = cosh(mand.y);
-                float d = (cosx * coshy - sinx * sinhy);
-                float re = (sinx * coshy) / d;
-                float im = (cosx * sinhy) / d;
-                return vec2(re, im);
+                // Henon (radius rather high, ~20000)
+                return apply_post_function(vec2(1. - c.x * z.x * z.x + z.y, c.y * z.x));
             }
             if (type == 11) {
-                // Henon (radius rather high, ~20000)
-                return vec2(1. - c.x * z.x * z.x + z.y, c.y * z.x);
+                // Duffing (radius not too important, ~200)
+                return apply_post_function(vec2(z.y, -1. * c.y * z.x + c.x * z.y - z.y * z.y * z.y));
             }
             if (type == 12) {
-                // Duffing (radius not too important, ~200)
-                return vec2(z.y, -1. * c.y * z.x + c.x * z.y - z.y * z.y * z.y);
+                // Chirikov (low radius, ~3)
+                return apply_post_function(vec2(z.x + c.x * z.y, c.y + c.y * sin(z.x)));
             }
             if (type == 13) {
-                // Chirikov (low radius, ~3)
-                return vec2(z.x + c.x * z.y, c.y + c.y * sin(z.x));
-            }
-            if (type == 14) {
                 // Ikeda (radius rather high, ~20000)
                 float t = 0.4 - 6. / (1. + square(z.x) + square(z.y));
                 float sin_t = sin(t);
                 float cos_t = cos(t);
-                return vec2(1. + c.x * (z.x * cos_t - z.y * sin_t), c.y * (z.x * sin_t + z.y * cos_t));
+                return apply_post_function(vec2(1. + c.x * (z.x * cos_t - z.y * sin_t), c.y * (z.x * sin_t + z.y * cos_t)));
             }
-            if (type == 15) {
+            if (type == 14) {
                 // Feather (radius around ~200 or lower)
                 float dr = 1. + z.x * z.x;
                 float di = z.y * z.y;
-                float zr = z.x * z.x * z.x - 3. * z.x * z.y * z.y;
-                float zi = 3. * z.x * z.x * z.y - z.y * z.y * z.y;
+                vec2 p = mand_power(z, 3.);
+                float zr = p.x;
+                float zi = p.y;
                 float dvr = (zr * dr + zi * di) / (dr * dr + di * di);
                 float dvi = (zi * dr - zr * di) / (dr * dr + di * di);
-                return vec2(dvr, dvi) + c;
+                return apply_post_function(vec2(dvr, dvi)) + c;
+            }
+            if (type == 15) {
+                // Heart
+                return vec2(c.x, c.y * -1.) + apply_post_function(vec2(2. * z.x * z.y, abs(z.y) - abs(z.x)));
             }
             if (type == 16) {
-                // Heart
-                return vec2(c.x, c.y * -1.) + vec2(2. * z.x * z.y, abs(z.y) - abs(z.x));
+                // Ass 2
+                return c + apply_post_function(vec2(sinh(z.x) * sin(z.y), cosh(z.y) * cos(z.x)));
             }
             if (type == 17) {
-                // Ass 2
-                return c + vec2(sinh(z.x) * sin(z.y), cosh(z.y) * cos(z.x));
+                // Triangle
+                return c + apply_post_function(vec2(sin(z.x) * sinh(z.y), cos(z.y) * cosh(z.x)));
             }
             if (type == 18) {
-                // Triangle
-                return c + vec2(sin(z.x) * sinh(z.y), cos(z.y) * cosh(z.x));
-            }
-            if (type == 19) {
                 // Shark fin
-                return c + vec2(z.x * z.x - abs(z.y) * z.y, z.x * z.y * 2.);
+                return c + apply_post_function(vec2(z.x * z.x - abs(z.y) * z.y, z.x * z.y * 2.));
             }
         }
 
@@ -553,13 +618,10 @@
         }
 
         var container = document.getElementsByClassName("container")[0];
-        var statusbar = document.createElement("h1"); // status bar in case of it being slow
         var canvasMain = document.createElement("canvas");
         var canvasJul = document.createElement("canvas");
         container.prepend(canvasJul);
         container.prepend(canvasMain);
-        container.prepend(statusbar);
-        statusbar.innerText = "Setting up canvases...";
         canvasMain.width = 500;
         canvasMain.height = 500;
         canvasJul.width = 500;
@@ -571,7 +633,7 @@
 
         function loadShaders(gl) {
             if (!gl) {
-                alert("Your browser does not support WebGL. This could also be caused by rendering a too large image. If that is the case, please restart your browser.");
+                alert("Your browser does not support WebGL. This could also be caused by rendering a too large or resource-intensive image. If that is the case, please restart your browser.");
                 return null;
             }
             gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
@@ -613,11 +675,8 @@
             return program;
         }
 
-        statusbar.innerText = "Compiling and loading shaders...";
         var programMain = loadShaders(glmain);
         var programJul = loadShaders(gljul);
-
-        statusbar.innerText = "Finishing...";
 
         var julia_constant = [0, 0];
 
@@ -634,7 +693,8 @@
             color_offset,
             color_method,
             main_juliaset_lerp,
-            mandelbrot_power
+            mandelbrot_power,
+            post_function
         ) {
             gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), canvas_dimensions);
             gl.uniform2fv(gl.getUniformLocation(program, "center"), center);
@@ -649,6 +709,7 @@
             gl.uniform1i(gl.getUniformLocation(program, "color_method"), color_method);
             gl.uniform1f(gl.getUniformLocation(program, "main_juliaset_lerp"), main_juliaset_lerp);
             gl.uniform1f(gl.getUniformLocation(program, "mandelbrot_power"), mandelbrot_power);
+            gl.uniform1i(gl.getUniformLocation(program, "post_function"), post_function);
         }
 
         var radius = 2000000;
@@ -660,6 +721,7 @@
         var main_jul_lerp = 1;
         var mandelbrot_power = 2;
         var power_slider_float = 0;
+        var fractal_post_function = 0;
 
         var presets_colormethods = {
             "terraced": {
@@ -700,86 +762,175 @@
             }
         };
 
+        var presets_functions = {
+            "none": {
+                "id": 0,
+                "radius": null
+            },
+            "sin": {
+                "id": 1,
+                "radius": 10
+            },
+            "sinh": {
+                "id": 2,
+                "radius": 10
+            },
+            "cos": {
+                "id": 3,
+                "radius": 10
+            },
+            "cosh": {
+                "id": 4,
+                "radius": 10
+            },
+            "tan": {
+                "id": 5,
+                "radius": 10
+            },
+            "tanh": {
+                "id": 6,
+                "radius": 10
+            },
+            "log": {
+                "id": 7,
+                "radius": 10
+            }
+        }
+
         var presets_fractals = {
             "mandelbrot": {
                 "id": 0,
-                "radius": 10000000
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>POWER</sup>FE + c"
             },
             "burning ship": {
                 "id": 1,
-                "radius": 10000000
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + i*abs(Im(z<sub>n</sub>)))<sup>POWER</sup>FE + c"
             },
             "celtic": {
                 "id": 2,
-                "radius": 10000000
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(abs(Re(z<sub>n</sub>)) + i*Im(z<sub>n</sub>))<sup>POWER</sup>FE + c"
             },
             "buffalo": {
                 "id": 3,
-                "radius": 10000000
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(abs(Re(z<sub>n</sub>)) + i*abs(Im(z<sub>n</sub>)))<sup>POWER</sup>FE + c"
             },
             "tricorn": {
                 "id": 4,
-                "radius": 10000000
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + i*-Im(z<sub>n</sub>))<sup>POWER</sup>FE + c"
             },
             "duck": {
                 "id": 5,
-                "radius": 10000000
+                "radius": 10000000,
+                "formula": "r = magnitude(z)<sup>POWER</sup><br>theta = POWER * abs(atan(z<sub>n+1</sub>))<br>z<sub>n+1</sub> = FSr * (cos(theta) + i*sin(theta))FE + c"
             },
             "ass": {
                 "id": 6,
-                "radius": 10000000
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>)<sup>3</sup> - Im(z<sub>n</sub>)<sup>2</sup> * abs(Re(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>)))FE + c"
             },
             "sine": {
                 "id": 7,
-                "radius": 100
+                "radius": 100,
+                "formula": "z<sub>n+1</sub> = FSc * sin(z<sub>n</sub>)FE"
             },
             "popcorn": {
                 "id": 8,
-                "radius": 2
+                "radius": 2,
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) - Re(c) * (Im(z<sub>n</sub>) + tan(3 * Im(z<sub>n</sub>))), Im(z<sub>n</sub>)) - Im(c) * (Re(z<sub>n</sub>) + tan(3 * Re(z<sub>n</sub>)))FE"
             },
             "thorn": {
                 "id": 9,
-                "radius": 10000000
-            },
-            "tan mandelbrot": {
-                "id": 10,
-                "radius": 1.5
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) / cos(Im(z<sub>n</sub>)), Im(z<sub>n</sub>) / sin(Re(z<sub>n</sub>)))FE + c"
             },
             "henon": {
-                "id": 11,
-                "radius": 20000
+                "id": 10,
+                "radius": 20000,
+                "formula": "z<sub>n+1</sub> = FS(1 - Re(c) * Re(z<sub>n</sub>) * Re(z<sub>n</sub>) + Im(z<sub>n</sub>) + i*(Im(c) * Re(z<sub>n</sub>)))FE"
             },
             "duffing": {
-                "id": 12,
-                "radius": 200
+                "id": 11,
+                "radius": 200,
+                "formula": "z<sub>n+1</sub> = FS(Im(z<sub>n</sub>) + i*(-1 * Im(c) * Re(z<sub>n</sub>) + Re(c) * Im(z<sub>n</sub>) - Im(z<sub>n</sub>)<sup>3</sup>))FE"
             },
             "chirikov": {
-                "id": 13,
-                "radius": 3
+                "id": 12,
+                "radius": 3, 
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + Re(c) * Im(z<sub>n</sub>) + i*(Im(c) + Im(c) * sin(Re(z<sub>n</sub>))FE"
             },
             "ikeda": {
-                "id": 14,
-                "radius": 20000
+                "id": 13,
+                "radius": 20000,
+                "formula": "t = 0.4 - 6 / (1 + Re(z<sub>n</sub>)<sup>2</sup> + Im(z<sub>n</sub>)<sup>2</sup>)<br>z<sub>n+1</sub> = FS(1 + Re(c) * (Re(z<sub>n</sub>) * cos(t) - Im(z<sub>n</sub>) * sin(t)) + i*(Im(c) * (Re(z<sub>n</sub>) * sin(t) + Im(z<sub>n</sub>) * cos(t))))FE"
             },
             "feather": {
-                "id": 15,
-                "radius": 100
+                "id": 14,
+                "radius": 50, 
+                "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>3</sup>/(1 + Re(z<sub>n</sub>)<sup>2</sup> + Im(z<sub>n</sub>)<sup>2</sup>)FE + c"
             },
             "heart": {
-                "id": 16,
-                "radius": 10000000
+                "id": 15,
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>) + i*(abs(Im(z<sub>n</sub>)) - abs(Re(z<sub>n</sub>))))FE + c"
             },
             "ass 2": {
-                "id": 17,
-                "radius": 10000000
+                "id": 16,
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(sinh(Re(z<sub>n</sub>)) * sin(Im(z<sub>n</sub>)) + i*(cosh(Im(z<sub>n</sub>)) * cos(Re(z<sub>n</sub>))))FE + c"
             },
             "triangle": {
-                "id": 18,
-                "radius": 10000000
+                "id": 17,
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(sin(Re(z<sub>n</sub>)) * sinh(Im(z<sub>n</sub>)) + i*(cos(Im(z<sub>n</sub>)) * cosh(Re(z<sub>n</sub>))))FE + c"
             },
             "shark fin": {
-                "id": 19,
-                "radius": 10000000
+                "id": 18,
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>)<sup>2</sup> - abs(Im(z<sub>n</sub>)) * Im(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>))FE + c"
+            }
+        }
+
+        function update_formula() {
+            for (f in presets_fractals) {
+                if (presets_fractals[f]["id"] == fractal_type) {
+                    var func_start = "";
+                    var func_end = "";
+                    if (fractal_post_function != 0) {
+                        for (fn in presets_functions) {
+                            if (presets_functions[fn]["id"] == fractal_post_function) {
+                                func_start = fn + "(";
+                                func_end = ")";
+                            }
+                        };
+                    }
+                    document.getElementById("formula").innerHTML = presets_fractals[f]["formula"]
+                        .replaceAll("POWER", mandelbrot_power)
+                        .replace("FS", func_start)
+                        .replace("FE", func_end);
+                }
+            };
+        }
+
+        function update_ui() {
+            document.getElementById("radius").value = radius;
+            document.getElementById("iterations").value = max_iterations;
+            document.getElementById("constantRe").value = julia_constant[0];
+            document.getElementById("constantIm").value = julia_constant[1];
+            document.getElementById("coloroffset").value = color_offset;
+            document.getElementById("nji").value = main_jul_lerp;
+
+            if (power_slider_float == 1) {
+                document.getElementById("powerfloat").value = mandelbrot_power;
+                document.getElementById("powerint").value = Math.round(mandelbrot_power);
+            }
+            if (power_slider_float == 0) {
+                document.getElementById("powerint").value = mandelbrot_power;
+                document.getElementById("powerfloat").value = mandelbrot_power;
             }
         }
 
@@ -792,6 +943,29 @@
             drawJul();
         }
 
+        function update_post_function(name) {
+            for (f in presets_functions) {
+                if (f == name) {
+                    fractal_post_function = presets_functions[f]["id"];
+                    if (presets_functions[f]["radius"] != null) {
+                        radius = presets_functions[f]["radius"];
+                    } else {
+                        for (f in presets_fractals) {
+                            if (presets_fractals[f]["id"] == fractal_type) {
+                                radius = presets_fractals[f]["radius"];
+                            }
+                        };
+                    }
+                }
+            };
+
+            update_formula();
+            update_ui();
+
+            drawMain();
+            drawJul();
+        }
+
         function updateSettings() {
             radius = parseFloat(document.getElementById("radius").value);
             max_iterations = parseInt(document.getElementById("iterations").value);
@@ -799,7 +973,7 @@
             julia_constant[1] = parseFloat(document.getElementById("constantIm").value);
             color_offset = parseFloat(document.getElementById("coloroffset").value);
             main_jul_lerp = parseFloat(document.getElementById("nji").value);
-
+            
             drawMain();
             drawJul();
         }
@@ -808,12 +982,16 @@
             power_slider_float = 1;
             mandelbrot_power = parseFloat(document.getElementById("powerfloat").value);
 
+            update_formula();
+
             drawMain();
             drawJul();
         }
         function updatePowerInt() {
             power_slider_float = 0;
             mandelbrot_power = parseFloat(document.getElementById("powerint").value);
+
+            update_formula();
 
             drawMain();
             drawJul();
@@ -822,7 +1000,19 @@
         function setFractal(type) {
             fractal_type = presets_fractals[type]["id"];
             radius = presets_fractals[type]["radius"];
-            document.getElementById("radius").value = radius;
+
+            for (f in presets_functions) {
+                if (presets_functions[f]["id"] == fractal_post_function) {
+                    fractal_post_function = presets_functions[f]["id"];
+                    if (presets_functions[f]["radius"] != null) {
+                        radius = presets_functions[f]["radius"];
+                    }
+                }
+            };
+            
+            update_ui();
+            update_formula();
+
             drawMain();
             drawJul();
         }
@@ -854,7 +1044,8 @@
                 color_offset,
                 color_method,
                 main_jul_lerp,
-                mandelbrot_power
+                mandelbrot_power,
+                fractal_post_function
             );
 
             glmain.drawArrays(glmain.TRIANGLE_FAN, 0, 4);
@@ -875,7 +1066,8 @@
                 color_offset,
                 color_method,
                 main_jul_lerp,
-                mandelbrot_power
+                mandelbrot_power,
+                fractal_post_function
             );
 
             gljul.drawArrays(gljul.TRIANGLE_FAN, 0, 4);
@@ -1042,6 +1234,7 @@
             params.append("nji", main_jul_lerp);
             params.append("mp", mandelbrot_power);
             params.append("pf", power_slider_float);
+            params.append("fpf", fractal_post_function);
             document.getElementById("url").innerText = document.getElementById("url").href = url.href;
         }
         
@@ -1065,22 +1258,15 @@
             main_jul_lerp = parseFloat(params.get("nji") ?? main_jul_lerp);
             mandelbrot_power = parseFloat(params.get("mp") ?? mandelbrot_power);
             power_slider_float = parseInt(params.get("pf") ?? power_slider_float);
+            fractal_post_function = parseInt(params.get("fpf") ?? fractal_post_function);
 
-            document.getElementById("radius").value = radius;
-            document.getElementById("iterations").value = max_iterations;
-            document.getElementById("constantRe").value = julia_constant[0];
-            document.getElementById("constantIm").value = julia_constant[1];
-            document.getElementById("coloroffset").value = color_offset;
-            document.getElementById("nji").value = main_jul_lerp;
+            update_ui()
 
-            if (power_slider_float == 1) {
-                document.getElementById("powerfloat").value = mandelbrot_power;
-                document.getElementById("powerint").value = Math.round(mandelbrot_power);
-            }
-            if (power_slider_float == 0) {
-                document.getElementById("powerint").value = mandelbrot_power;
-                document.getElementById("powerfloat").value = mandelbrot_power;
-            }
+            update_formula();
+        }
+
+        function contextlost() {
+            alert("Your WebGL seems to have crashed. This is mainly caused, by rendering a too large or resource-intensive image. Please refresh this page (you can save your settings with the link below).");
         }
 
         canvasMain.onwheel = on_zoom_main;
@@ -1093,12 +1279,13 @@
         canvasJul.onmouseup = mouse_up_jul;
         canvasJul.onmousemove = mouse_move_jul;
 
+        canvasMain.addEventListener("webglcontextlost", contextlost);
+
         apply_url_params();
         drawMain();
         drawJul();
 
-        statusbar.innerText = "Done"; // why does this exist?
-        statusbar.remove();
+        document.getElementById("statusbar").remove();
 
     </script>
 </body>
