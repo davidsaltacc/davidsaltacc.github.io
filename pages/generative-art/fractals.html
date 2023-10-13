@@ -91,8 +91,8 @@
         <button onclick="update_post_function('none')">None</button>
         <button onclick="update_post_function('sin')">Sine</button>
         <button onclick="update_post_function('sinh')">Hyperbolic sine</button>
-        <button onclick="update_post_function('sin')">Cosine</button>
-        <button onclick="update_post_function('sinh')">Hyperbolic cosine</button>
+        <button onclick="update_post_function('cos')">Cosine</button>
+        <button onclick="update_post_function('cosh')">Hyperbolic cosine</button>
         <button onclick="update_post_function('tan')">Tangent</button>
         <button onclick="update_post_function('tanh')">Hyperbolic tangent</button>
         <button onclick="update_post_function('log')">Logarithm</button>
@@ -405,6 +405,9 @@
         }
 
         vec2 apply_post_function(vec2 z) {
+            if (post_function == 0) {
+                return z;
+            }
             if (post_function == 1) {
                 return c_sin(z);
             }
@@ -426,7 +429,6 @@
             if (post_function == 7) {
                 return c_log(z);
             }
-            return z;
         }
 
         vec2 iteration(vec2 z, vec2 c, int type) {
