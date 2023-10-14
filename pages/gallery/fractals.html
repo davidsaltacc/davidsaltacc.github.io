@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractals Gallery</title>
+    <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
+    <style>
+
+body {
+    background-color: #000000;
+}
+
+div.gallery img {
+    width: 100%;
+    height: auto;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.responsive {
+    padding: 0 6px;
+    float: left;
+    width: 20%;
+}
+
+@media only screen and (max-width: 1000px) {
+    .responsive {
+        width: 24.99999%;
+        margin: 6px 0;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .responsive {
+        width: 49.99999%;
+        margin: 6px 0;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .responsive {
+        width: 100%;
+    }
+}
+
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+    </style>
+</head>
+<body>
+    <script>
+        function createGalleryElement(img) {
+            var e = document.createElement("div");
+            e.className = "responsive";
+            var g = document.createElement("div");
+            e.appendChild(g);
+            g.className = "gallery";
+            var a = document.createElement("a");
+            g.appendChild(a);
+            a.href = img;
+            a.target = "_blank";
+            var i = document.createElement("img");
+            a.appendChild(i);
+            i.src = img;
+            document.body.appendChild(e);
+        }
+
+        for (var n = 0; n <= 33; n++) {
+            createGalleryElement("../../assets/gallery/fractals/fractal (" + n + ").png");
+        }
+
+        var c = document.createElement("div");
+        c.className = "clearfix";
+        document.appendChild(c);
+    </script>
+</body>
+</html>
