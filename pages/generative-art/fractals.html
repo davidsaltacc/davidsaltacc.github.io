@@ -48,6 +48,29 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.4);
         }
+        #statusbar {
+            color: crimson;
+        }
+        #canvasMain, #canvasJul {
+            float: right;
+            top: 0;
+            border-radius: 8px;
+            margin-right: 4px;
+        }
+        #canvasMain {
+            margin-left: 10px;
+        }
+        .sticky {
+            position: -webkit-sticky; 
+            position: sticky;
+        }
+        #title {
+            font-size: 40px;
+        }
+        #stickycanvases {
+            width: 15px;
+            height: 15px;
+        }
     </style>
 </head>
     <div id="unsupported">
@@ -55,15 +78,18 @@
     </div>
     <div class="container">
         <br>
-        <h1 id="statusbar">Compiling Shaders. This might take a second...</h1>
-        <h3>Controls:</h3>
-        <p>Drag around the canvases with the right mouse button pressed to move</p>
-        <p>Use the scroll wheel to zoom</p>
-        <p>Click or drag the left mouse button on the main (first) canvas, to render the juliasets for that mouse position</p>
+        <h1 id="title">David's Fractal Explorer</h1>
+        <br>
+        <h1 id="statusbar">Compiling Shaders. This might take a second...</h1>       
         <h3>Fractal description:</h3>
         <p id="description"></p>
+        <h3>Color method description:</h3>
+        <p id="description_colormethod"></p>
+        <h3>Color scheme description:</h3>
+        <p id="description_colorscheme"></p>
         <h3>Formula:</h3>
         <p id="formula"></p>
+        <br><br>
         <h3>Fractal Selection:</h3>
         <button onclick="setFractal('mandelbrot')">Mandelbrot</button>
         <button onclick="setFractal('burning ship')">Burning ship</button>
@@ -120,7 +146,13 @@
         <button onclick="setColormethod('stripes')">Stripes</button>
         <button onclick="setColormethod('interior')">Interior</button>
         <button onclick="setColormethod('accurate')">Accurate</button>
+        <h3>Controls:</h3>
+        <p>Drag around the canvases with the right mouse button pressed to move</p>
+        <p>Use the scroll wheel to zoom</p>
+        <p>Click or drag the left mouse button on the main (first) canvas, to render the juliasets for that mouse position</p> 
         <h3>Settings:</h3>
+        <p>Sticky canvases:</p>
+        <input type="checkbox" id="stickycanvases" checked="true" onchange="setCanvasesSticky(document.getElementById('stickycanvases').checked);">
         <p>Escape Radius:</p>
         <input type="number" id="radius" value="2" onchange="updateSettings();">
         <p>Iterations:</p>
@@ -624,7 +656,7 @@
                     }
                 } else if (color_method == 3) {
                     distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - radius));
-                    color_v = -log(distance_to_orbit_trap);
+                    color_v = -log(log(distance_to_orbit_trap));
                 } else if (color_method == 4) {
                     if (magnitude(z) > radius) {
                         float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
@@ -671,8 +703,12 @@
         var container = document.getElementsByClassName("container")[0];
         var canvasMain = document.createElement("canvas");
         var canvasJul = document.createElement("canvas");
-        container.prepend(canvasJul);
+        canvasMain.id = "canvasMain";
+        canvasJul.id = "canvasJul";
+        canvasMain.className = "sticky";
+        canvasJul.className = "sticky";
         container.prepend(canvasMain);
+        container.prepend(canvasJul);
         canvasMain.width = 500;
         canvasMain.height = 500;
         canvasJul.width = 500;
@@ -726,8 +762,8 @@
             return program;
         }
 
-        var programMain = loadShaders(glmain);
-        var programJul = loadShaders(gljul);
+        var programMain = null;
+        var programJul = null;
 
         var julia_constant = [0, 0];
 
@@ -776,40 +812,51 @@
 
         var presets_colormethods = {
             "terraced": {
-                "id": 0
+                "id": 0,
+                "description": "\"Mathematically accurate\" coloring method. Not smoothed, colored based on how long it takes for z to escape to infinity."
             },
             "smooth": {
-                "id": 1
+                "id": 1,
+                "description": "Smooth coloring."
             },
             "interior": {
-                "id": 2
+                "id": 2,
+                "description": "Interior coloring."
             },
             "rings": {
-                "id": 3
+                "id": 3,
+                "description": "Rings around the fractal. A lower radius makes it look better sometimes. Aim for around 20000."
             },
             "stripes": {
-                "id": 4
+                "id": 4,
+                "description": "Really cool stripes pattern."
             },
             "accurate": {
-                "id": 5
+                "id": 5,
+                "description": "Pixels are either black (part of the set) or not (not a part of the set)."
             }
         };
 
         var presets_colormaps = {
             "classic": {
-                "id": 0
+                "id": 0,
+                "description": "The \"Classic\" colormap. Easily calculated with a bit of math magic."
             },
             "ultra fractal": {
-                "id": 1
+                "id": 1,
+                "description": "The default colormap in ultra fractal."
             },
             "red and blue": {
-                "id": 2
+                "id": 2,
+                "description": "Red and blue. As the name says."
             },
             "sand": {
-                "id": 3
+                "id": 3,
+                "description": "Sand colormap. Colors remind of sand and water related things."
             },
             "rainbow": {
-                "id": 4
+                "id": 4,
+                "description": "Basically a HSV colormap. Just rainbows."
             }
         };
 
@@ -931,7 +978,7 @@
             },
             "chirikov": {
                 "id": 12,
-                "radius": 3, 
+                "radius": 100, 
                 "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + Re(c) * Im(z<sub>n</sub>) + i*(Im(c) + Im(c) * sin(Re(z<sub>n</sub>))FE",
                 "description": "Chirikov map."
             },
@@ -975,7 +1022,7 @@
                 "id": 19,
                 "radius": 10000000,
                 "formula": "re = Re(z<sub>n</sub>)<sup>2</sup> - Im(z<sub>n</sub>)<sup>2</sup> + Re(c)<br>z<sub>n+1</sub> = FS(re, i*(2 * re * Im(z<sub>n</sub>) + Im(c)))FE",
-                "description": "By all respect, I think, John Tippets just messed up the code for a mandelbrot set, and got this."
+                "description": "With all respect, I think, John Tippets just messed up the code for a mandelbrot set, and got this."
             },
             "zubiet": {
                 "id": 20,
@@ -1037,6 +1084,16 @@
                     document.getElementById("description").innerHTML = presets_fractals[f]["description"]; 
                 }
             }
+            for (c in presets_colormaps) {
+                if (presets_colormaps[c]["id"] == colorscheme) {
+                    document.getElementById("description_colorscheme").innerHTML = presets_colormaps[c]["description"]; 
+                }
+            }
+            for (m in presets_colormethods) {
+                if (presets_colormethods[m]["id"] == color_method) {
+                    document.getElementById("description_colormethod").innerHTML = presets_colormethods[m]["description"]; 
+                }
+            }
 
             if (power_slider_float == 1) {
                 document.getElementById("powerfloat").value = mandelbrot_power;
@@ -1048,13 +1105,25 @@
             }
         }
 
+        function setCanvasesSticky(sticky) {
+            canvasMain.className = sticky ? "sticky" : "";
+            canvasJul.className = sticky ? "sticky" : "";
+        }
+
         function updateSize(size) {
             canvasMain.width = canvasMain.height = size;
             canvasJul.width = canvasJul.height = size;
+            canvasMain.clientWidth = canvasMain.clientHeight = size;
+            canvasJul.clientWidth = canvasJul.clientHeight = size;
             programMain = loadShaders(glmain);
             programJul = loadShaders(gljul);
             drawMain();
             drawJul();
+            if (size > (window.innerWidth - window.innerWidth / 6) / 2 && size > window.innerHeight - window.innerHeight / 4) {
+                setCanvasesSticky(false);
+            } else {
+                setCanvasesSticky(true);
+            }
         }
 
         function update_post_function(name) {
@@ -1133,12 +1202,18 @@
 
         function setColormap(name) {
             colorscheme = presets_colormaps[name]["id"];
+
+            document.getElementById("description_colorscheme").innerHTML = presets_colormaps[name]["description"];
+
             drawMain();
             drawJul();
         }
 
         function setColormethod(name) {
             color_method = presets_colormethods[name]["id"];
+
+            document.getElementById("description_colormethod").innerHTML = presets_colormethods[name]["description"];
+
             drawMain();
             drawJul();
         }
@@ -1394,11 +1469,16 @@
 
         canvasMain.addEventListener("webglcontextlost", contextlost);
 
-        apply_url_params();
-        drawMain();
-        drawJul();
+        document.body.onload = function() {
+            programMain = loadShaders(glmain);
+            programJul = loadShaders(gljul);
 
-        document.getElementById("statusbar").remove();
+            apply_url_params();
+            drawMain();
+            drawJul();
+
+            document.getElementById("statusbar").remove();
+        }
 
     </script>
 </body>
