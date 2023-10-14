@@ -56,13 +56,15 @@
     <div class="container">
         <br>
         <h1 id="statusbar">Compiling Shaders. This might take a second...</h1>
-        <h3>Controls</h3>
+        <h3>Controls:</h3>
         <p>Drag around the canvases with the right mouse button pressed to move</p>
         <p>Use the scroll wheel to zoom</p>
         <p>Click or drag the left mouse button on the main (first) canvas, to render the juliasets for that mouse position</p>
-        <h3>Formula</h3>
+        <h3>Fractal description:</h3>
+        <p id="description"></p>
+        <h3>Formula:</h3>
         <p id="formula"></p>
-        <h3>Fractal Selection</h3>
+        <h3>Fractal Selection:</h3>
         <button onclick="setFractal('mandelbrot')">Mandelbrot</button>
         <button onclick="setFractal('burning ship')">Burning ship</button>
         <button onclick="setFractal('celtic')">Celtic</button>
@@ -70,7 +72,7 @@
         <button onclick="setFractal('tricorn')">Tricorn</button>
         <button onclick="setFractal('duck')">Duck</button>
         <button onclick="setFractal('ass')">B fractal</button>
-        <button onclick="setFractal('sine')">Sine Juliaset</button>
+        <button onclick="setFractal('sine')">Sine julia</button>
         <button onclick="setFractal('popcorn')">Popcorn</button>
         <button onclick="setFractal('thorn')">Thorn</button>
         <button onclick="setFractal('henon')">Henon</button>
@@ -82,11 +84,16 @@
         <button onclick="setFractal('ass 2')">Sunglasses</button>
         <button onclick="setFractal('triangle')">Triangle</button>
         <button onclick="setFractal('shark fin')">Shark fin</button>
+        <button onclick="setFractal('tippets')">Tippets</button>
+        <button onclick="setFractal('zubiet')">Zubiet</button>
+        <button onclick="setFractal('sinh julia')">Sinh julia</button>
+        <button onclick="setFractal('unnamed 1')">Unnamed 1</button>
+        <button onclick="setFractal('unnamed 2')">Unnamed 2</button>
         <h3>Mandelbrot Power:</h3>
         <p>Float slider:</p>
-        <input type="range" id="powerfloat" value="2" min="0" max="20" step="0.001" oninput="updatePowerFloat();">
+        <input type="range" id="powerfloat" value="2" min="-10" max="10" step="0.001" oninput="updatePowerFloat();">
         <p>Integer slider:</p>
-        <input type="range" id="powerint" value="2" min="0" max="20" step="1" oninput="updatePowerInt();">
+        <input type="range" id="powerint" value="2" min="-10" max="10" step="1" oninput="updatePowerInt();">
         <h3>After fractal function:</h3>
         <button onclick="update_post_function('none')">None</button>
         <button onclick="update_post_function('sin')">Sine</button>
@@ -96,7 +103,9 @@
         <button onclick="update_post_function('tan')">Tangent</button>
         <button onclick="update_post_function('tanh')">Hyperbolic tangent</button>
         <button onclick="update_post_function('log')">Logarithm</button>
-        <h3>Colormap Selection</h3>
+        <button onclick="update_post_function('sqrt')">Square root</button>
+        <button onclick="update_post_function('abs')">Absolute</button>
+        <h3>Colormap Selection:</h3>
         <button onclick="setColormap('classic')">Classic</button>
         <button onclick="setColormap('ultra fractal')">Ultra Fractal Default</button>
         <button onclick="setColormap('red and blue')">Red and Blue</button>
@@ -104,14 +113,14 @@
         <button onclick="setColormap('rainbow')">Rainbow</button>
         <p>Color offset:</p>
         <input type="range" min="0" max="1" step="0.001" value="0" id="coloroffset" oninput="updateSettings();">
-        <h3>Color Method Selection</h3>
+        <h3>Color Method Selection:</h3>
         <button onclick="setColormethod('terraced')">Terraced</button>
         <button onclick="setColormethod('smooth')">Smooth</button>
         <button onclick="setColormethod('rings')">Rings</button>
         <button onclick="setColormethod('stripes')">Stripes</button>
         <button onclick="setColormethod('interior')">Interior</button>
         <button onclick="setColormethod('accurate')">Accurate</button>
-        <h3>Settings</h3>
+        <h3>Settings:</h3>
         <p>Escape Radius:</p>
         <input type="number" id="radius" value="2" onchange="updateSettings();">
         <p>Iterations:</p>
@@ -147,7 +156,7 @@
         <p>All the amazing people who discovered all of these fractals and made this project possible</p>
         <p>My friends (they did nothing for this project but still thanks)</p>
         <p>You, for visiting and testing my project!</p>
-        <h3>TODO</h3>
+        <h3>TODO for me</h3>
         <p>add explanation (important), add more fractals, add more colormaps, a transition effect, when switching fractal types (lerp?), add presets<p>
     </div>
     <script type="x-shader/x-vertex" id="vert-shader">#version 300 es
@@ -244,6 +253,18 @@
                 im = im - (2. * pi);
             }
             return vec2(log(re), im);
+        }
+        vec2 c_sqrt(vec2 z) {
+            float r = length(z);
+            float re = sqrt(0.5 * (r + z.x));
+            float im = sqrt(0.5 * (r - z.x));
+            if (z.y < 0.) {
+                im = -im;
+            }
+            return vec2(re, im);
+        }
+        vec2 c_abs(vec2 z) {
+            return vec2(abs(z.x), abs(z.y));
         }
         
         vec2 to_polar(vec2 z) {
@@ -429,6 +450,12 @@
             if (post_function == 7) {
                 return c_log(z);
             }
+            if (post_function == 8) {
+                return c_sqrt(z);
+            }
+            if (post_function == 9) {
+                return c_abs(z);
+            }
         }
 
         vec2 iteration(vec2 z, vec2 c, int type) {
@@ -525,6 +552,28 @@
             if (type == 18) {
                 // Shark fin
                 return c + apply_post_function(vec2(z.x * z.x - abs(z.y) * z.y, z.x * z.y * 2.));
+            }
+            if (type == 19) {
+                // Tippets
+                float re = z.x * z.x - z.y * z.y + c.x;
+                float im = 2. * re * z.y + c.y;
+                return apply_post_function(vec2(re, im));
+            }
+            if (type == 20) {
+                // Zubiet
+                return apply_post_function(mand_power(z, mandelbrot_power)) + c_division(c, z);
+            }
+            if (type == 21) {
+                // Sinh julia
+                return apply_post_function(c_abs(mand_power(c_sinh(z), float(mandelbrot_power)))) + c;
+            }
+            if (type == 22) {
+                // Unnamed 1
+                return apply_post_function(mand_power(z, mandelbrot_power) - mand_power(-z, c.x) + vec2(c.y, 0.));
+            }
+            if (type == 23) {
+                // Unnamed 2
+                return apply_post_function(mand_power(z - c_division(mand_power(z, 3.) - vec2(1., 0.), 3. * mand_power(z, 2.)), mandelbrot_power)) + c;
             }
         }
 
@@ -717,7 +766,7 @@
         var radius = 2000000;
         var max_iterations = 200;
         var fractal_type = 0;
-        var color_method = 0;
+        var color_method = 1;
         var colorscheme = 0;
         var color_offset = 0;
         var main_jul_lerp = 1;
@@ -796,6 +845,14 @@
             "log": {
                 "id": 7,
                 "radius": 10
+            },
+            "sqrt": {
+                "id": 8,
+                "radius": 10
+            },
+            "abs": {
+                "id": 9,
+                "radius": 10
             }
         }
 
@@ -803,97 +860,146 @@
             "mandelbrot": {
                 "id": 0,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>POWER</sup>FE + c"
+                "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>POWER</sup>FE + c",
+                "description": "The standard Mandelbrot set."
             },
             "burning ship": {
                 "id": 1,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + i*abs(Im(z<sub>n</sub>)))<sup>POWER</sup>FE + c"
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + i*abs(Im(z<sub>n</sub>)))<sup>POWER</sup>FE + c",
+                "description": "A variation of the Mandelbrot set. Got its name because of the tiny burning ship on the left."
             },
             "celtic": {
                 "id": 2,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(abs(Re(z<sub>n</sub>)) + i*Im(z<sub>n</sub>))<sup>POWER</sup>FE + c"
+                "formula": "z<sub>n+1</sub> = FS(abs(Re(z<sub>n</sub>)) + i*Im(z<sub>n</sub>))<sup>POWER</sup>FE + c",
+                "description": "Another variation of the Mandelbrot set. Kind of looks like a fish."
             },
             "buffalo": {
                 "id": 3,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(abs(Re(z<sub>n</sub>)) + i*abs(Im(z<sub>n</sub>)))<sup>POWER</sup>FE + c"
+                "formula": "z<sub>n+1</sub> = FS(abs(Re(z<sub>n</sub>)) + i*abs(Im(z<sub>n</sub>)))<sup>POWER</sup>FE + c",
+                "description": "Yet another Mandelbrot variation. The reason for its name should be obvious."
             },
             "tricorn": {
                 "id": 4,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + i*-Im(z<sub>n</sub>))<sup>POWER</sup>FE + c"
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + i*-Im(z<sub>n</sub>))<sup>POWER</sup>FE + c",
+                "description": "ANOTHER Mandelbrot variation. Also called the Mandelbar sometimes."
             },
             "duck": {
                 "id": 5,
                 "radius": 10000000,
-                "formula": "r = magnitude(z)<sup>POWER</sup><br>theta = POWER * abs(atan(z<sub>n+1</sub>))<br>z<sub>n+1</sub> = FSr * (cos(theta) + i*sin(theta))FE + c"
+                "formula": "r = magnitude(z)<sup>POWER</sup><br>theta = POWER * abs(atan(z<sub>n+1</sub>))<br>z<sub>n+1</sub> = FSr * (cos(theta) + i*sin(theta))FE + c",
+                "description": "Another Mandlebrot variation. Looks like a duck. Apparently also called the perpendicular burning ship. Formula is mostly just the polar coordinate formula for getting the N-th power of z, it has to be modified for the duck."
             },
             "ass": {
                 "id": 6,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>)<sup>3</sup> - Im(z<sub>n</sub>)<sup>2</sup> * abs(Re(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>)))FE + c"
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>)<sup>3</sup> - Im(z<sub>n</sub>)<sup>2</sup> * abs(Re(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>)))FE + c",
+                "description": "Kind of looks like- well, ..., whatever."
             },
             "sine": {
                 "id": 7,
                 "radius": 100,
-                "formula": "z<sub>n+1</sub> = FSc * sin(z<sub>n</sub>)FE"
+                "formula": "z<sub>n+1</sub> = FSc * sin(z<sub>n</sub>)FE",
+                "description": "Infinitely repeating to the left and right. Interesting, isn't it?"
             },
             "popcorn": {
                 "id": 8,
                 "radius": 2,
-                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) - Re(c) * (Im(z<sub>n</sub>) + tan(3 * Im(z<sub>n</sub>))), Im(z<sub>n</sub>)) - Im(c) * (Re(z<sub>n</sub>) + tan(3 * Re(z<sub>n</sub>)))FE"
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) - Re(c) * (Im(z<sub>n</sub>) + tan(3 * Im(z<sub>n</sub>))), Im(z<sub>n</sub>)) - Im(c) * (Re(z<sub>n</sub>) + tan(3 * Re(z<sub>n</sub>)))FE",
+                "description": "I have no idea who named this one the \"Popcorn\" fractal. Maybe the creators name was Popcorn? Also, it generates really cool patterns."
             },
             "thorn": {
                 "id": 9,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) / cos(Im(z<sub>n</sub>)), Im(z<sub>n</sub>) / sin(Re(z<sub>n</sub>)))FE + c"
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) / cos(Im(z<sub>n</sub>)), Im(z<sub>n</sub>) / sin(Re(z<sub>n</sub>)))FE + c",
+                "description": "Not the usual kind of fractal, yet still very interesting."
             },
             "henon": {
                 "id": 10,
                 "radius": 20000,
-                "formula": "z<sub>n+1</sub> = FS(1 - Re(c) * Re(z<sub>n</sub>) * Re(z<sub>n</sub>) + Im(z<sub>n</sub>) + i*(Im(c) * Re(z<sub>n</sub>)))FE"
+                "formula": "z<sub>n+1</sub> = FS(1 - Re(c) * Re(z<sub>n</sub>) * Re(z<sub>n</sub>) + Im(z<sub>n</sub>) + i*(Im(c) * Re(z<sub>n</sub>)))FE",
+                "description": "Henon map."
             },
             "duffing": {
                 "id": 11,
                 "radius": 200,
-                "formula": "z<sub>n+1</sub> = FS(Im(z<sub>n</sub>) + i*(-1 * Im(c) * Re(z<sub>n</sub>) + Re(c) * Im(z<sub>n</sub>) - Im(z<sub>n</sub>)<sup>3</sup>))FE"
+                "formula": "z<sub>n+1</sub> = FS(Im(z<sub>n</sub>) + i*(-1 * Im(c) * Re(z<sub>n</sub>) + Re(c) * Im(z<sub>n</sub>) - Im(z<sub>n</sub>)<sup>3</sup>))FE",
+                "description": "Duffing map."
             },
             "chirikov": {
                 "id": 12,
                 "radius": 3, 
-                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + Re(c) * Im(z<sub>n</sub>) + i*(Im(c) + Im(c) * sin(Re(z<sub>n</sub>))FE"
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>) + Re(c) * Im(z<sub>n</sub>) + i*(Im(c) + Im(c) * sin(Re(z<sub>n</sub>))FE",
+                "description": "Chirikov map."
             },
             "ikeda": {
                 "id": 13,
                 "radius": 20000,
-                "formula": "t = 0.4 - 6 / (1 + Re(z<sub>n</sub>)<sup>2</sup> + Im(z<sub>n</sub>)<sup>2</sup>)<br>z<sub>n+1</sub> = FS(1 + Re(c) * (Re(z<sub>n</sub>) * cos(t) - Im(z<sub>n</sub>) * sin(t)) + i*(Im(c) * (Re(z<sub>n</sub>) * sin(t) + Im(z<sub>n</sub>) * cos(t))))FE"
+                "formula": "t = 0.4 - 6 / (1 + Re(z<sub>n</sub>)<sup>2</sup> + Im(z<sub>n</sub>)<sup>2</sup>)<br>z<sub>n+1</sub> = FS(1 + Re(c) * (Re(z<sub>n</sub>) * cos(t) - Im(z<sub>n</sub>) * sin(t)) + i*(Im(c) * (Re(z<sub>n</sub>) * sin(t) + Im(z<sub>n</sub>) * cos(t))))FE",
+                "description": "Ikeda map. Beast of a formula."
             },
             "feather": {
                 "id": 14,
                 "radius": 50, 
-                "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>3</sup>/(1 + Re(z<sub>n</sub>)<sup>2</sup> + Im(z<sub>n</sub>)<sup>2</sup>)FE + c"
+                "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>3</sup>/(1 + Re(z<sub>n</sub>)<sup>2</sup> + Im(z<sub>n</sub>)<sup>2</sup>)FE + c",
+                "description": "Really cool looking fractal. Looks like a feather."
             },
             "heart": {
                 "id": 15,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>) + i*(abs(Im(z<sub>n</sub>)) - abs(Re(z<sub>n</sub>))))FE + c"
+                "formula": "z<sub>n+1</sub> = FS(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>) + i*(abs(Im(z<sub>n</sub>)) - abs(Re(z<sub>n</sub>))))FE + c",
+                "description": "I wonder where this one got its name from."
             },
             "ass 2": {
                 "id": 16,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(sinh(Re(z<sub>n</sub>)) * sin(Im(z<sub>n</sub>)) + i*(cosh(Im(z<sub>n</sub>)) * cos(Re(z<sub>n</sub>))))FE + c"
+                "formula": "z<sub>n+1</sub> = FS(sinh(Re(z<sub>n</sub>)) * sin(Im(z<sub>n</sub>)) + i*(cosh(Im(z<sub>n</sub>)) * cos(Re(z<sub>n</sub>))))FE + c",
+                "description": "Looks just a little bit like sunglasses."
             },
             "triangle": {
                 "id": 17,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(sin(Re(z<sub>n</sub>)) * sinh(Im(z<sub>n</sub>)) + i*(cos(Im(z<sub>n</sub>)) * cosh(Re(z<sub>n</sub>))))FE + c"
+                "formula": "z<sub>n+1</sub> = FS(sin(Re(z<sub>n</sub>)) * sinh(Im(z<sub>n</sub>)) + i*(cos(Im(z<sub>n</sub>)) * cosh(Re(z<sub>n</sub>))))FE + c",
+                "description": "Literally just a triangle."
             },
             "shark fin": {
                 "id": 18,
                 "radius": 10000000,
-                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>)<sup>2</sup> - abs(Im(z<sub>n</sub>)) * Im(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>))FE + c"
+                "formula": "z<sub>n+1</sub> = FS(Re(z<sub>n</sub>)<sup>2</sup> - abs(Im(z<sub>n</sub>)) * Im(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>))FE + c",
+                "description": "Could also be a dolphin. Actually, not really."
+            },
+            "tippets": {
+                "id": 19,
+                "radius": 10000000,
+                "formula": "re = Re(z<sub>n</sub>)<sup>2</sup> - Im(z<sub>n</sub>)<sup>2</sup> + Re(c)<br>z<sub>n+1</sub> = FS(re, i*(2 * re * Im(z<sub>n</sub>) + Im(c)))FE",
+                "description": "By all respect, I think, John Tippets just messed up the code for a mandelbrot set, and got this."
+            },
+            "zubiet": {
+                "id": 20,
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>POWER</sup>FE + c / z<sub>n</sub>",
+                "description": "Looks really interesting. "
+            },
+            "sinh julia": {
+                "id": 21,
+                "radius": 70,
+                "formula": "s = sinh(z<sub>n</sub>)<sup>POWER</sup><br>z<sub>n+1</sub> = FS(abs(Re(s)) + i*abs(Im(s)))FE + c",
+                "description": "Kind of like the sine julia, this one is repeating infinitely vertically. Just looks a little better."
+            },
+            "unnamed 1": {
+                "id": 22,
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>POWER</sup> - (-z<sub>n</sub>)<sup>Re(c)</sup> + (Im(c) + 0i)",
+                "description": "I found no good name for this. If you can think of anything, tell me."
+            },
+            "unnamed 2": {
+                "id": 23,
+                "radius": 10000000,
+                "formula": "z<sub>n+1</sub> = FS(z<sub>n</sub> - (z<sub>n</sub><sup>3</sup> - 1) / (3 * z<sub>n</sub><sup>2</sup>))<sup>POWER</sup>FE + c",
+                "description": "I found no name again. Creates really cool patterns. On a power of one (change with power slider) and interior coloring, seems to create a Nova/Newton fractal."
             }
         }
 
@@ -925,6 +1031,12 @@
             document.getElementById("constantIm").value = julia_constant[1];
             document.getElementById("coloroffset").value = color_offset;
             document.getElementById("nji").value = main_jul_lerp;
+
+            for (f in presets_fractals) {
+                if (presets_fractals[f]["id"] == fractal_type) {
+                    document.getElementById("description").innerHTML = presets_fractals[f]["description"]; 
+                }
+            }
 
             if (power_slider_float == 1) {
                 document.getElementById("powerfloat").value = mandelbrot_power;
@@ -1263,7 +1375,6 @@
             fractal_post_function = parseInt(params.get("fpf") ?? fractal_post_function);
 
             update_ui()
-
             update_formula();
         }
 
