@@ -98,7 +98,7 @@
         <button onclick="setFractal('tricorn')">Tricorn</button>
         <button onclick="setFractal('duck')">Duck</button>
         <button onclick="setFractal('ass')">B fractal</button>
-        <button onclick="setFractal('sine')">Sine julia</button>
+        <button onclick="setFractal('sine')">Sine</button>
         <button onclick="setFractal('popcorn')">Popcorn</button>
         <button onclick="setFractal('thorn')">Thorn</button>
         <button onclick="setFractal('henon')">Henon</button>
@@ -112,7 +112,7 @@
         <button onclick="setFractal('shark fin')">Shark fin</button>
         <button onclick="setFractal('tippets')">Tippets</button>
         <button onclick="setFractal('zubiet')">Zubiet</button>
-        <button onclick="setFractal('sinh julia')">Sinh julia</button>
+        <button onclick="setFractal('sinh')">Hyperbolic sine</button>
         <button onclick="setFractal('unnamed 1')">Unnamed 1</button>
         <button onclick="setFractal('unnamed 2')">Unnamed 2</button>
         <h3>Mandelbrot Power:</h3>
@@ -170,8 +170,9 @@
         <button onclick="exportJul()">Export Juliaset as PNG</button>
         <h3>Reset Settings:</h3>
         <a href="fractals">Click here</a>
-        <h3>Visit the old version:</h3>
-        <a href="https://davidsaltacc.github.io/pages/generative-art/fractals-old">davidsaltacc.github.io/pages/generative-art/fractals-old</a>
+        <h3>Other Versions:</h3>
+        <a href="https://davidsaltacc.github.io/pages/generative-art/fractals-old">Old Version</a><br>
+        <a href="https://turbowarp.org/907856776?fps=60&turbo">Scratch Version I made for some reason</a>
         <h3>Side Note:</h3>
         <p>This project is still very early in development. This means, new features will be added in the future. Until everything is finished, bugs might occur, things might break. If you find anything, please <a href="https://github.com/davidsaltacc/davidsaltacc.github.io/issues/new">open a issue on github.</a></p>
         <h3>What are fractals and what is this?</h3>
@@ -599,7 +600,7 @@
             }
             if (type == 21) {
                 // Sinh julia
-                return apply_post_function(c_abs(mand_power(c_sinh(z), float(mandelbrot_power)))) + c;
+                return apply_post_function(mand_power(c_sinh(z), float(mandelbrot_power))) + c;
             }
             if (type == 22) {
                 // Unnamed 1
@@ -1032,11 +1033,11 @@
                 "formula": "z<sub>n+1</sub> = FSz<sub>n</sub><sup>POWER</sup>FE + c / z<sub>n</sub>",
                 "description": "Looks really interesting. "
             },
-            "sinh julia": {
+            "sinh": {
                 "id": 21,
                 "radius": 70,
-                "formula": "s = sinh(z<sub>n</sub>)<sup>POWER</sup><br>z<sub>n+1</sub> = FS(abs(Re(s)) + i*abs(Im(s)))FE + c",
-                "description": "Kind of like the sine julia, this one is repeating infinitely vertically. Just looks a little better."
+                "formula": "z<sub>n+1</sub> = FSc * sinh(z<sub>n</sub>)FE",
+                "description": "Kind of like the sine, this one is repeating infinitely vertically. Just looks a little better."
             },
             "unnamed 1": {
                 "id": 22,
