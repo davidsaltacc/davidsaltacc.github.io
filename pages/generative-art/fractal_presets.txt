@@ -1,0 +1,56 @@
+red abyss https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.001963569934344038&cym=0.003574888911897868&cxj=-0.010708994419744579&cyj=0.02131202089970078&cx=0.15&cy=0.15&scm=2.419858985765179&scj=1.9812129697580458&r=2&i=200&cm=4&cs=2&f=8
+
+brokkoli https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.20117297067581988&cym=-0.056309937378829895&cxj=0.3954531055569938&cyj=0.009487052477678892&cx=0.5287465053292354&cy=0.7778837494840902&scm=0.7288475201562036&scj=0.8902163713969866&r=10000000&i=200&cm=4&cs=0&f=5
+
+warped stars https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.3855425546126928&cym=0.4083439746823433&cxj=-0.005008648238924607&cyj=0.05795404544025662&cx=-0.4707010305371936&cy=0.3373058001292218&scm=0.8902163713969863&scj=0.8902163713969862&r=10000000&i=200&cm=0&cs=0&co=0&f=15&nji=1&mp=2&pf=0&fpf=0
+
+warped madness https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.09895975418423456&cym=0.1725929437981413&cxj=0.0535930374934917&cyj=-0.011097046158798557&cx=0.8069267647455302&cy=1.0177628633829439&scm=0.728847520156202&scj=0.7288475201562028&r=10000000&i=200&cm=4&cs=0&f=9
+
+blue stars https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.48654049689663914&cym=0.9627952402152087&cxj=0.07024153135431208&cyj=0.006133083707247605&cx=-0.3964487965819276&cy=1.3621613496430345&scm=1.3280467690946192&scj=0.488561103264068&r=10000000&i=200&cm=4&cs=1&f=1
+
+satanic triangle https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.0899207694494639&cym=0.6403359060286853&cxj=-0.05375925236757623&cyj=-0.0849031420411695&cx=0.86&cy=1.22&scm=0.5967298790565082&scj=0.3274923012311928&r=10000000&i=200&cm=4&cs=2&co=0.774&f=17&nji=0.938&mp=2&pf=0&fpf=0
+
+dark flowers https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.2852962566489068&cym=0.03761544698530624&cxj=-0.024341055582611792&cyj=0.00369954218557968&cx=0.28104751574552045&cy=0.00974249766166341&scm=11.9856400189588&scj=0.8902163713969872&r=200000&i=200&cm=1&cs=1&co=0.611&f=0&nji=1
+
+juliaset-mandelbrot-morph-hybrid https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.6797941812685873&cym=0.3599639617190119&cxj=-0.015618544953747523&cyj=0.041820858254612875&cx=-0.6760184827557125&cy=0.36218400198793044&scm=108.1705629704612&scj=0.7288475201562037&r=10000000&i=200&cm=1&cs=2&co=0.71&f=0&nji=0.975
+
+evil heart https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.11607878847558814&cym=-0.12068861287713499&cxj=-0.010000000000000009&cyj=-0.34999999999999976&cx=-0.00020133395168031587&cy=0.05323384526490743&scm=0.596729879056508&scj=0.4&r=10000000&i=200&cm=4&cs=2&co=0.694&f=15&nji=0.752&mp=2&pf=0&fpf=0
+
+neon claw https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.4777537738381225&cym=0.030561350760365712&cxj=-0.07633722780925005&cyj=0.013377733809426584&cx=0.4424347421840124&cy=0.08026961753281696&scm=3.057841479281666&scj=0.6285807794310604&r=10000000&i=200&cm=1&cs=2&co=0.663&f=6&nji=1
+
+grey sandstorm https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.6188867603313892&cym=0.5366211389119813&cxj=-0.02072685836627047&cyj=0.09205036525041489&cx=-1.537225223400219&cy=1.3343019936943956&scm=0.5967298790565054&scj=0.7288475201562037&r=10000000&i=300&cm=4&cs=3&co=0.85&f=3&nji=1
+
+sand snowflake https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.6936056976080175&cym=-0.0520851363429712&cxj=-0.10620503390816427&cyj=-0.020343738373241244&cx=0.6985509201079757&cy=-0.07681124884276233&scm=21.839260013257704&scj=0.7288475201562037&r=2000000&i=300&cm=4&cs=3&co=0.762&f=0&nji=1&mp=6&pf=0
+
+starlight https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.11091525438281317&cym=-0.5994677276229414&cxj=-0.09806176814213524&cyj=-0.3838136408078341&cx=0.15637410290318415&cy=-0.601196579869452&scm=1.6220799867378692&scj=1.328046769094619&r=10000000&i=300&cm=1&cs=3&co=0.771&f=18&nji=1&mp=2&pf=0&fpf=0
+
+blue mess https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0&cym=0&cxj=0&cyj=0&cx=-0.41&cy=-0.74&scm=0.4&scj=0.4&r=10&i=300&cm=2&cs=3&co=0.533&f=0&nji=1&mp=2&pf=0&fpf=6
+
+blue n red spirals https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-2.9164034263738285&cym=-2.2064737712242617&cxj=0&cyj=0&cx=-3.0416141136006507&cy=-2.168792330434692&scm=3.610005399773645&scj=0.4&r=10&i=300&cm=2&cs=2&co=0.251&f=0&nji=1&mp=2&pf=0&fpf=7
+
+dots https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-2.2293750904917&cym=-1.8621515184478548&cxj=0&cyj=0&cx=-2.847973616358518&cy=-2.194040347274679&scm=1.3280467690946172&scj=0.4&r=10&i=300&cm=0&cs=1&co=0.251&f=0&nji=1&mp=2&pf=0&fpf=7
+
+orange and blue shapes https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.990420018289369&cym=-1.5588836050546715&cxj=0&cyj=0&cx=-1.2098913161973988&cy=-1.6205328460400732&scm=1.6220799867378697&scj=0.4&r=10&i=200&cm=2&cs=0&co=0&f=7&nji=1&mp=2&pf=0&fpf=7
+
+i am running out of names, this one has glow and holes and a lot of detail and stuff https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.4135819648276487&cym=-0.5891817559765259&cxj=-0.01649785855340957&cyj=-0.09856508044992048&cx=-0.04827666860710945&cy=-0.7633292310698878&scm=1.3280467690946158&scj=0.890216371396987&r=10&i=300&cm=1&cs=0&co=0.564&f=0&nji=1&mp=3&pf=0&fpf=1
+
+negative mandelbrot https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.059208093362228695&cym=-0.5525283385333876&cxj=-0.027360083779649443&cyj=0.17943064878780499&cx=0.16621324789939596&cy=-0.8109558815665463&scm=1.9812129697580478&scj=0.32749230123119266&r=2000000&i=200&cm=2&cs=0&co=0&f=0&nji=1&mp=-2&pf=0&fpf=0
+
+i need more names, another negative mandelbrot https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.8567747928375089&cym=1.4842110545557632&cxj=0&cyj=0&cx=0.8568491729262434&cy=1.4840862974235016&scm=1192.3831948166915&scj=0.4&r=2000000&i=200&cm=2&cs=0&co=0&f=0&nji=1&mp=-2&pf=0&fpf=0
+
+red spiky tower thing https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.3400737517655845&cym=0.4009963861424237&cxj=-0.049811619995863254&cyj=-0.12248231144142802&cx=-0.5&cy=-0.85&scm=0.3274923012311928&scj=0.3274923012311927&r=70&i=200&cm=1&cs=2&co=0.708&f=21&nji=1&mp=1.764&pf=1&fpf=0
+
+blue spikes https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.09948657531757554&cym=0.5031999090788106&cxj=0&cyj=0&cx=-1.7494865753175775&cy=-0.0068000909211898275&scm=0.3999999999999996&scj=0.4&r=10&i=200&cm=1&cs=0&co=0.655&f=9&nji=1&mp=2&pf=0&fpf=4
+
+two eyes staring at eachother https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.3400000000000001&cym=0.9600000000000001&cxj=0&cyj=0&cx=0&cy=0.16&scm=0.4&scj=0.4&r=10&i=200&cm=1&cs=2&co=0.079&f=9&nji=1&mp=2&pf=0&fpf=9
+
+unnamed thing. looks cool https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.49920199527352155&cym=-0.5060908484588055&cxj=1.55&cyj=0.07&cx=0.6762973895010461&cy=-0.30117344488220754&scm=0.890216371396987&scj=0.4&r=10000000&i=200&cm=2&cs=0&co=0&f=22&nji=1&mp=-1&pf=0&fpf=0
+
+really cool pattern, again https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.49920199527352155&cym=-0.5060908484588055&cxj=0.6300000000000001&cyj=0.16999999999999987&cx=-0.19725789910817199&cy=-0.36230557994129453&scm=0.890216371396987&scj=0.4&r=10000000&i=200&cm=2&cs=0&co=0&f=22&nji=1&mp=-5&pf=0&fpf=0
+
+hole + again cool pattern https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.8318369331382797&cym=-0.20208635282061937&cxj=0.9800000000000002&cyj=0.09999999999999992&cx=1.0044548078974043&cy=0.27877772686551333&scm=1.6220799867378697&scj=0.4&r=10000000&i=200&cm=2&cs=0&co=0&f=22&nji=1&mp=-10&pf=0&fpf=0
+
+another unnamed thing https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.8762765433991999&cym=-0.3487467607980377&cxj=0.007491547845488555&cyj=-0.060440875913773284&cx=0.34586100962574196&cy=-0.14126742010750531&scm=0.21952465443761052&scj=0.2681280184142556&r=10&i=200&cm=1&cs=3&co=0.793&f=23&nji=1&mp=1&pf=0&fpf=4
+
+inaccurate mandelbrot set https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-2.7969270462006306&cym=0.45530418941462336&cxj=0.3892561271857&cyj=-0.6956652884579845&cx=-2.7496570063668146&cy=0.4624083572509194&scm=14.639293777471222&scj=6.577858708438822&r=10000000&i=200&cm=1&cs=0&co=0&f=23&nji=1&mp=2&pf=0&fpf=0
+
