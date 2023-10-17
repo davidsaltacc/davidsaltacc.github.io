@@ -42,7 +42,7 @@ red spiky tower thing https://davidsaltacc.github.io/pages/generative-art/fracta
 
 blue spikes https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.09948657531757554&cym=0.5031999090788106&cxj=0&cyj=0&cx=-1.7494865753175775&cy=-0.0068000909211898275&scm=0.3999999999999996&scj=0.4&r=10&i=200&cm=1&cs=0&co=0.655&f=9&nji=1&mp=2&pf=0&fpf=4
 
-two eyes staring at eachother https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.3400000000000001&cym=0.9600000000000001&cxj=0&cyj=0&cx=0&cy=0.16&scm=0.4&scj=0.4&r=10&i=200&cm=1&cs=2&co=0.079&f=9&nji=1&mp=2&pf=0&fpf=9
+two eyes staring at eachother https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.34&cym=0.96&cxj=0&cyj=0&cx=0&cy=0.16&scm=0.4&scj=0.4&r=10&i=200&cm=1&cs=2&co=0.079&f=9&nji=1&mp=2&pf=0&fpf=9
 
 unnamed thing. looks cool https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0.49920199527352155&cym=-0.5060908484588055&cxj=1.55&cyj=0.07&cx=0.6762973895010461&cy=-0.30117344488220754&scm=0.890216371396987&scj=0.4&r=10000000&i=200&cm=2&cs=0&co=0&f=22&nji=1&mp=-1&pf=0&fpf=0
 
@@ -54,3 +54,10 @@ another unnamed thing https://davidsaltacc.github.io/pages/generative-art/fracta
 
 inaccurate mandelbrot set https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-2.7969270462006306&cym=0.45530418941462336&cxj=0.3892561271857&cyj=-0.6956652884579845&cx=-2.7496570063668146&cy=0.4624083572509194&scm=14.639293777471222&scj=6.577858708438822&r=10000000&i=200&cm=1&cs=0&co=0&f=23&nji=1&mp=2&pf=0&fpf=0
 
+another mandelbrot lgarithm interior thing https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-3.303877452535078&cym=-0.43950484945827883&cxj=0&cyj=0&cx=-3.305845363119572&cy=-0.4406250447140679&scm=132.11982396385946&scj=0.2681280184142556&r=10&i=500&cm=2&cs=0&co=0&f=0&nji=1&mp=2&pf=0&fpf=7
+
+staircase https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.02644662061657285&cym=1.121180470283664&cxj=0.7000000000000001&cyj=0.41&cx=0.22071592117506642&cy=1.0678931332918886&scm=3.5280426948154044&scj=0.4&r=20000&i=200&cm=0&cs=0&co=0&f=10&nji=1&mp=2&pf=0&fpf=0
+
+thing, i am runnign out of names again https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-1.77&cym=0.07999999999999999&cxj=0&cyj=0&cx=-3.2199999999999998&cy=1.5999999999999999&scm=0.4&scj=0.4&r=10&i=200&cm=2&cs=0&co=0&f=0&nji=1&mp=2&pf=0&fpf=7
+
+spirals https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.056729961876286344&cym=0.7470900113355418&cxj=0&cyj=0&cx=-0.0864857619116211&cy=0.8488861693511607&scm=2.554123898861756&scj=0.4&r=10&i=200&cm=2&cs=0&co=0&f=0&nji=1&mp=-2&pf=0&fpf=8
