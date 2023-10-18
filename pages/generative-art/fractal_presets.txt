@@ -61,3 +61,6 @@ staircase https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.02
 thing, i am runnign out of names again https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-1.77&cym=0.07999999999999999&cxj=0&cyj=0&cx=-3.2199999999999998&cy=1.5999999999999999&scm=0.4&scj=0.4&r=10&i=200&cm=2&cs=0&co=0&f=0&nji=1&mp=2&pf=0&fpf=7
 
 spirals https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=-0.056729961876286344&cym=0.7470900113355418&cxj=0&cyj=0&cx=-0.0864857619116211&cy=0.8488861693511607&scm=2.554123898861756&scj=0.4&r=10&i=200&cm=2&cs=0&co=0&f=0&nji=1&mp=-2&pf=0&fpf=8
+
+tanh feather https://davidsaltacc.github.io/pages/generative-art/fractals?cxm=0&cym=0&cxj=0&cyj=0&cx=-0.07258111091495845&cy=0.013731143011388225&scm=0.596729879056508&scj=0.4&r=6&i=150&cm=4&cs=0&co=0.73&f=14&nji=1&mp=2&pf=0&fpf=6
+
