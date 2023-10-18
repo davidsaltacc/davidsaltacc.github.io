@@ -155,20 +155,3 @@ hr {
 .active, .dot:hover {
 	background-color: #69748d;
 }
-
-.highlighted {
-	border: #ffee00 3px solid;
-}
-
-.highlighttext {
-	text-align: center;
-	padding: 12px 0;
-	font-size: x-large;
-	color: #ffee00;
-	transition: color 0.5s ease;
-	text-shadow: 0px 0px 50px #fff70069;
-}
-
-.highlighttext:hover {
-	color: #fff86b;
-}
