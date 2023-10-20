@@ -707,7 +707,7 @@
                     } else if (i == max_iterations) {
                         color_black = true;
                     }
-                } else if (color_method == 6) { // smooth stripes TODO implement in UI
+                } else if (color_method == 6) { // smooth stripes
                     if (magnitude(z) > radius) {
                         float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
                         stripe += cos(atan(z.y, z.x)) * fract(float_iters);
@@ -719,7 +719,7 @@
                     } else {
                         stripe += cos(atan(z.y, z.x));
                     }
-                } else if (color_method == 7) { // "edgy" stripes TODO implement in UI
+                } else if (color_method == 7) { // "edgy" stripes
                     if (magnitude(z) > radius) {
                         float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
                         stripe += pow(e, -0.5 * atan(z.y, z.x)) * fract(float_iters);
@@ -731,7 +731,7 @@
                     } else {
                         stripe += pow(e, -0.5 * atan(z.y, z.x));
                     }
-                } else if (color_method == 8) { // floor stripes TODO implement in UI
+                } else if (color_method == 8) { // floor stripes
                     if (magnitude(z) > radius) {
                         float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
                         stripe += floor(atan(z.y, z.x) * pi) * fract(float_iters);
