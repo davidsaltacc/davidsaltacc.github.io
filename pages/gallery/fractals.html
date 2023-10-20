@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fractals Gallery</title>
     <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
+	<link rel="stylesheet" type="text/css" href="../../styles.css">
     <style>
 
 body {
@@ -52,9 +53,19 @@ div.gallery img {
     display: table;
     clear: both;
 }
+
+h1, p {
+	margin-left: 5px;
+}
+
+img {
+	border-radius: 0;
+}
     </style>
 </head>
 <body>
+	<h1>David's Fractal Gallery</h1>
+	<p>Note: These are just downscaled versions. Click on the images to see the full versions.</p>
     <script>
         function createGalleryElement(img, img_downscaled) {
             var e = document.createElement("div");
