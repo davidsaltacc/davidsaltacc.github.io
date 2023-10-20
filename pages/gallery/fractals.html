@@ -56,7 +56,7 @@ div.gallery img {
 </head>
 <body>
     <script>
-        function createGalleryElement(img) {
+        function createGalleryElement(img, img_downscaled) {
             var e = document.createElement("div");
             e.className = "responsive";
             var g = document.createElement("div");
@@ -68,12 +68,12 @@ div.gallery img {
             a.target = "_blank";
             var i = document.createElement("img");
             a.appendChild(i);
-            i.src = img;
+            i.src = img_downscaled;
             document.body.appendChild(e);
         }
 
         for (var n = 0; n <= 47; n++) {
-            createGalleryElement("../../assets/gallery/fractals/fractal (" + n + ").png");
+            createGalleryElement("../../assets/gallery/fractals/fractal (" + n + ").png", "../../assets/gallery/fractals/downscaled/fractal (" + n + ") downscaled.png");
         }
 
         var c = document.createElement("div");
