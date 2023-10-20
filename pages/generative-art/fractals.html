@@ -157,6 +157,9 @@
         <button onclick="setColormethod('stripes')">Stripes</button>
         <button onclick="setColormethod('interior')">Interior</button>
         <button onclick="setColormethod('accurate')">Accurate</button>
+        <button onclick="setColormethod('smooth stripes')">Smooth stripes</button>
+        <button onclick="setColormethod('edgy')">Edgy</button>
+        <button onclick="setColormethod('floor')">Floor</button>
         <hr>
         <h3>Controls:</h3>
         <p>Drag around the canvases with the right mouse button pressed to move</p>
@@ -704,6 +707,42 @@
                     } else if (i == max_iterations) {
                         color_black = true;
                     }
+                } else if (color_method == 6) { // smooth stripes TODO implement in UI
+                    if (magnitude(z) > radius) {
+                        float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+                        stripe += cos(atan(z.y, z.x)) * fract(float_iters);
+                        color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
+                        color_v /= float(max_iterations);
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    } else {
+                        stripe += cos(atan(z.y, z.x));
+                    }
+                } else if (color_method == 7) { // "edgy" stripes TODO implement in UI
+                    if (magnitude(z) > radius) {
+                        float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+                        stripe += pow(e, -0.5 * atan(z.y, z.x)) * fract(float_iters);
+                        color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
+                        color_v /= float(max_iterations);
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    } else {
+                        stripe += pow(e, -0.5 * atan(z.y, z.x));
+                    }
+                } else if (color_method == 8) { // floor stripes TODO implement in UI
+                    if (magnitude(z) > radius) {
+                        float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+                        stripe += floor(atan(z.y, z.x) * pi) * fract(float_iters);
+                        color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
+                        color_v /= float(max_iterations);
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    } else {
+                        stripe += floor(atan(z.y, z.x) * pi);
+                    }
                 }
                 last_z = z;
             }
@@ -862,6 +901,18 @@
             "accurate": {
                 "id": 5,
                 "description": "Pixels are either black (part of the set) or not (not a part of the set)."
+            },
+            "smooth stripes": {
+                "id": 6,
+                "description": "Like stripes, just a lot smoother."
+            },
+            "edgy": {
+                "id": 7,
+                "description": "Another stripes variant, has a lot of edges."
+            },
+            "floor": {
+                "id": 8,
+                "description": "Yet *another* stripes variant, but this ones my favourite, it looks really cool."
             }
         };
 
