@@ -160,6 +160,7 @@
         <button onclick="setColormethod('smooth stripes')">Smooth stripes</button>
         <button onclick="setColormethod('edgy')">Edgy</button>
         <button onclick="setColormethod('floor')">Floor</button>
+        <button onclick="setColormethod('squared')">Squared</button>
         <hr>
         <h3>Controls:</h3>
         <p>Drag around the canvases with the right mouse button pressed to move</p>
@@ -340,7 +341,7 @@
 
         float weierstrass(float x) {
             x *= 2.;
-            return cos(x) + cos(3. * x) / 2. + cos(9. * x) / 4. + cos(27. * x) / 8. + cos(81. * x) / 16.;
+            return cos(x) + cos(3. * x) / 2. + cos(9. * x) / 4. + cos(27. * x) / 8. + cos(81. * x) / 16. + cos(243. * x) / 32.;
         }
 
         float cubic_interpolation(float a, float b, float c, float d, float x) {
@@ -743,6 +744,20 @@
                     } else {
                         stripe += floor(atan(z.y, z.x) * pi);
                     }
+                } else if (color_method == 9) { // squared stripes
+                    if (magnitude(z) > radius) {
+                        float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+                        float v = atan(z.y, z.x);
+                        stripe += v * v * fract(float_iters);
+                        color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
+                        color_v /= float(max_iterations);
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    } else {
+                        float v = atan(z.y, z.x);
+                        stripe += v * v;
+                    }
                 }
                 last_z = z;
             }
@@ -913,6 +928,10 @@
             "floor": {
                 "id": 8,
                 "description": "Yet *another* stripes variant, but this ones my favourite, it looks really cool."
+            },
+            "squared": {
+                "id": 9,
+                "description": "Another stripes variant. "
             }
         };
 
