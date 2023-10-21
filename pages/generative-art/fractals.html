@@ -556,8 +556,8 @@
                 return c + apply_post_function(vec2(z.x * z.x * z.x - z.y * z.y * abs(z.y), 2. * z.x * z.y));
             }
             if (type == 7) {
-                // Juliaset Sine (very high radius required)
-                return apply_post_function(c * c_sin(z));
+                // Juliaset Sine (radius ~20)
+                return apply_post_function(c + mand_power(c_sin(z), mandelbrot_power));
             }
             if (type == 8) {
                 // Popcorn (ideal radius ca ~2)
@@ -639,6 +639,7 @@
                 // Unnamed 3
                 return apply_post_function(mand_power(c_division(mand_power(z, mandelbrot_power) + c - vec2(1., 0.), c_multiplication(z, vec2(2., 2.)) + c - vec2(2., 0.)), mandelbrot_power));
             }
+
         }
 
         void main() {
@@ -1046,8 +1047,8 @@
             },
             "sine": {
                 "id": 7,
-                "radius": 100,
-                "formula": "z<sub>n+1</sub> = FSc * sin(z<sub>n</sub>)FE",
+                "radius": 50,
+                "formula": "z<sub>n+1</sub> = FSc + sin(z<sub>n</sub>)<sup>POWER</sup>FE",
                 "description": "Infinitely repeating to the left and right. Interesting, isn't it?"
             },
             "popcorn": {
@@ -1131,7 +1132,7 @@
             "sinh": {
                 "id": 21,
                 "radius": 70,
-                "formula": "z<sub>n+1</sub> = FSc * sinh(z<sub>n</sub>)FE",
+                "formula": "z<sub>n+1</sub> = FSc + sinh(z<sub>n</sub>)<sup>POWER</sup>FE",
                 "description": "Kind of like the sine, this one is repeating infinitely vertically. Just looks a little better."
             },
             "unnamed 1": {
