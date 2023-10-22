@@ -67,7 +67,7 @@
         #title {
             font-size: 40px;
         }
-        #stickycanvases {
+        #stickycanvases, #pixelate {
             width: 15px;
             height: 15px;
         }
@@ -141,12 +141,19 @@
         <button onclick="update_post_function('sqrt')">Square root</button>
         <button onclick="update_post_function('abs')">Absolute</button>
         <hr>
+        <h3>Pixelation:</h3>
+        <p>Pixelation enabled:</p>
+        <input type="checkbox" id="pixelate" onchange="togglePixelation();"><br>
+        <p>Resolution:</p>
+        <input type="range" id="pixelateresolution" value="1" min="1" max="50" step="1" oninput="updatePixelationValue();">
+        <hr>
         <h3>Colormap Selection:</h3>
         <button onclick="setColormap('classic')">Classic</button>
         <button onclick="setColormap('ultra fractal')">Ultra Fractal Default</button>
         <button onclick="setColormap('red and blue')">Red and Blue</button>
         <button onclick="setColormap('sand')">Sand</button>
         <button onclick="setColormap('rainbow')">Rainbow</button>
+        <button onclick="setColormap('davids')">David's</button>
         <p>Color offset:</p>
         <input type="range" min="0" max="1" step="0.001" value="0" id="coloroffset" oninput="updateSettings();">
         <hr>
@@ -161,6 +168,7 @@
         <button onclick="setColormethod('edgy')">Edgy</button>
         <button onclick="setColormethod('floor')">Floor</button>
         <button onclick="setColormethod('squared')">Squared</button>
+        <button onclick="setColormethod('stripier stripes')">Stripier stripes</button>
         <hr>
         <h3>Controls:</h3>
         <p>Drag around the canvases with the right mouse button pressed to move</p>
@@ -255,6 +263,8 @@
         uniform float main_juliaset_lerp;
         uniform float mandelbrot_power;
         uniform int post_function;
+        uniform int pixelate;
+        uniform int pixelate_resolution;
 
         #define pi 3.141592653589793
         #define e 2.718281828459045
@@ -273,6 +283,14 @@
                 return n * n;
             }
             return pow(n, p);
+        }
+        vec2 to_polar(vec2 z) {
+            float r = length(z);
+            float theta = atan(z.y, z.x);
+            return vec2(r, theta);
+        }
+        float lerp(float a, float b, float t) {
+            return (1. - t) * a + t * b;
         }
 
         vec2 c_multiplication(vec2 a, vec2 b) {
@@ -326,18 +344,16 @@
         vec2 c_abs(vec2 z) {
             return vec2(abs(z.x), abs(z.y));
         }
-        
-        vec2 to_polar(vec2 z) {
-            float r = length(z);
-            float theta = atan(z.y, z.x);
-            return vec2(r, theta);
+        vec2 c_floor(vec2 z) {
+            return vec2(floor(z.x), floor(z.y));
         }
-        vec2 mand_power(vec2 z, float n) {
+        vec2 c_pow(vec2 z, float n) {
             vec2 polar = to_polar(z);
             float r = pow(polar.x, n);
             float theta = n * polar.y;
             return r * vec2(cos(theta), sin(theta));
         }
+        
 
         float weierstrass(float x) {
             x *= 2.;
@@ -356,6 +372,15 @@
                 cubic_interpolation(color0.r, color1.r, color2.r, color3.r, x),
                 cubic_interpolation(color0.g, color1.g, color2.g, color3.g, x),
                 cubic_interpolation(color0.b, color1.b, color2.b, color3.b, x),
+                1.
+            );
+        }
+
+        vec4 color_lerp(vec3 c0, vec3 c1, float x) {
+            return vec4(
+                lerp(c0.r, c1.r, x),
+                lerp(c0.g, c1.g, x),
+                lerp(c0.b, c1.b, x),
                 1.
             );
         }
@@ -466,6 +491,36 @@
             return vec4(0., 0., 0., 1.);
         }
 
+        vec4 davids_colorscheme(float x) {
+            x *= 2.;
+
+            vec3 blue0 = vec3(0.  , 0.  , 0.  );
+            vec3 blue1 = vec3(0.22, 0.44, 0.87);
+            
+            vec3 green0 = vec3(0.25, 0.5 , 0.  );
+            vec3 green1 = vec3(0.47, 0.93, 0.87);
+            
+            vec3 red0 = vec3(0.5 , 0.  , 0.  );
+            vec3 red1 = vec3(0.71, 0.44, 0.87);
+            
+            vec3 yellow0 = vec3(0.75, 0.5 , 0.  );
+            vec3 yellow1 = vec3(0.96, 0.93, 0.87);
+
+            x = fract(x) * 4.;
+            if (x < 1.) {
+                return color_lerp(blue0, blue1, fract(x));
+            }
+            if (x < 2.) {
+                return color_lerp(green0, green1, fract(x));
+            }
+            if (x < 3.) {
+                return color_lerp(red0, red1, fract(x));
+            }
+            if (x < 4.) {
+                return color_lerp(yellow0, yellow1, fract(x));
+            }
+        }
+
         vec4 color(float x) {
             x += color_offset;
             if (colorscheme == 0) {
@@ -483,9 +538,12 @@
             if (colorscheme == 4) {
                 return rainbow_colorscheme(x);
             }
+            if (colorscheme == 5) {
+                return davids_colorscheme(x);
+            }
         }
 
-        vec2 apply_post_function(vec2 z) {
+        vec2 apply_post_function_2(vec2 z) {
             if (post_function == 0) {
                 return z;
             }
@@ -518,29 +576,37 @@
             }
         }
 
+        vec2 apply_post_function(vec2 z_) {
+            vec2 z = apply_post_function_2(z_);
+            if (pixelate == 1) {
+                return c_floor(z * float(pixelate_resolution)) / float(pixelate_resolution);
+            }
+            return z;
+        }
+
         vec2 iteration(vec2 z, vec2 c, int type) {
             if (type == 0) {
                 // Mandelbrot
-                return c + apply_post_function(mand_power(z, mandelbrot_power));
+                return c + apply_post_function(c_pow(z, mandelbrot_power));
             } 
             if (type == 1) {
                 // Burning ship
-                vec2 power = mand_power(z, mandelbrot_power);
+                vec2 power = c_pow(z, mandelbrot_power);
                 return c + apply_post_function(vec2(power.x, abs(power.y)));
             }
             if (type == 2) {
                 // Celtic
-                vec2 power = mand_power(z, mandelbrot_power);
+                vec2 power = c_pow(z, mandelbrot_power);
                 return c + apply_post_function(vec2(abs(power.x), power.y));
             }
             if (type == 3) {
                 // Buffalo
-                vec2 power = mand_power(z, mandelbrot_power);
+                vec2 power = c_pow(z, mandelbrot_power);
                 return c + apply_post_function(vec2(abs(power.x), abs(power.y)));
             }
             if (type == 4) {
                 // Tricorn
-                vec2 power = mand_power(z, mandelbrot_power);
+                vec2 power = c_pow(z, mandelbrot_power);
                 return c + apply_post_function(vec2(power.x, -power.y));
             }
             if (type == 5) {
@@ -557,7 +623,7 @@
             }
             if (type == 7) {
                 // Juliaset Sine (radius ~20)
-                return apply_post_function(c + mand_power(c_sin(z), mandelbrot_power));
+                return apply_post_function(c + c_pow(c_sin(z), mandelbrot_power));
             }
             if (type == 8) {
                 // Popcorn (ideal radius ca ~2)
@@ -590,7 +656,7 @@
                 // Feather (radius around ~200 or lower)
                 float dr = 1. + z.x * z.x;
                 float di = z.y * z.y;
-                vec2 p = mand_power(z, 3.);
+                vec2 p = c_pow(z, 3.);
                 float zr = p.x;
                 float zi = p.y;
                 float dvr = (zr * dr + zi * di) / (dr * dr + di * di);
@@ -621,23 +687,23 @@
             }
             if (type == 20) {
                 // Zubiet
-                return apply_post_function(mand_power(z, mandelbrot_power)) + c_division(c, z);
+                return apply_post_function(c_pow(z, mandelbrot_power)) + c_division(c, z);
             }
             if (type == 21) {
                 // Sinh julia
-                return apply_post_function(mand_power(c_sinh(z), float(mandelbrot_power))) + c;
+                return apply_post_function(c_pow(c_sinh(z), float(mandelbrot_power))) + c;
             }
             if (type == 22) {
                 // Unnamed 1
-                return apply_post_function(mand_power(z, mandelbrot_power) - mand_power(-z, c.x) + vec2(c.y, 0.));
+                return apply_post_function(c_pow(z, mandelbrot_power) - c_pow(-z, c.x) + vec2(c.y, 0.));
             }
             if (type == 23) {
                 // Unnamed 2
-                return apply_post_function(mand_power(z - c_division(mand_power(z, 3.) - vec2(1., 0.), 3. * mand_power(z, 2.)), mandelbrot_power)) + c;
+                return apply_post_function(c_pow(z - c_division(c_pow(z, 3.) - vec2(1., 0.), 3. * c_pow(z, 2.)), mandelbrot_power)) + c;
             }
             if (type == 24) {
                 // Unnamed 3
-                return apply_post_function(mand_power(c_division(mand_power(z, mandelbrot_power) + c - vec2(1., 0.), c_multiplication(z, vec2(2., 2.)) + c - vec2(2., 0.)), mandelbrot_power));
+                return apply_post_function(c_pow(c_division(c_pow(z, mandelbrot_power) + c - vec2(1., 0.), c_multiplication(z, vec2(2., 2.)) + c - vec2(2., 0.)), mandelbrot_power));
             }
 
         }
@@ -759,6 +825,20 @@
                         float v = atan(z.y, z.x);
                         stripe += v * v;
                     }
+                } else if (color_method == 10) { // More colorful stripes?
+                    if (magnitude(z) > radius) {
+                        float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+                        float v = atan(z.y, z.x);
+                        stripe += 4. * sin(6. * cos(v)) * fract(float_iters);
+                        color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
+                        color_v /= float(max_iterations);
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    } else {
+                        float v = atan(z.y, z.x);
+                        stripe += 4. * sin(6. * cos(v));
+                    }
                 }
                 last_z = z;
             }
@@ -864,7 +944,9 @@
             color_method,
             main_juliaset_lerp,
             mandelbrot_power,
-            post_function
+            post_function,
+            pixelate,
+            pixelate_resolution
         ) {
             gl.uniform2fv(gl.getUniformLocation(program, "canvas_dimensions"), canvas_dimensions);
             gl.uniform2fv(gl.getUniformLocation(program, "center"), center);
@@ -880,18 +962,22 @@
             gl.uniform1f(gl.getUniformLocation(program, "main_juliaset_lerp"), main_juliaset_lerp);
             gl.uniform1f(gl.getUniformLocation(program, "mandelbrot_power"), mandelbrot_power);
             gl.uniform1i(gl.getUniformLocation(program, "post_function"), post_function);
+            gl.uniform1i(gl.getUniformLocation(program, "pixelate"), pixelate);
+            gl.uniform1i(gl.getUniformLocation(program, "pixelate_resolution"), pixelate_resolution);
         }
 
         var radius = 2000000;
         var max_iterations = 200;
         var fractal_type = 0;
         var color_method = 1;
-        var colorscheme = 0;
+        var colorscheme = 5;
         var color_offset = 0;
         var main_jul_lerp = 1;
         var mandelbrot_power = 2;
         var power_slider_float = 0;
         var fractal_post_function = 0;
+        var pixelate = 0;
+        var pixelate_resolution = 1;
 
         var presets_colormethods = {
             "terraced": {
@@ -933,6 +1019,10 @@
             "squared": {
                 "id": 9,
                 "description": "Another stripes variant. "
+            },
+            "stripier stripes": {
+                "id": 10,
+                "description": "Just another stripes variant. More colorful."
             }
         };
 
@@ -956,6 +1046,10 @@
             "rainbow": {
                 "id": 4,
                 "description": "Basically a HSV colormap. Just rainbows."
+            },
+            "davids": {
+                "id": 5,
+                "description": "My own colorscheme. Really like it. Sorry, if the smoothing doesn't look too good."
             }
         };
 
@@ -1184,6 +1278,9 @@
             document.getElementById("coloroffset").value = color_offset;
             document.getElementById("nji").value = main_jul_lerp;
 
+            document.getElementById("pixelate").checked = pixelate == 1 ? true : false;
+            document.getElementById("pixelateresolution").value = pixelate_resolution;
+
             for (f in presets_fractals) {
                 if (presets_fractals[f]["id"] == fractal_type) {
                     document.getElementById("description").innerHTML = presets_fractals[f]["description"]; 
@@ -1208,6 +1305,18 @@
                 document.getElementById("powerint").value = mandelbrot_power;
                 document.getElementById("powerfloat").value = mandelbrot_power;
             }
+        }
+
+        function togglePixelation() {
+            pixelate = pixelate == 0 ? 1 : 0;
+            drawMain();
+            drawJul();
+        }
+
+        function updatePixelationValue() {
+            pixelate_resolution = parseInt(document.getElementById("pixelateresolution").value);
+            drawMain();
+            drawJul();
         }
 
         function setCanvasesSticky(sticky) {
@@ -1258,7 +1367,7 @@
             radius = parseFloat(document.getElementById("radius").value);
             max_iterations = parseInt(document.getElementById("iterations").value);
             julia_constant[0] = parseFloat(document.getElementById("constantRe").value);
-            julia_constant[1] = parseFloat(document.getElementById("constantIm").value);
+            julia_constant[1] = -parseFloat(document.getElementById("constantIm").value);
             color_offset = parseFloat(document.getElementById("coloroffset").value);
             main_jul_lerp = parseFloat(document.getElementById("nji").value);
             
@@ -1339,7 +1448,9 @@
                 color_method,
                 main_jul_lerp,
                 mandelbrot_power,
-                fractal_post_function
+                fractal_post_function,
+                pixelate,
+                pixelate_resolution
             );
 
             glmain.drawArrays(glmain.TRIANGLE_FAN, 0, 4);
@@ -1361,7 +1472,9 @@
                 color_method,
                 main_jul_lerp,
                 mandelbrot_power,
-                fractal_post_function
+                fractal_post_function,
+                pixelate,
+                pixelate_resolution
             );
 
             gljul.drawArrays(gljul.TRIANGLE_FAN, 0, 4);
@@ -1529,6 +1642,8 @@
             params.append("mp", mandelbrot_power);
             params.append("pf", power_slider_float);
             params.append("fpf", fractal_post_function);
+            params.append("px", pixelate);
+            params.append("pxr", pixelate_resolution);
             document.getElementById("url").innerText = document.getElementById("url").href = url.href;
         }
         
@@ -1553,6 +1668,8 @@
             mandelbrot_power = parseFloat(params.get("mp") ?? mandelbrot_power);
             power_slider_float = parseInt(params.get("pf") ?? power_slider_float);
             fractal_post_function = parseInt(params.get("fpf") ?? fractal_post_function);
+            pixelate = parseInt(params.get("px") ?? pixelate);
+            pixelate_resolution = parseInt(params.get("pxr") ?? pixelate_resolution);
 
             update_ui()
             update_formula();
