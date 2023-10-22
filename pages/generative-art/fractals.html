@@ -169,6 +169,8 @@
         <button onclick="setColormethod('floor')">Floor</button>
         <button onclick="setColormethod('squared')">Squared</button>
         <button onclick="setColormethod('stripier stripes')">Stripier stripes</button>
+        <button onclick="setColormethod('transparent background')">Transparent BG</button>
+        <button onclick="setColormethod('transparent set')">Transparent set</button>
         <hr>
         <h3>Controls:</h3>
         <p>Drag around the canvases with the right mouse button pressed to move</p>
@@ -839,13 +841,27 @@
                         float v = atan(z.y, z.x);
                         stripe += 4. * sin(6. * cos(v));
                     }
+                } else if (color_method == 11 || color_method == 12) {
+                    if (magnitude(z) > radius) {
+                        break;
+                    } else if (i == max_iterations) {
+                        color_black = true;
+                    }
                 }
                 last_z = z;
             }
             if (color_black) {
-                fragmentColor = vec4(0., 0., 0., 1.);
+                if (color_method == 12) {
+                    fragmentColor = vec4(0., 0., 0., 0.);
+                } else {
+                    fragmentColor = vec4(0., 0., 0., 1.);
+                }
             } else {
-                fragmentColor = color(color_v);
+                if (color_method == 11) {
+                    fragmentColor = vec4(0., 0., 0., 0.);
+                } else {
+                    fragmentColor = color(color_v);
+                }
             }
         }
     </script>
@@ -1023,6 +1039,14 @@
             "stripier stripes": {
                 "id": 10,
                 "description": "Just another stripes variant. More colorful."
+            },
+            "transparent background": {
+                "id": 11,
+                "description": "A transparent background, if you want to have your own image in the background."
+            },
+            "transparent set": {
+                "id": 12,
+                "description": "A transparent set, if you want to have your own image inside the set."
             }
         };
 
