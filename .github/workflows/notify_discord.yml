@@ -1,0 +1,16 @@
+name: Notify discord
+
+on:
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    run:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Request webhook
+                uses: tsickert/discord-webhook
+                with:
+                    webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+                    content: "${{ github.event.repository.full_name }}'s main branch got a push at ${{ github.event.pull_request.created_at }} by ${{ github.event.pull_request.user.name }}."
+                    username: "davidsaltacc.github.io status"
