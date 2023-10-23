@@ -66,30 +66,6 @@ img {
 <body>
 	<h1>David's Fractal Gallery</h1>
 	<p>Note: These are just downscaled versions. Click on the images to see the full versions.</p>
-    <script>
-        function createGalleryElement(img, img_downscaled) {
-            var e = document.createElement("div");
-            e.className = "responsive";
-            var g = document.createElement("div");
-            e.appendChild(g);
-            g.className = "gallery";
-            var a = document.createElement("a");
-            g.appendChild(a);
-            a.href = img;
-            a.target = "_blank";
-            var i = document.createElement("img");
-            a.appendChild(i);
-            i.src = img_downscaled;
-            document.body.appendChild(e);
-        }
-
-        for (var n = 0; n <= 47; n++) {
-            createGalleryElement("../../assets/gallery/fractals/fractal (" + n + ").png", "../../assets/gallery/fractals/downscaled/fractal (" + n + ") downscaled.png");
-        }
-
-        var c = document.createElement("div");
-        c.className = "clearfix";
-        document.appendChild(c);
-    </script>
+    <script src="../../code/js/pages/gallery/fractals.js"></script>
 </body>
 </html>

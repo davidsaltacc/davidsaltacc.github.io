@@ -16,6 +16,7 @@
 		<meta name="google-site-verification" content="sDyuww7gx0uclXRfNkhdomUydNH_N30MXErE37MpXCQ" />
     </head>
     <body>
+		<!-- TODO split css, js, and other inline code into their own files -->
 		<div class="container">
 			<h1>[wip] home - coder site.</h1>
 			<h2>check out some of the stuff i made here:</h2>
@@ -122,35 +123,7 @@
 				<span class="dot" onclick="currentSlide(15)"></span>
 				<span class="dot" onclick="currentSlide(16)"></span>
 			</div>
-			<script>
-				let slideIndex = 1;
-				showSlides(slideIndex);
-				function plusSlides(n) {
-					showSlides(slideIndex += n);
-				}
-				function currentSlide(n) {
-					showSlides(slideIndex = n);
-				}
-				function showSlides(n) {
-					let i;
-					let slides = document.getElementsByClassName("slideshow");
-					let dots = document.getElementsByClassName("dot");
-					if (n > slides.length) {
-						slideIndex = 1;
-					}
-					if (n < 1) {
-						slideIndex = slides.length;
-					}
-					for (i = 0; i < slides.length; i++) {
-						slides[i].style.display = "none";
-					}
-					for (i = 0; i < dots.length; i++) {
-						dots[i].className = dots[i].className.replace(" active", "");
-					}
-					slides[slideIndex-1].style.display = "block";
-					dots[slideIndex-1].className += " active";
-				}
-			</script>
+			<script src="code/js/index.js"></script>
 			<br><hr><br>
 			<a href="pages">pages/</a><br>
 			<a href="pages/code">pages/code/</a><br>

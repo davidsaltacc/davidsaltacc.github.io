@@ -17,24 +17,6 @@
 </head>
 <body>
     <h1>Prime Numbers = <span id="text"></span></h1>
-    <script>
-        const text = document.getElementById("text");
-
-        var n = 0;
-
-        function update() {
-            for (var i = 2; i <= n; i++) {
-                if (n % i == 0) {
-                    if (i != n) {
-                        break;
-                    }
-                    text.innerHTML += n + ", ";
-                }
-            }
-            n++;
-            setTimeout(update, 0);
-        }
-        update();
-    </script>
+    <script src="../../code/js/pages/iWasBored/primenumbers.js"></script>
 </body>
 </html>
