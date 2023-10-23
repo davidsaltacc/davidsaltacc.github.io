@@ -1,5 +1,5 @@
 # davidsaltacc.github.io
 
-what r u doing here, browsing my terrible code?
+hello
 
-go to [the website](https://davidsaltacc.github.io) instead, thanks
+please go to [the website](https://davidsaltacc.github.io) instead of browsing through my code, thanks
