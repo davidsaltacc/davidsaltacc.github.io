@@ -13,7 +13,7 @@ jobs:
                 uses: tsickert/discord-webhook@v5.3.0
                 with:
                     webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-                    content: "${{ github.event.repository.full_name }}'s main branch got a push at ${{ github.event.repository.updated_at }} by ${{ github.actor }}. Younges commit message: ${{ github.event.head_commit.message }}"
+                    content: "${{ github.event.repository.full_name }}'s main branch got a push at ${{ github.event.repository.updated_at }} by ${{ github.actor }}. Youngest commit message: ${{ github.event.head_commit.message }}"
                     username: "davidsaltacc.github.io status"
             -   name: Log event
-                run: echo "${{toJSON(github.event)}}"
+                run: echo '${{toJSON(github.event)}}'
