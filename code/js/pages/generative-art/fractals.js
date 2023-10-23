@@ -141,7 +141,7 @@ function uniform(gl, program,
 var radius = 2000000;
 var max_iterations = 200;
 var fractal_type = 0;
-var color_method = 1;
+var color_method = 0;
 var colorscheme = 5;
 var color_offset = 0;
 var main_jul_lerp = 1;
