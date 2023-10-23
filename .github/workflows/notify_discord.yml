@@ -16,4 +16,7 @@ jobs:
                     content: "${{ github.event.repository.full_name }}'s main branch got a push at ${{ github.event.repository.updated_at }} by ${{ github.actor }}. Youngest commit message: ${{ github.event.head_commit.message }}"
                     username: "davidsaltacc.github.io status"
             -   name: Log event
-                run: echo '${{toJSON(github.event)}}'
+                env:
+                    EVENT_CONTEXT: ${{ toJson(github.event) }}
+                run: |
+                    echo "$EVENT_CONTEXT"
