@@ -13,5 +13,5 @@ jobs:
                 uses: tsickert/discord-webhook@v5.3.0
                 with:
                     webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-                    content: "${{ github.event.repository.full_name }}'s main branch got a push at ${{ github.event.pusher.date }} by ${{ github.event.pusher.username }}."
+                    content: "${{ github.event.repository.full_name }}'s main branch got a push at ${{ github.event.repository.updated_at }} by ${{ github.actor }}."
                     username: "davidsaltacc.github.io status"
