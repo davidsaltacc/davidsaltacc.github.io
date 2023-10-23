@@ -2,7 +2,7 @@ name: Notify discord
 
 on:
     workflow_dispatch:
-    pull_request:
+    push:
         branches: [ main ]
 
 jobs:
@@ -13,5 +13,5 @@ jobs:
                 uses: tsickert/discord-webhook@v5.3.0
                 with:
                     webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-                    content: "${{ github.event.repository.full_name }}'s main branch got a push at ${{ github.event.pull_request.created_at }} by ${{ github.event.pull_request.user.name }}."
+                    content: "${{ github.event.repository.full_name }}'s main branch got a push at ${{ github.event.pusher.date }} by ${{ github.event.pusher.username }}."
                     username: "davidsaltacc.github.io status"
