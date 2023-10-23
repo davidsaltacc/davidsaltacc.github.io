@@ -544,7 +544,7 @@ function updateSettings() {
     radius = parseFloat(document.getElementById("radius").value);
     max_iterations = parseInt(document.getElementById("iterations").value);
     julia_constant[0] = parseFloat(document.getElementById("constantRe").value);
-    julia_constant[1] = -parseFloat(document.getElementById("constantIm").value);
+    julia_constant[1] = parseFloat(document.getElementById("constantIm").value);
     color_offset = parseFloat(document.getElementById("coloroffset").value);
     main_jul_lerp = parseFloat(document.getElementById("nji").value);
     
@@ -635,10 +635,11 @@ function drawMain() {
 
 function drawJul() {
     create_url_params();
+    var jc = [julia_constant[0], -julia_constant[1]];
     uniform(gljul, programJul,
         [canvasJul.clientWidth, canvasJul.clientHeight],
         [center_x_jul, center_y_jul],
-        julia_constant,
+        jc,
         scale_factor_jul,
         radius,
         1,

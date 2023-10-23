@@ -1,1 +1,0 @@
-TODO add the fractal.html's js+gl to this directory and then transfer all the css and gl from all the pages, then check if everything still works
