@@ -1,6 +1,7 @@
 name: Notify discord
 
 on:
+    workflow_dispatch:
     pull_request:
         branches: [ main ]
 
