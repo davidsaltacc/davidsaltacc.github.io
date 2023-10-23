@@ -544,7 +544,7 @@ function updateSettings() {
     radius = parseFloat(document.getElementById("radius").value);
     max_iterations = parseInt(document.getElementById("iterations").value);
     julia_constant[0] = parseFloat(document.getElementById("constantRe").value);
-    julia_constant[1] = parseFloat(document.getElementById("constantIm").value);
+    julia_constant[1] = -parseFloat(document.getElementById("constantIm").value);
     color_offset = parseFloat(document.getElementById("coloroffset").value);
     main_jul_lerp = parseFloat(document.getElementById("nji").value);
     
@@ -687,7 +687,7 @@ function mouse_down_main(e) {
         julia_constant[0] = mouse_x_main;
         julia_constant[1] = mouse_y_main;
         document.getElementById("constantRe").value = mouse_x_main;
-        document.getElementById("constantIm").value = mouse_y_main;
+        document.getElementById("constantIm").value = -mouse_y_main;
         drawJul();
     }
     if (e.button == 2) {
@@ -710,7 +710,7 @@ function mouse_move_main(e) {
         julia_constant[0] = mouse_x_main;
         julia_constant[1] = mouse_y_main;
         document.getElementById("constantRe").value = mouse_x_main;
-        document.getElementById("constantIm").value = mouse_y_main;
+        document.getElementById("constantIm").value = -mouse_y_main;
         drawJul();
     }
     if (mouse_clicked_right_main) {
