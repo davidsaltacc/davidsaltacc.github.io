@@ -1,0 +1,101 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    display: block;
+}
+
+.slidercontainer {
+    position: absolute;
+    z-index: 2;
+    width: 25%;
+    background: rgba(50, 50, 50, 0.4);
+}
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7; 
+    -webkit-transition: .2s; 
+    transition: opacity .2s;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+.slider:hover {
+    opacity: 1;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #000;
+}
+.slider::-moz-range-thumb {
+    width: 15px; 
+    height: 15px;
+    background: #000;
+}
+p, a {
+    margin: 0px;
+    font-family: system-ui;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.pointerCursor {
+    cursor: pointer;
+}
+
+#rerenderButton {
+    animation-name: blink;
+    animation-duration: 500ms;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+    0% {
+        color: rgba(129, 129, 129, 0.588);;
+    }
+    100% {
+        color: rgb(255, 255, 255);
+    }
+}
+
+.helpmenumodal {
+    display: none;
+    position: fixed;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.helpmenucontent {
+    background-color: #1d1d1d;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+#closehelp {
+    color: #555555;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#closehelp:hover,
+#closehelp:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

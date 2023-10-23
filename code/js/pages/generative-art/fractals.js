@@ -92,10 +92,12 @@ var programMain = null;
 var programJul = null;
 
 async function loadShaders() { // async/await blackmagic to deal with this fuckery
+    document.getElementById("statusbar").style.display = "block";
     programMain = await loadShaders_(glmain);
     programJul = await loadShaders_(gljul);
     drawMain();
     drawJul();
+    document.getElementById("statusbar").style.display = "none";
 }
 
 var julia_constant = [0, 0];
@@ -870,6 +872,4 @@ document.body.onload = function() {
     apply_url_params();
 
     loadShaders();
-
-    document.getElementById("statusbar").remove();
 }
