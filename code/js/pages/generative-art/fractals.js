@@ -635,11 +635,10 @@ function drawMain() {
 
 function drawJul() {
     create_url_params();
-    var jc = [julia_constant[0], -julia_constant[1]];
     uniform(gljul, programJul,
         [canvasJul.clientWidth, canvasJul.clientHeight],
         [center_x_jul, center_y_jul],
-        jc,
+        julia_constant,
         scale_factor_jul,
         radius,
         1,
