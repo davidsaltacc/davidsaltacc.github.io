@@ -14,6 +14,6 @@ function createGalleryElement(img, img_downscaled) {
     document.body.appendChild(e);
 }
 
-for (var n = 0; n <= 51; n++) {
+for (var n = 0; n <= 52; n++) {
     createGalleryElement("../../assets/gallery/fractals/fractal (" + n + ").png", "../../assets/gallery/fractals/downscaled/fractal (" + n + ") downscaled.png");
 }
