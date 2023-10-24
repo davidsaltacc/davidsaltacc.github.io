@@ -65,7 +65,15 @@ async function loadShaders_(gl) {
     var program = gl.createProgram();
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
+    var ext = gl.getExtension("KHR_parallel_shader_compile");
+    if (ext) {
+        gl.linkProgram(program);
+        while (!gl.getProgramParameter(program, ext.COMPLETION_STATUS_KHR)) {
+            console.log("waiting for shader to compile");
+        }
+    } else {
+        gl.linkProgram(program);
+    }
     gl.detachShader(program, vertexShader);
     gl.detachShader(program, fragmentShader);
     gl.deleteShader(vertexShader);
@@ -84,6 +92,7 @@ async function loadShaders_(gl) {
     var aVertexPosition = gl.getAttribLocation(program, "position");
     gl.enableVertexAttribArray(aVertexPosition);
     gl.vertexAttribPointer(aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
     gl.useProgram(program);
     return program;
 }
@@ -203,6 +212,10 @@ var presets_colormethods = {
     "transparent set": {
         "id": 12,
         "description": "A transparent set, if you want to have your own image inside the set."
+    },
+    "spiky": {
+        "id": 13,
+        "description": "Something spiky."
     }
 };
 

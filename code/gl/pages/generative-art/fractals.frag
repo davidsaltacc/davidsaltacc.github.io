@@ -445,6 +445,31 @@ vec2 iteration(vec2 z, vec2 c, int type) {
     }
 }
 
+float stripe_func(vec2 z) {
+    if (color_method == 4) { // normal stripes
+        return weierstrass(atan(z.y, z.x));
+    }
+    if (color_method == 6) { // smooth stripes
+        return cos(atan(z.y, z.x));
+    }
+    if (color_method == 7) { // edgy stripes
+        return pow(e, -0.5 * atan(z.y, z.x));
+    }
+    if (color_method == 8) { // floor stripes
+        return floor(atan(z.y, z.x) * pi);
+    }
+    if (color_method == 9) { // squared stripes
+        return pow(atan(z.y, z.x), 2.);
+    }
+    if (color_method == 10) { // stripier stripes
+        return 4. * sin(6. * cos(atan(z.y, z.x)));
+    }
+}
+
+float smooth_iters(int i, vec2 z, vec2 last_z) {
+    return float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+}
+
 void main() {
     vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
     vec2 original_z = vertex_position * window / scale_factor + center;
@@ -477,7 +502,7 @@ void main() {
             }
         } else if (color_method == 1) {
             if (magnitude(z) > radius) {
-                float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
+                float float_iters = smooth_iters(i, z, last_z);
                 color_v = float_iters / float(max_iterations);
                 break;
             } else if (i == max_iterations) {
@@ -493,17 +518,17 @@ void main() {
         } else if (color_method == 3) {
             distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - radius));
             color_v = -log(log(distance_to_orbit_trap));
-        } else if (color_method == 4) {
+        } else if (color_method == 4 || color_method == 6 || color_method == 7 || color_method == 8 || color_method == 9 || color_method == 10) { // stripes
             if (magnitude(z) > radius) {
-                float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
-                stripe += weierstrass(atan(z.y, z.x)) * fract(float_iters);
+                float float_iters = smooth_iters(i, z, last_z);
+                stripe += stripe_func(z) * fract(float_iters);
                 color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
                 color_v /= float(max_iterations);
                 break;
             } else if (i == max_iterations) {
                 color_black = true;
             } else {
-                stripe += weierstrass(atan(z.y, z.x));
+                stripe += stripe_func(z);
             }
         } else if (color_method == 5) {
             if (magnitude(z) > radius) {
@@ -512,72 +537,15 @@ void main() {
             } else if (i == max_iterations) {
                 color_black = true;
             }
-        } else if (color_method == 6) { // smooth stripes
+        } else if (color_method == 11 || color_method == 12) { // transparent
             if (magnitude(z) > radius) {
-                float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
-                stripe += cos(atan(z.y, z.x)) * fract(float_iters);
-                color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
-                color_v /= float(max_iterations);
                 break;
             } else if (i == max_iterations) {
                 color_black = true;
-            } else {
-                stripe += cos(atan(z.y, z.x));
             }
-        } else if (color_method == 7) { // "edgy" stripes
-            if (magnitude(z) > radius) {
-                float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
-                stripe += pow(e, -0.5 * atan(z.y, z.x)) * fract(float_iters);
-                color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
-                color_v /= float(max_iterations);
-                break;
-            } else if (i == max_iterations) {
-                color_black = true;
-            } else {
-                stripe += pow(e, -0.5 * atan(z.y, z.x));
-            }
-        } else if (color_method == 8) { // floor stripes
-            if (magnitude(z) > radius) {
-                float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
-                stripe += floor(atan(z.y, z.x) * pi) * fract(float_iters);
-                color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
-                color_v /= float(max_iterations);
-                break;
-            } else if (i == max_iterations) {
-                color_black = true;
-            } else {
-                stripe += floor(atan(z.y, z.x) * pi);
-            }
-        } else if (color_method == 9) { // squared stripes
-            if (magnitude(z) > radius) {
-                float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
-                float v = atan(z.y, z.x);
-                stripe += v * v * fract(float_iters);
-                color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
-                color_v /= float(max_iterations);
-                break;
-            } else if (i == max_iterations) {
-                color_black = true;
-            } else {
-                float v = atan(z.y, z.x);
-                stripe += v * v;
-            }
-        } else if (color_method == 10) { // More colorful stripes?
-            if (magnitude(z) > radius) {
-                float float_iters = float(i) + log(radius / magnitude(last_z)) / log(magnitude(z) / magnitude(last_z));
-                float v = atan(z.y, z.x);
-                stripe += 4. * sin(6. * cos(v)) * fract(float_iters);
-                color_v = float_iters / square(log(float_iters)) + 40. * stripe / float_iters;
-                color_v /= float(max_iterations);
-                break;
-            } else if (i == max_iterations) {
-                color_black = true;
-            } else {
-                float v = atan(z.y, z.x);
-                stripe += 4. * sin(6. * cos(v));
-            }
-        } else if (color_method == 11 || color_method == 12) {
-            if (magnitude(z) > radius) {
+        } else if (color_method == 13) { // something spiky
+            if (sqrt(z.x * last_z.x + z.y * last_z.y) > radius) {
+                color_v = float(i) / float(max_iterations);
                 break;
             } else if (i == max_iterations) {
                 color_black = true;
@@ -587,7 +555,7 @@ void main() {
     }
     if (color_black) {
         if (color_method == 12) {
-            fragmentColor = vec4(0., 0., 0., 0.); // TODO make transparent a custom option, so you still can have normal coloring + add image upload for bg images 
+            fragmentColor = vec4(0., 0., 0., 0.); // TODO make transparent a custom option, so you still can have normal coloring + add image upload for bg images, also TODO implement new colormaps https://iquilezles.org/articles/palettes/
         } else {
             fragmentColor = vec4(0., 0., 0., 1.);
         }
