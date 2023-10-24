@@ -455,8 +455,14 @@ var presets_fractals = {
     "fish": {
         "id": 25,
         "radius": 10000000,
-        "formula": "z<sub>n+1</sub> = FSabs(Re(z<sub>n</sub>) - Im(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>)) + cFE",
-        "description": "Doesn't even look close to a fish."
+        "formula": "z<sub>n+1</sub> = FSabs(Re(z<sub>n</sub>) - Im(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>))FE + c",
+        "description": "Doesn't even look like anything close to a fish."
+    },
+    "wavy": {
+        "id": 26,
+        "radius": 10000000,
+        "formula": "r = 4.0 + cos(Re(z<sub>n</sub>) * pi) * 3.0 + Re(c)<br>a = 1.4 + sin(Im(z<sub>n</sub>) * pi) * 0.4 + Im(c)<br>b = 0.3 + cos((Re(z<sub>n</sub>) + Im(z<sub>n</sub>)) * pi) * 0.2 + Re(c) + Im(c)<br>x = Im(z<sub>n</sub>) + 1 - a * x^2<br>y = b * x<br>x = r * x * (1 - x)<br>z<sub>n+1</sub> = FS(x + yi)FE",
+        "description": "Really complicated. Looks best with my own colormap. Looking at this formula, I am realising there is absolutely no limit to how long these descriptions can be. Lets see... Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Is this enough? I don't know."
     }
 }
 

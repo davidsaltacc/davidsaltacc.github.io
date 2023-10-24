@@ -499,7 +499,14 @@ vec2 iteration(vec2 z, vec2 c, int type) {
     }
     if (type == 25) {
         // Fish
-        return apply_post_function(vec2(abs(z.x - z.y), 2. * z.x * z.y) + c);
+        return apply_post_function(vec2(abs(z.x - z.y), 2. * z.x * z.y)) + c;
+    }
+    if (type == 26) {
+        // Wavy 
+        float x = z.y + 1. - (1.4 + sin(z.y * pi) * 0.4 + c.x) * pow(z.x, 2.);
+        float y = (0.3 + cos((z.x + z.y) * pi) * 0.2 + c.y) * x;
+        x = (4. + cos(z.x * pi) * 3. + (c.x + c.y)) * x * (1. - x);
+        return apply_post_function(vec2(x, y));
     }
 }
 
@@ -531,17 +538,17 @@ float smooth_iters(int i, vec2 z, vec2 last_z) {
 void main() {
     vec2 window = canvas_dimensions / min(canvas_dimensions.x, canvas_dimensions.y);
     vec2 original_z = vertex_position * window / scale_factor + center;
-    original_z = vec2(original_z.x, original_z.y * -1.); // its upside down somehow?
+    original_z = vec2(original_z.x, original_z.y * -1.);
     vec2 last_z = original_z;
     vec2 z = original_z;
     vec2 c = original_z;
     if (juliaset == 1) {
         if (main_juliaset_lerp == 1.) {
-            c = vec2(julia_constant.x, julia_constant.y * -1.); // it gets inverted for some reason;
+            c = vec2(julia_constant.x, julia_constant.y * -1.);
         } else if (main_juliaset_lerp == 0.) {
             c = original_z;
         } else {
-            c = (1. - main_juliaset_lerp) * original_z + main_juliaset_lerp * vec2(julia_constant.x, julia_constant.y * -1.);;
+            c = (1. - main_juliaset_lerp) * original_z + main_juliaset_lerp * vec2(julia_constant.x, julia_constant.y * -1.);
         }
     }
     float distance_to_orbit_trap = 100000000.;
