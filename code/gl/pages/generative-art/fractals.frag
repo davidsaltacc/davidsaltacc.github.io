@@ -260,6 +260,7 @@ vec4 davids_colorscheme(float x) {
     }
 }
 vec4 lava_waves_colorscheme(float x) {
+    x *= 2.;
     x = fract(x + 0.5);
     return vec4(
         (128. * sin(6.25 * (x + 0.5)) + 128.) / 255.,
@@ -270,6 +271,7 @@ vec4 lava_waves_colorscheme(float x) {
 }
 
 vec4 morning_glory_colorscheme(float x) {
+    x *= 2.;
     x = fract(x);
     float xx = 270.9 * x + 0.7703;
     float r = 0.;
@@ -290,6 +292,15 @@ vec4 morning_glory_colorscheme(float x) {
     float b = (95. * sin((x - 0.041) * 7.46) + 106.9) / 255.;
     return vec4(
         r, g, b,
+        1.
+    );
+}
+
+vec4 chocolate_colormap(float x) {
+    return vec4(
+        (sin(x * pi * 200.) + 1.) / 2.,
+        (sin(x * pi * 204.) + 0.8) / 2.,
+        (sin(x * pi * 208.) + 0.6) / 2.,
         1.
     );
 }
@@ -319,6 +330,9 @@ vec4 color(float x) {
     }
     if (colorscheme == 7) {
         return morning_glory_colorscheme(x);
+    }
+    if (colorscheme == 8) {
+        return chocolate_colormap(x);
     }
 }
 
@@ -482,6 +496,10 @@ vec2 iteration(vec2 z, vec2 c, int type) {
     if (type == 24) {
         // Unnamed 3
         return apply_post_function(c_pow(c_division(c_pow(z, mandelbrot_power) + c - vec2(1., 0.), c_multiplication(z, vec2(2., 2.)) + c - vec2(2., 0.)), mandelbrot_power));
+    }
+    if (type == 25) {
+        // Fish
+        return apply_post_function(vec2(abs(z.x - z.y), 2. * z.x * z.y) + c);
     }
 }
 

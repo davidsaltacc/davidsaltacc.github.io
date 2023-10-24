@@ -251,6 +251,10 @@ var presets_colormaps = {
     "morning glory": {
         "id": 7,
         "description": "Another colorscheme I found on the internet. "
+    },
+    "chocolate": {
+        "id": 8,
+        "description": "A colorscheme I just came up with. Has this chocolate-y color to it. Apparently it changes into a rainbow and back when zooming in. Unintended. Also, this only looks good with smooth coloring."
     }
 };
 
@@ -446,7 +450,13 @@ var presets_fractals = {
         "id": 24,
         "radius": 10000000,
         "formula": "z<sub>n+1</sub> = FS((z<sub>n</sub><sup>POWER</sup> + c - 1) / ((2 + 2i) * z<sub>n</sub> + c - 2))<sup>POWER</sup>FE",
-        "description": "No name again, but it looks really cool."
+        "description": "No name again, but it looks really cool. Also, it is very big."
+    },
+    "fish": {
+        "id": 25,
+        "radius": 10000000,
+        "formula": "z<sub>n+1</sub> = FSabs(Re(z<sub>n</sub>) - Im(z<sub>n</sub>)) + i*(2 * Re(z<sub>n</sub>) * Im(z<sub>n</sub>)) + cFE",
+        "description": "Doesn't even look close to a fish."
     }
 }
 
