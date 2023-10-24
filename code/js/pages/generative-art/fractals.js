@@ -254,7 +254,7 @@ var presets_colormaps = {
     },
     "chocolate": {
         "id": 8,
-        "description": "A colorscheme I just came up with. Has this chocolate-y color to it. Apparently it changes into a rainbow and back when zooming in. Unintended. Also, this only looks good with smooth coloring."
+        "description": "A colorscheme I just came up with. Has this chocolate-y color to it. Apparently it changes into a rainbow and back when zooming in. Unintended. Also, this only looks good with smooth coloring. Tho it really makes most fractals look amazing."
     }
 };
 
