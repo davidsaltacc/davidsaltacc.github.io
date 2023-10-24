@@ -259,12 +259,37 @@ vec4 davids_colorscheme(float x) {
         return color_lerp(yellow0, yellow1, fract(x));
     }
 }
-vec4 lava_waves(float x) {
+vec4 lava_waves_colorscheme(float x) {
     x = fract(x + 0.5);
     return vec4(
         (128. * sin(6.25 * (x + 0.5)) + 128.) / 255.,
         (63. * sin(x * 99.72) + 97.) / 255.,
         (128. * sin(6.23 *x) + 128.) / 255.,
+        1.
+    );
+}
+
+vec4 morning_glory_colorscheme(float x) {
+    x = fract(x);
+    float xx = 270.9 * x + 0.7703;
+    float r = 0.;
+    if (xx > 255.) {
+        r = (510. - xx) / 266.;
+    } else {
+        r = xx / 255.;
+    }
+    xx = 180. * sin(x * 3.97 + 9.46) + 131.;
+    float g = 0.;
+    if (xx < 0.) {
+        g = abs(xx) / 255.;
+    } else if (xx > 255.) {
+        g = (510. - xx) / 255.;
+    } else {
+        g = xx / 255.;
+    }
+    float b = (95. * sin((x - 0.041) * 7.46) + 106.9) / 255.;
+    return vec4(
+        r, g, b,
         1.
     );
 }
@@ -290,7 +315,10 @@ vec4 color(float x) {
         return davids_colorscheme(x);
     }
     if (colorscheme == 6) {
-        return lava_waves(x);
+        return lava_waves_colorscheme(x);
+    }
+    if (colorscheme == 7) {
+        return morning_glory_colorscheme(x);
     }
 }
 

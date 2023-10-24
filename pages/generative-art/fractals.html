@@ -78,11 +78,11 @@
         <button onclick="update_post_function('sqrt')">Square root</button>
         <button onclick="update_post_function('abs')">Absolute</button>
         <hr>
-        <h3>Pixelation:</h3>
-        <p>Pixelation enabled:</p>
+        <h3>Mosaic:</h3>
+        <p>Mosaic enabled:</p>
         <input type="checkbox" id="pixelate" onchange="togglePixelation();"><br>
         <p>Resolution:</p>
-        <input type="range" id="pixelateresolution" value="1" min="1" max="50" step="1" oninput="updatePixelationValue();">
+        <input type="range" id="pixelateresolution" value="1" min="1" max="200" step="1" oninput="updatePixelationValue();">
         <hr>
         <h3>Colormap Selection:</h3>
         <button onclick="setColormap('classic')">Classic</button>
@@ -92,6 +92,7 @@
         <button onclick="setColormap('rainbow')">Rainbow</button>
         <button onclick="setColormap('davids')">David's</button>
         <button onclick="setColormap('lavawaves')">Lava waves</button>
+        <button onclick="setColormap('morning glory')">Morning glory</button>
         <p>Color offset:</p>
         <input type="range" min="0" max="1" step="0.001" value="0" id="coloroffset" oninput="updateSettings();">
         <hr>
@@ -158,6 +159,7 @@
         <p><a href="https://nathansolomon1678.github.io/fractals">This</a> project by nathansolomon1678 on github, where I got a lot of insipration (and maybe code ;) from</p>
         <p>Paul Bourke, especially their website page on fractals <a href="http://www.paulbourke.net/fractals/">here</a>, where I got lots of the fractals and insipration from</p>
         <p>CodeParade (HackerPoet on github) for <a href="https://github.com/HackerPoet/FractalSoundExplorer">this</a> project, where I got the code for the feather fractal from</p>
+        <p><a href="https://github.com/kbinani/colormap-shaders">This</a> project on github I got some colormaps from.</p>
         <p>All the amazing people who discovered all of these fractals and made this project possible</p>
         <p>My friends (they did nothing for this project but still thanks)</p>
         <p>You, for visiting and testing my project!</p>

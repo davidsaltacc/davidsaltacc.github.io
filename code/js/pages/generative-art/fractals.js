@@ -247,6 +247,10 @@ var presets_colormaps = {
     "lavawaves": {
         "id": 6,
         "description": "Some colorscheme I found on the internet. Decided to put it in because I was running out of good colormaps."
+    },
+    "morning glory": {
+        "id": 7,
+        "description": "Another colorscheme I found on the internet. "
     }
 };
 
