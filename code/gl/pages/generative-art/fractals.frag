@@ -259,6 +259,15 @@ vec4 davids_colorscheme(float x) {
         return color_lerp(yellow0, yellow1, fract(x));
     }
 }
+vec4 lava_waves(float x) {
+    x = fract(x + 0.5);
+    return vec4(
+        (128. * sin(6.25 * (x + 0.5)) + 128.) / 255.,
+        (63. * sin(x * 99.72) + 97.) / 255.,
+        (128. * sin(6.23 *x) + 128.) / 255.,
+        1.
+    );
+}
 
 vec4 color(float x) {
     x += color_offset;
@@ -279,6 +288,9 @@ vec4 color(float x) {
     }
     if (colorscheme == 5) {
         return davids_colorscheme(x);
+    }
+    if (colorscheme == 6) {
+        return lava_waves(x);
     }
 }
 

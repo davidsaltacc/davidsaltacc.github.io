@@ -243,6 +243,10 @@ var presets_colormaps = {
     "davids": {
         "id": 5,
         "description": "My own colorscheme. Really like it. Sorry, if the smoothing doesn't look too good."
+    },
+    "lavawaves": {
+        "id": 6,
+        "description": "Some colorscheme I found on the internet. Decided to put it in because I was running out of good colormaps."
     }
 };
 
