@@ -159,7 +159,7 @@ vec4 ultrafractal_colorscheme(float x) {
     if (x < 4.) {
         return color_interpolate(orange, black, blue, lightblue, fract(x));
     }
-    if (x < 5.) {
+    if (x <= 5.) {
         return color_interpolate(black, blue, lightblue, white, fract(x));
     }
     return vec4(black, 1.);
@@ -179,7 +179,7 @@ vec4 red_blue_colorscheme(float x) {
     if (x < 3.) {
         return color_interpolate(white, blue, black, red, fract(x));
     }
-    if (x < 4.) {
+    if (x <= 4.) {
         return color_interpolate(blue, black, red, white, fract(x));
     }
     return vec4(black, 1.);
@@ -199,7 +199,7 @@ vec4 sand_colorscheme(float x) {
     if (x < 3.) {
         return color_interpolate(orange, cyan, blue, yellow, fract(x));
     }
-    if (x < 4.) {
+    if (x <= 4.) {
         return color_interpolate(cyan, blue, yellow, orange, fract(x));
     }
     return vec4(0., 0., 0., 1.);
@@ -227,7 +227,7 @@ vec4 rainbow_colorscheme(float x) {
     if (x < 5.) {
         return color_interpolate(lightblue, blue, pink, red, fract(x));
     }
-    if (x < 6.) {
+    if (x <= 6.) {
         return color_interpolate(blue, pink, red, yellow, fract(x));
     }
     return vec4(0., 0., 0., 1.);
@@ -255,7 +255,7 @@ vec4 davids_colorscheme(float x) {
     if (x < 3.) {
         return color_lerp(red0, red1, fract(x));
     }
-    if (x < 4.) {
+    if (x <= 4.) {
         return color_lerp(yellow0, yellow1, fract(x));
     }
 }
@@ -529,6 +529,9 @@ float stripe_func(vec2 z) {
     if (color_method == 10) { // stripier stripes
         return 4. * sin(6. * cos(atan(z.y, z.x)));
     }
+    if (color_method == 14) { // stripy rings
+        return pow(weierstrass(magnitude(z) * 2.), 2.) + pow(weierstrass(atan(z.y, z.x)), 2.);
+    }
 }
 
 float smooth_iters(int i, vec2 z, vec2 last_z) {
@@ -583,7 +586,7 @@ void main() {
         } else if (color_method == 3) {
             distance_to_orbit_trap = min(distance_to_orbit_trap, abs(magnitude(z) - radius));
             color_v = -log(log(distance_to_orbit_trap));
-        } else if (color_method == 4 || color_method == 6 || color_method == 7 || color_method == 8 || color_method == 9 || color_method == 10) { // stripes
+        } else if (color_method == 4 || color_method == 6 || color_method == 7 || color_method == 8 || color_method == 9 || color_method == 10 || color_method == 14) { // stripes
             if (magnitude(z) > radius) {
                 float float_iters = smooth_iters(i, z, last_z);
                 stripe += stripe_func(z) * fract(float_iters);
@@ -620,7 +623,7 @@ void main() {
     }
     if (color_black) {
         if (color_method == 12) {
-            fragmentColor = vec4(0., 0., 0., 0.); // TODO make transparent a custom option, so you still can have normal coloring + add image upload for bg images, also TODO implement new colormaps https://iquilezles.org/articles/palettes/
+            fragmentColor = vec4(0., 0., 0., 0.); // TODO make transparent a custom option, so you still can have normal coloring + add image upload for bg images
         } else {
             fragmentColor = vec4(0., 0., 0., 1.);
         }

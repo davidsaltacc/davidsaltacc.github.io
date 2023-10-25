@@ -216,6 +216,10 @@ var presets_colormethods = {
     "spiky": {
         "id": 13,
         "description": "Something spiky."
+    },
+    "stripy rings": {
+        "id": 14,
+        "description": "Rings, but with stripes too. "
     }
 };
 
