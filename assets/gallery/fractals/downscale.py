@@ -1,6 +1,6 @@
 import cv2
 
-for i in range(0, 52 + 1):
+for i in range(0, 56 + 1):
     print(f"img {i}")
     img = cv2.imread(f"fractal ({i}).png")
     img = cv2.resize(img, (500, 500))
