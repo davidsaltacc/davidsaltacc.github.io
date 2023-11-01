@@ -1,0 +1,61 @@
+table.board {
+    width: 150px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+table.board th {
+    border: 1px solid #fff;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 0;
+    transition: 100ms linear;
+    font-size: xx-large;
+}
+
+table.board th:hover {
+    background-color: #222239;
+}
+
+table.board th.highlighted {
+    background-color: #ff000057;
+}
+
+table.board th.highlighted:hover {
+    background-color: #fe0b0b70;
+}
+
+.cross-out-v {
+    position: relative;
+}
+.cross-out-v::before { /* I have no idea what I am doing anymore, but this works so I keep it */
+    content: "";
+    position: absolute;
+    left: 44%;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background-color: #CADEFF;
+}
+
+.cross-out-h {
+    position: relative;
+}
+.cross-out-h::before { 
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 44%;
+    width: 100%;
+    height: 5px;
+    background-color: #CADEFF;
+}
+
+button {
+    border-radius: 0;
+    background-color: #222239;
+    color: #CADEFF;
+    font-size: 110%;
+}
