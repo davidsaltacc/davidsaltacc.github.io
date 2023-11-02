@@ -48,7 +48,7 @@ function getempty() {
     return empty;
 }
 
-function winner(minimax_check) {
+function winner(dont_highlight) {
     var winning_positions = [
         [[0,0], [1,0], [2,0]],
         [[0,1], [1,1], [2,1]],
@@ -68,7 +68,7 @@ function winner(minimax_check) {
         var pl0 = board[pos[0][0]][pos[0][1]];
         if (board[pos[1][0]][pos[1][1]] == pl0 && board[pos[2][0]][pos[2][1]] == pl0 && pl0 != em) {
             winner = pl0;
-            if (!minimax_check) {
+            if (!dont_highlight) {
                 htmlboard[pos[0][0]][pos[0][1]].className = "highlighted";
                 htmlboard[pos[1][0]][pos[1][1]].className = "highlighted";
                 htmlboard[pos[2][0]][pos[2][1]].className = "highlighted";
@@ -80,12 +80,12 @@ function winner(minimax_check) {
 
 function minimax(board, depth, ismax) {
     var result = winner(true);
+    var empty = getempty();
     if (result != null) {
         return result == p1 ? 1 : -1;
-    } else if (getempty().length == 0) {
+    } else if (empty.length == 0) {
         return 0;
     }
-    var empty = getempty();
     if (ismax) {
         var bestscore = -Infinity;
         empty.forEach(function(e) {
@@ -111,7 +111,7 @@ function minimax(board, depth, ismax) {
     }
 }
 
-function getaismove() {
+function getaismove() { // TODO instead of difficulty being a chance of random moves, play a move with a little less score on lower difficulties
     var empty = getempty();
     var bestscore = -Infinity;
     var move = null;
@@ -120,9 +120,17 @@ function getaismove() {
         board[e[1]][e[0]] = player;
         var score = minimax(board, 0, false);
         board[e[1]][e[0]] = em;
-        if (score > bestscore) {
-            bestscore = score;
-            move = e;
+        console.log("Move " + e[1] + "/" + e[0] + " Score " + score);
+        if (Math.random() > 0.5 && bestscore != 0) { // 0.5 chance for >= instead of > for more random moves, bestscore != null because it doesnt work else
+            if (score > bestscore) {
+                bestscore = score;
+                move = e;
+            }
+        } else {
+            if (score >= bestscore) {
+                bestscore = score;
+                move = e;
+            }
         }
     });
     return move;
