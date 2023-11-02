@@ -5,10 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
 	<link rel="stylesheet" type="text/css" href="../../styles.css">
-    <link rel="stylesheet" type="text/css" href="../../code/css/pages/tutorial/tictactoe.css">
+    <link rel="stylesheet" type="text/css" href="../../code/css/pages/tutorial/tictactoe-game.css">
     <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
 </head>
 <body>
-    [THIS PAGE IS WORK IN PROGRESS]
+    <h1 id="status">Tic-Tac-Toe game in progress...</h1>
+    <h2 class="centered" id="difficultytext"></h2>
+    <table class="board">
+        <tr>
+            <th id="00"> </th>
+            <th id="10"> </th>
+            <th id="20"> </th>
+        </tr>
+        <tr>
+            <th id="01"> </th>
+            <th id="11"> </th>
+            <th id="21"> </th>
+        </tr>
+        <tr>
+            <th id="02"> </th>
+            <th id="12"> </th>
+            <th id="22"> </th>
+        </tr>
+    </table>
+    <div class="centered">
+        <h3>Change starting player:</h3>
+        <button class="modebutton" onclick="aistart = false;reset();upddifftxt();">Player starts</button>
+        <button class="modebutton" onclick="aistart = true;reset();upddifftxt();">AI starts</button>
+        <h3>Change difficulty:</h3>
+        <button class="modebutton" onclick="difficulty = 1;upddifftxt();">Level 1 - Very Easy</button><br>
+        <button class="modebutton" onclick="difficulty = 2;upddifftxt();">Level 2 - Easy</button><br>
+        <button class="modebutton" onclick="difficulty = 3;upddifftxt();">Level 3 - Medium</button><br>
+        <button class="modebutton" onclick="difficulty = 4;upddifftxt();">Level 4 - Difficult</button><br>
+        <button class="modebutton" onclick="difficulty = 5;upddifftxt();">Level 5 - Impossible</button>
+    </div>
+    <script src="../../code/js/pages/tutorial/tictactoe-game.js"></script>
 </body>
 </html>
