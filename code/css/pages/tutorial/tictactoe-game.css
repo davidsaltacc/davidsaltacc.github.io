@@ -3,16 +3,16 @@ body {
 }
 
 table.board {
-    width: 60vmin;
-    margin: 4vh auto;
+    width: 54vmin;
+    margin: 0 auto;
     border-collapse: collapse;
 }
 
 table.board th {
     border: 1px solid #fff;
-    width: 20vmin;
-    height: 20vmin;
-    line-height: 20vmin;
+    width: 18vmin;
+    height: 18vmin;
+    line-height: 18vmin;
     text-align: center;
     border-radius: 0;
     transition: 100ms linear;

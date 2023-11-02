@@ -264,16 +264,20 @@ function reset() {
     });
     
     if (aistart) {
+        p1 = "X";
+        p2 = "O";
         player = p1;
         var [aix, aiy] = aimove();
         board[aiy][aix] = player;
         htmlboard[aiy][aix].innerHTML = player;
         player = p2;
     } else {
+        p1 = "O";
+        p2 = "X";
         player = p2;
     }
 
-    el("status").innerHTML = "Tic-Tac-Toe game in progress...";
+    el("status").innerHTML = "Tic-Tac-Toe game in progress... " + p2 + "'s turn.";
 }
 
 function upddifftxt() {
