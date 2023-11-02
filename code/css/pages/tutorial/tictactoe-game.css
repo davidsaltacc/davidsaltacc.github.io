@@ -17,6 +17,7 @@ table.board th {
     border-radius: 0;
     transition: 100ms linear;
     font-size: 12vmin;
+    cursor: pointer;
 }
 
 table.board th:hover {

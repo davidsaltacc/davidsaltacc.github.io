@@ -48,7 +48,7 @@ function getempty() {
     return empty;
 }
 
-function winner() {
+function winner(minimax_check) {
     var winning_positions = [
         [[0,0], [1,0], [2,0]],
         [[0,1], [1,1], [2,1]],
@@ -68,13 +68,18 @@ function winner() {
         var pl0 = board[pos[0][0]][pos[0][1]];
         if (board[pos[1][0]][pos[1][1]] == pl0 && board[pos[2][0]][pos[2][1]] == pl0 && pl0 != em) {
             winner = pl0;
+            if (!minimax_check) {
+                htmlboard[pos[0][0]][pos[0][1]].className = "highlighted";
+                htmlboard[pos[1][0]][pos[1][1]].className = "highlighted";
+                htmlboard[pos[2][0]][pos[2][1]].className = "highlighted";
+            }
         }
     });
     return winner;
 }
 
 function minimax(board, depth, ismax) {
-    var result = winner();
+    var result = winner(true);
     if (result != null) {
         return result == p1 ? 1 : -1;
     } else if (getempty().length == 0) {
@@ -182,7 +187,7 @@ function clicked(y, x) {
     board[y][x] = player;
     htmlboard[y][x].innerHTML = player;
 
-    pwinner = winner();
+    pwinner = winner(false);
     if (pwinner != null) {
         won = true;
         onwon();
@@ -205,7 +210,7 @@ function clicked(y, x) {
     board[aiy][aix] = player;
     htmlboard[aiy][aix].innerHTML = player;
     
-    pwinner = winner();
+    pwinner = winner(false);
     if (pwinner != null) {
         won = true;
         onwon();
@@ -261,6 +266,7 @@ function reset() {
         [2, 2]
     ].forEach(function(p) {
         htmlboard[p[0]][p[1]].innerHTML = em;
+        htmlboard[p[0]][p[1]].className = "";
     });
     
     if (aistart) {
