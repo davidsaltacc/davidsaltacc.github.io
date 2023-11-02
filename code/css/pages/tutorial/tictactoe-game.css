@@ -3,20 +3,20 @@ body {
 }
 
 table.board {
-    width: 60vw;
+    width: 60vmin;
     margin: 4vh auto;
     border-collapse: collapse;
 }
 
 table.board th {
     border: 1px solid #fff;
-    width: 20vw;
-    height: 20vw;
-    line-height: 20vw;
+    width: 20vmin;
+    height: 20vmin;
+    line-height: 20vmin;
     text-align: center;
     border-radius: 0;
     transition: 100ms linear;
-    font-size: 12vw;
+    font-size: 12vmin;
 }
 
 table.board th:hover {
