@@ -14,8 +14,8 @@ please go to [the website](https://davidsaltacc.github.io) instead of browsing t
 
 owned by:
 
-@justacoder_  on youtube
-u/david30121  on reddit
-davidsaltacc  on github
-@justacoder   on discord
-@justacoder__ on tiktok
+@justacoder_  on youtube  
+u/david30121  on reddit  
+davidsaltacc  on github  
+@justacoder   on discord  
+@justacoder__ on tiktok  
