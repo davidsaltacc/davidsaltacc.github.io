@@ -2,3 +2,32 @@ p {
     margin: 2px;
     margin-left: 0;
 }
+
+details summary {
+    cursor: pointer;
+    font-size: x-large;
+}
+
+.indent-1 {
+    margin-left: 3%;
+}
+
+.indent-2 {
+    margin-left: 3%;
+}
+
+.indent-3 {
+    margin-left: 3%;
+}
+
+.indent-4 {
+    margin-left: 3%;
+}
+
+.indent-5 {
+    margin-left: 3%;
+}
+
+.description {
+    font-size: large;
+}

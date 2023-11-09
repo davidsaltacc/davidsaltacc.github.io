@@ -1,25 +1,452 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<link rel="stylesheet" type="text/css" href="../../styles.css">
-            <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
-            <title>ShadowClient 0.1.3_1</title>
-            <link rel="stylesheet" type="text/css" href="../../code/css/pages/minecraft/shadowclient.css">
-	</head>
-	<body>
-		<div class="container">
-            <h1>ShadowClient 0.1.3_1</h1>
-            <h2 style="color: crimson;">There will be a more detailed documentation some time in the future. This is just the download page with a bit of information, that will later be moved.</h2>
-            <img src="../../assets/thumbnail_shadowclient.html.png" style="width:100%">
-            <h2>Download:</h2>
-            <a href="https://github.com/davidsaltacc/shadowclient/raw/main/build/libs/shadowclient-0.1.3_1.jar">Download ShadowClient 0.1.3_1</a><br>
-            <a href="https://github.com/davidsaltacc/shadowclient/raw/main/build/libs/shadowclient-0.1.3_1-sources.jar">Download ShadowClient 0.1.3_1 Sources</a><br>
-            <p style="padding-top: 10px;">Download the first file and put it into your (fabric) mods folder.</p>
-            <p>The sources are available in the second download.</p>
-            <h2>Other Versions:</h2>
-            <a href="https://github.com/davidsaltacc/shadowclient/tree/main/build/libs">Download older versions</a><br>
-            <a href="https://github.com/davidsaltacc/shadowclient/tree/development/build/libs">Download development builds</a>
-		</div>
-	</body>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../../styles.css">
+    <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
+    <title>ShadowClient 0.1.3_1</title>
+    <link rel="stylesheet" type="text/css" href="../../code/css/pages/minecraft/shadowclient.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>ShadowClient 0.1.3_1</h1>
+        <h2 style="color: crimson;">There will be a more detailed documentation some time in the future. This is just
+            the download page with a bit of information, that will later be moved.</h2>
+        <img src="../../assets/thumbnail_shadowclient.html.png" style="width:100%">
+        <h2>Download:</h2>
+        <a href="https://github.com/davidsaltacc/shadowclient/raw/main/build/libs/shadowclient-0.1.3_1.jar">Download
+            ShadowClient 0.1.3_1</a><br>
+        <a href="https://github.com/davidsaltacc/shadowclient/raw/main/build/libs/shadowclient-0.1.3_1-sources.jar">Download
+            ShadowClient 0.1.3_1 Sources</a><br>
+        <p style="padding-top: 10px;">Download the first file and put it into your (fabric) mods folder.</p>
+        <p>The sources are available in the second download.</p>
+        <h2>Other Versions:</h2>
+        <a href="https://github.com/davidsaltacc/shadowclient/tree/main/build/libs">Download older versions</a><br>
+        <a href="https://github.com/davidsaltacc/shadowclient/tree/development/build/libs">Download development
+            builds</a>
+        <h1>HELP (will be moved soon)</h1><!--TODO create descriptions -->
+        <details>
+            <summary>Modules</summary>
+            <details class="indent-1">
+                <summary>Combat</summary>
+                <details class="indent-2">
+                    <summary>Kill Aura</summary>
+                    <p class="indent-3 description">Attacks everything living in the players range.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Legit</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Criticals</summary>
+                    <p class="indent-3 description">Automatically lands critical hits. For some reason only works when
+                        not moving. todo for me, fix!</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Auto Crystal</summary>
+                    <p class="indent-3 description">Automatically detonates (not places) crystals in range.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Face Crystals</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>No Knockback</summary>
+                    <p class="indent-3 description">Prevents you from getting knockback from attacks.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Strength</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+            </details>
+            <details class="indent-1">
+                <summary>Player</summary>
+                <details class="indent-2">
+                    <summary>Reach</summary>
+                    <p class="indent-3 description">Gives you extended reach.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Range</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Fast Break</summary>
+                    <p class="indent-3 description">Allows you to break blocks faster.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Hotbar Cycle</summary>
+                    <p class="indent-3 description">Cycles through your hotbar really fast.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Autofish</summary>
+                    <p class="indent-3 description">Automatically pulls back and recasts the fishing rod.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Auto Respawn</summary>
+                    <p class="indent-3 description">Immediatly respawn after death.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Fast Place</summary>
+                    <p class="indent-3 description">Removes the item use cooldown allowing you to place blocks faster.
+                    </p>
+                </details>
+            </details>
+            <details class="indent-1">
+                <summary>Movement</summary>
+                <details class="indent-2">
+                    <summary>Airjump</summary>
+                    <p class="indent-3 description">Allows you to jump in the air. Hold to fly. Sprint to go insane
+                        speeds (not even intended, by the way).</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Autosprint</summary>
+                    <p class="indent-3 description">Automatically sprint instead of walk when moving.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Parkour</summary>
+                    <p class="indent-3 description">Automatically jumps at the ledges of blocks (todo for me: make it so
+                        it doesn't jump when the jump is only 1 block deep).</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Edge Distance</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Legit</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Stepup</summary>
+                    <p class="indent-3 description">Automatically walk onto blocks without jumping.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Height</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Boat Fly</summary>
+                    <p class="indent-3 description">Fly when in a boat (also works with other vehicles).</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Speed</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>No Fall Damage</summary>
+                    <p class="indent-3 description">You take no fall damage. As in the title.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Fast Climbing</summary>
+                    <p class="indent-3 description">Climb ladders & etc. faster.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>High Jump</summary>
+                    <p class="indent-3 description">You jump higher. As in the title.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Height</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>No Slowdown</summary>
+                    <p class="indent-3 description">Eating/Using items and stepping on some blocks doesn't slow you
+                        down.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Bunny Hopping</summary>
+                    <p class="indent-3 description">Basically spams the jump key.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>When</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Minimum Velocity</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Legit</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Fly</summary>
+                    <p class="indent-3 description">Fly. Its in the title.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Speed</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Snowwalk</summary>
+                    <p class="indent-3 description">Lets you walk on powder snow, as if you were wearing leather boots.
+                    </p>
+                </details>
+                <details class="indent-2">
+                    <summary>Autoswim</summary>
+                    <p class="indent-3 description">Automatically start swimming when in water.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Spider</summary>
+                    <p class="indent-3 description">Climb up walls without ladders.</p>
+                </details>
+            </details>
+            <details class="indent-1">
+                <summary>Render</summary>
+                <details class="indent-2">
+                    <summary>Extended Cam Dist</summary>
+                    <p class="indent-3 description">Distances your camera further away when in third person camera mode.
+                    </p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Distance</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Night Vision</summary>
+                    <p class="indent-3 description">Allows you to see during the night and in dark caves.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>No Pumpkin</summary>
+                    <p class="indent-3 description">Removes the pumpkin overlay when wearing one.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Tracers</summary>
+                    <p class="indent-3 description">Draws a visible line to every loaded entity.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Players</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Hostiles</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Passives</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Ambients</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Others</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>No Fire Overlay</summary>
+                    <p class="indent-3 description">Lowers or completely removes the fire overlay when on fire.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Offset</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>No Hurt Tilt</summary>
+                    <p class="indent-3 description">Stops the camera from tilting when getting hurt.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>ESP</summary>
+                    <p class="indent-3 description">Renders a visible outline around all loaded entities.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Players</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Hostiles</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Passives</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Ambients</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Others</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Camera NoClip</summary>
+                    <p class="indent-3 description">In third person, you can move your camera into objects.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Portal GUI</summary>
+                    <p class="indent-3 description">Allows you to open your inventory while inside a portal.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>No Blind</summary>
+                    <p class="indent-3 description">Doesn't blind you when you have the blindness or darkness effect.
+                    </p>
+                </details>
+                <details class="indent-2">
+                    <summary>No Levitation</summary>
+                    <p class="indent-3 description">Stops you from levitating when you have the levitation effect.
+                        Useful when dealing with shulkers.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>See Invisibles</summary>
+                    <p class="indent-3 description">Renders invisible entities as ghosts, so you can see them.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Players</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Hostiles</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Passives</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Ambients</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Others</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>No Wobble</summary>
+                    <p class="indent-3 description">Stops the screen from wobbling when inside a portal or when you have
+                        the nausea effect.</p>
+                </details>
+            </details>
+            <details class="indent-1">
+                <summary>Fun</summary>
+                <details class="indent-2">
+                    <summary>Sneak Spam</summary>
+                    <p class="indent-3 description">Silly. Spams the sneak key.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Speed</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+                <details class="indent-2">
+                    <summary>Rainbow GUI</summary>
+                    <p class="indent-3 description">Renders the black parts of the GUI in rainbow.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Derpy</summary>
+                    <p class="indent-3 description">Rotates your head around like wild (only visible to other players).
+                    </p>
+                </details>
+                <details class="indent-2">
+                    <summary>Secret Shaders</summary>
+                    <p class="indent-3 description">Mojang coded a few shaders, most of them unused, made accessible
+                        through this module.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>ID</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+            </details>
+            <details class="indent-1">
+                <summary>Other</summary>
+                <details class="indent-2">
+                    <summary>Disable Updates</summary>
+                    <p class="indent-3 description">Disables the ShadowClient's update cycle. Most modules will stop
+                        working completely. Can help with lag.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Advanced Help</summary>
+                    <p class="indent-3 description">Opens this help page.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Enderman Magnet</summary>
+                    <p class="indent-3 description">Looks at all visible enderman in the area.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Panic</summary>
+                    <p class="indent-3 description">Disables all modules.</p>
+                </details>
+                <details class="indent-2">
+                    <summary>Packet Log</summary>
+                    <p class="indent-3 description">Logs all packets sent between the server and the client.</p>
+                    <details class="indent-3">
+                        <summary>Settings</summary>
+                        <details class="indent-4">
+                            <summary>Mode</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Filter</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                        <details class="indent-4">
+                            <summary>Filter Mode</summary>
+                            <p class="indent-5 description">...</p>
+                        </details>
+                    </details>
+                </details>
+            </details>
+            <details class="indent-1">
+                <summary>Menus</summary>
+                <details class="indent-2">
+                    <summary>Setting Menu</summary>
+                    <p class="indent-3 description">Opens the settings menu with settings related to the ShadowClient instance.</p>
+                </details>
+            </details>
+        </details>
+    </div>
+</body>
+
 </html>
