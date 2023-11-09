@@ -26,7 +26,7 @@
         <a href="https://github.com/davidsaltacc/shadowclient/tree/main/build/libs">Download older versions</a><br>
         <a href="https://github.com/davidsaltacc/shadowclient/tree/development/build/libs">Download development
             builds</a>
-        <h1>HELP (will be moved soon)</h1><!--TODO create descriptions -->
+        <h1>HELP (will be moved soon)</h1>
         <details>
             <summary>Modules</summary>
             <details class="indent-1">
@@ -38,7 +38,8 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Legit</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">Only attack entities the player has a clear line of sight
+                                to.</p>
                         </details>
                     </details>
                 </details>
@@ -54,7 +55,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Face Crystals</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">Faces the crystals (server side).</p>
                         </details>
                     </details>
                 </details>
@@ -65,7 +66,8 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Strength</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">How strong the knockback prevention is, 0 = none, 1 = full.
+                            </p>
                         </details>
                     </details>
                 </details>
@@ -79,7 +81,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Range</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">The range.</p>
                         </details>
                     </details>
                 </details>
@@ -124,11 +126,11 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Edge Distance</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">How close to the edge you have be for you to jump.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Legit</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">Without legit enabled, you jump way further.</p>
                         </details>
                     </details>
                 </details>
@@ -139,7 +141,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Height</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">How high you can step up.</p>
                         </details>
                     </details>
                 </details>
@@ -150,7 +152,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Speed</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">The speed of the boat.</p>
                         </details>
                     </details>
                 </details>
@@ -169,7 +171,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Height</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">The height.</p>
                         </details>
                     </details>
                 </details>
@@ -185,15 +187,16 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>When</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">Options: Always, Walking, Sprinting.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Minimum Velocity</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">The minimum velocity required for the module to make you
+                                jump, so you don't jump while youre standing still.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Legit</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">Without legit, you go way faster.</p>
                         </details>
                     </details>
                 </details>
@@ -204,7 +207,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Speed</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">How fast you fly.</p>
                         </details>
                     </details>
                 </details>
@@ -232,7 +235,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Distance</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">The camera distance.</p>
                         </details>
                     </details>
                 </details>
@@ -251,23 +254,23 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Players</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for players.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Hostiles</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for hostile entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Passives</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for passive entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Ambients</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for ambient entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Others</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for other entities.</p>
                         </details>
                     </details>
                 </details>
@@ -278,7 +281,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Offset</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">How far it should be lowered. 0 = none, 0.6 = full.</p>
                         </details>
                     </details>
                 </details>
@@ -293,23 +296,23 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Players</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for players.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Hostiles</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for hostile entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Passives</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for passive entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Ambients</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for ambient entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Others</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for other entities.</p>
                         </details>
                     </details>
                 </details>
@@ -338,23 +341,23 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Players</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for players.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Hostiles</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for hostile entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Passives</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for passive entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Ambients</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for ambient entities.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Others</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">If it should be rendered for other entities.</p>
                         </details>
                     </details>
                 </details>
@@ -373,7 +376,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Speed</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">The speed.</p>
                         </details>
                     </details>
                 </details>
@@ -394,7 +397,7 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>ID</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">The shader id, so which shader is getting rendered.</p>
                         </details>
                     </details>
                 </details>
@@ -425,15 +428,16 @@
                         <summary>Settings</summary>
                         <details class="indent-4">
                             <summary>Mode</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">Which packets get logged. Options: All, Received, Sent.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Filter</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">A filter to filter out what you want to have logged.</p>
                         </details>
                         <details class="indent-4">
                             <summary>Filter Mode</summary>
-                            <p class="indent-5 description">...</p>
+                            <p class="indent-5 description">Options: Whitelist (allows what the filter option contains),
+                                Blacklist (blocks whatever filter contains).</p>
                         </details>
                     </details>
                 </details>
@@ -442,7 +446,8 @@
                 <summary>Menus</summary>
                 <details class="indent-2">
                     <summary>Setting Menu</summary>
-                    <p class="indent-3 description">Opens the settings menu with settings related to the ShadowClient instance.</p>
+                    <p class="indent-3 description">Opens the settings menu with settings related to the ShadowClient
+                        instance.</p>
                 </details>
             </details>
         </details>
