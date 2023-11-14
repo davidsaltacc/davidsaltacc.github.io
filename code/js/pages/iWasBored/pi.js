@@ -1,17 +1,13 @@
 const counter = document.getElementById("counter");
 
-var k = 1;
-var pi = 0;
-var i = 0;
+var pi = 3;
+var n = 2;
+var s = 1;
 function update() {
-    if (i % 2 == 0) {
-        pi += 4 / k;
-    } else {
-        pi -= 4 / k;
-    }
-    k += 2;
-    i += 1;
-    if (i % 100 == 0) {
+    pi += s * (4 / ((n) * (n + 1) * (n + 2)));
+    s *= -1;
+    n += 2;
+    if (n % 200 == 0) {
         counter.innerHTML = pi;
     }
     setTimeout(update, 0);
