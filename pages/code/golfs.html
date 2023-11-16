@@ -12,7 +12,7 @@
 		<div class="container">
             <h1>Code Golfs I wrote</h1>
 
-            <h2>Eulers Number, 1000 Digits Precision, 156 Bytes</h2>
+            <h2>Eulers Number, Python, 1000 Digits Precision, 156 Bytes</h2>
             <h3><pre><code class="language-python">import decimal as c;c.getcontext().prec=1000;d=c.Decimal;e=d(0);i=1
 while 1:
  f=d(1)
@@ -20,7 +20,7 @@ while 1:
  o=e;e+=1/f;i+=1
  if e==o:print(e);break</code></pre></h3>
 
-            <h2>Pi, Using the Leibniz Method, 1000 Digits Precision, 143 Bytes</h2>
+            <h2>Pi, Using the Leibniz Method, Python, 1000 Digits Precision, 143 Bytes, takes WAY too long</h2>
             <h3><pre><code class="language-python">import decimal as c
 c.getcontext().prec=1000
 d=c.Decimal
@@ -29,7 +29,7 @@ while 1:
  o=p;p+=n*4/k;i+=1;k+=2;n*=-1
  if o==p:print(p);break</code></pre></h3>
 
-            <h2>Pi, Using the Nilkantha Method, 1000 Digits Precision, 157 Bytes</h2>
+            <h2>Pi, Using the Nilkantha Method, Python, 1000 Digits Precision, 157 Bytes, takes WAY too long</h2>
             <h3><pre><code class="language-python">import decimal as c
 c.getcontext().prec=1000
 d=c.Decimal
@@ -38,7 +38,7 @@ while 1:
  o=p;p+=s*(4/((n)*(n+1)*(n+2)));s*=-1;n+=2
  if p==o:print(p);break</code></pre></h3>
 
-            <h2>Pi, Using the Gauss-Legendre Method, 1000 Digits Precision, 200 Bytes</h2>
+            <h2>Pi, Using the Gauss-Legendre Method, Python, 1000 Digits Precision, 200 Bytes</h2>
             <h3><pre><code class="language-python">import decimal as c
 c.getcontext().prec=1000
 d=c.Decimal
@@ -48,7 +48,7 @@ while 1:
  n,b=(a+b)/2,(a*b).sqrt();t-=p*(a-n)**2;a,p,o=n,2*p,r;r=(a+b)**2/(4*t)
  if r==o:print(r);break</code></pre></h3>
 
-            <h2>Golden Ratio, 1000 Digits Precision, 77 Bytes</h2>
+            <h2>Golden Ratio, Python, 1000 Digits Precision, 77 Bytes</h2>
             <h3><pre><code class="language-python">import decimal as d;d.getcontext().prec=1000;print((1+d.Decimal(5).sqrt())/2)</code></pre></h3>
 
 
