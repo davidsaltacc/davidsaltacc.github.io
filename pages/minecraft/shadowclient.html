@@ -5,26 +5,55 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../../styles.css">
     <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
-    <title>ShadowClient 0.1.4</title>
+    <title>ShadowClient 0.2.0</title>
     <link rel="stylesheet" type="text/css" href="../../code/css/pages/minecraft/shadowclient.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>ShadowClient 0.1.4</h1>
-        <h2 style="color: crimson;">There will be a more detailed documentation some time in the future. This is just
-            the download page with a bit of information, that will later be moved.</h2>
+        <h1>ShadowClient 0.2.0</h1>
         <img src="../../assets/thumbnail_shadowclient.html.png" style="width:100%">
         <h2>Download:</h2>
-        <a href="https://github.com/davidsaltacc/shadowclient/releases/download/0.1.4/shadowclient-0.1.4.jar">Download
-            ShadowClient 0.1.4</a><br>
-        <a href="https://github.com/davidsaltacc/shadowclient/releases/download/0.1.4/shadowclient-0.1.4-sources.jar">Download
-            ShadowClient 0.1.4 Sources</a><br>
+        <a href="https://github.com/davidsaltacc/shadowclient/raw/main/jars/shadowclient-0.2.0.jar">Download
+            ShadowClient 0.2.0</a><br>
+        <a href="https://github.com/davidsaltacc/shadowclient/raw/main/jars/shadowclient-0.2.0-sources.jar">Download
+            ShadowClient 0.2.0 Sources</a><br>
         <p style="padding-top: 10px;">Download the first file and put it into your (fabric) mods folder.</p>
         <p>The sources are available in the second download.</p>
         <h2>Other Versions:</h2>
         <a href="https://github.com/davidsaltacc/shadowclient/releases">Download other versions</a><br>
         <a href="https://github.com/davidsaltacc/shadowclient/tree/development/jars">Download development builds</a>
+        <h1>A small documentation for the client will be available some time in the future.</h1>
+        <h2>Shadowclient 0.2.0 release notes</h2>
+        <p style="white-space: pre-line">new features:  
+- descriptions for modules  
+- added configurable keybindings (in the mc keybinding menu)  
+- added small chat message for toggling modules   
+- added sodium/optifine detection  
+- notifications system  
+- timer speeds can now go below 1  
+
+new modules:  
+- death notification  
+- xray
+- trajectories
+- freecam
+- blink (hidden because broken)
+- ms ping display
+- shadow hud (minimalistic hud)
+
+fixes:
+- fixed window title not being overwritten properly
+- refactored some of my terrible code
+- updated the welcome message to look better
+- removed fabric api being necessary
+- moved jars to another folder
+- fixed not being jump with bhopping
+- fixed lots of potential crashes
+- fixed enum settings not being saved properly
+- fixed slider setting precision always being 3 digits
+        </p>
+        <div style="display: none;">
         <h1>HELP (will be moved soon)</h1>
         <details open>
             <summary>Modules</summary>
@@ -462,6 +491,7 @@
                 </details>
             </details>
         </details>
+    </div>
     </div>
 </body>
 
