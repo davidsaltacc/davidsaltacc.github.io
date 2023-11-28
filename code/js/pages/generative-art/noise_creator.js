@@ -33,7 +33,7 @@ var seed = Math.random()
 document.getElementById("seedvalue").innerHTML = Math.floor(seed * 65536); 
 noise.seed(seed);
 var gz = 0;
-var colormap = BuPu_r;
+var colormap = setCustomColormap(true);
 var defaultcolormap = colormap;
 var rendering = false;
 usecustomcmap = true;
