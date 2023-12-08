@@ -38,12 +38,12 @@ async function loadShaders_(gl) {
     var vertCode;
     var fragCode;
 
-    await fetch("../../code/gl/pages/generative-art/fractals.vert") 
+    await fetch("../../code/gl/pages/generative-art/fractals-v2.vert") 
         .then(response => response.text())
         .then(data => {
             vertCode = data;
         });
-    await fetch("../../code/gl/pages/generative-art/fractals.frag") 
+    await fetch("../../code/gl/pages/generative-art/fractals-v2.frag") 
         .then(response => response.text())
         .then(data => {
             fragCode = data;
@@ -840,7 +840,7 @@ function exportJul() {
 }
 
 function create_url_params() {
-    var url = new URL("https://davidsaltacc.github.io/pages/generative-art/fractals");
+    var url = new URL("https://davidsaltacc.github.io/pages/generative-art/fractals-v2");
     var params = url.searchParams;
     params.append("cxm", center_x_main);
     params.append("cym", center_y_main);

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fractals v3</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Fractals">
+    <meta property="og:description" content="A fractal explorer">
+    <meta property="og:image" content="/assets/thumbnail_fractals.html.png">
+    <meta property="og:url" content="https://davidsaltacc.github.io/pages/generative-art/fractals-v3">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Fractals">
+    <meta name="twitter:description" content="A fractal explorer">
+    <meta name="twitter:image" content="/assets/thumbnail_fractals.html.png">
+    <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
+	<link rel="stylesheet" type="text/css" href="../../code/css/pages/generative-art/fractals-v3.css">
+</head>
+<body>
+    <div class="container">
+        <canvas id="canvasJul" width="500" height="500"></canvas>
+        <canvas id="canvasMain" width="500" height="500"></canvas>
+        <h1 id="title">David's Fractal Explorer v3</h1>
+        <h4 class="infobar">This is not a finished page. The <a href="fractals-v2">v2 version</a> has more features at the moment.</h4>
+        <h2 class="infobar" id="statusbar">Loading... This shouldn't take long at all.</h2>
+        <script src="../../code/js/pages/generative-art/fractals-v3.js"></script>
+        <h3>Fractal Selection:</h3>
+        <button onclick="setFractal('mandelbrot')">Mandelbrot</button>
+        <button onclick="setFractal('burning ship')">Burning ship</button>
+        <button onclick="setFractal('celtic')">Celtic</button>
+        <button onclick="setFractal('buffalo')">Buffalo</button>
+        <button onclick="setFractal('tricorn')">Tricorn</button>
+        <button onclick="setFractal('duck')">Duck</button>
+        <button onclick="setFractal('ass')">B fractal</button>
+        <button onclick="setFractal('sine')">Sine</button>
+        <button onclick="setFractal('popcorn')">Popcorn</button>
+        <button onclick="setFractal('thorn')">Thorn</button>
+        <button onclick="setFractal('henon')">Henon</button>
+        <button onclick="setFractal('duffing')">Duffing</button>
+        <button onclick="setFractal('chirikov')">Chirikov</button>
+        <button onclick="setFractal('ikeda')">Ikeda</button>
+        <button onclick="setFractal('feather')">Feather</button>
+        <button onclick="setFractal('heart')">Heart</button>
+        <button onclick="setFractal('ass 2')">Sunglasses</button>
+        <button onclick="setFractal('triangle')">Triangle</button>
+        <button onclick="setFractal('shark fin')">Shark fin</button>
+        <button onclick="setFractal('tippets')">Tippets</button>
+        <button onclick="setFractal('zubiet')">Zubiet</button>
+        <button onclick="setFractal('sinh')">Hyperbolic sine</button>
+        <button onclick="setFractal('unnamed 1')">Unnamed 1</button>
+        <button onclick="setFractal('unnamed 2')">Unnamed 2</button>
+        <button onclick="setFractal('unnamed 3')">Unnamed 3</button>
+        <button onclick="setFractal('fish')">Fish</button>
+        <button onclick="setFractal('wavy')">Wavy</button>
+        <button onclick="setFractal('collatz')">Collatz</button>
+        <hr>
+        <h3>Colormap Selection:</h3>
+        <button onclick="setColormap('classic')">Classic</button>
+        <button onclick="setColormap('ultra fractal')">Ultra Fractal Default</button>
+        <button onclick="setColormap('red and blue')">Red and Blue</button>
+        <button onclick="setColormap('sand')">Sand</button>
+        <button onclick="setColormap('rainbow')">Rainbow</button>
+        <button onclick="setColormap('davids')">David's</button>
+        <button onclick="setColormap('lavawaves')">Lava waves</button>
+        <button onclick="setColormap('morning glory')">Morning glory</button>
+        <button onclick="setColormap('chocolate')">Chocolate</button>
+        <hr>
+        <h3>Color Method Selection:</h3>
+        <button onclick="setColormethod('terraced')">Terraced</button>
+        <button onclick="setColormethod('smooth')">Smooth</button>
+        <button onclick="setColormethod('rings')">Rings</button>
+        <button onclick="setColormethod('stripes')">Stripes</button>
+        <button onclick="setColormethod('interior')">Interior</button>
+        <button onclick="setColormethod('accurate')">Accurate</button>
+        <button onclick="setColormethod('smooth stripes')">Smooth stripes</button>
+        <button onclick="setColormethod('edgy')">Edgy</button>
+        <button onclick="setColormethod('floor')">Floor</button>
+        <button onclick="setColormethod('squared')">Squared</button>
+        <button onclick="setColormethod('stripier stripes')">Stripier stripes</button>
+        <button onclick="setColormethod('spiky')">Spiky</button>
+        <button onclick="setColormethod('stripy rings')">Stripy rings</button>
+        <hr>
+        <h3>Settings:</h3>
+        <p>Sticky canvases:</p>
+        <input type="checkbox" id="stickycanvases" checked="true" onchange="setCanvasesSticky(document.getElementById('stickycanvases').checked);">
+        <p>Escape Radius:</p>
+        <input type="number" id="radius" value="100000" onchange="setRadius(document.getElementById('radius').value)">
+        <p>Iterations:</p>
+        <input type="number" id="iterations" value="200" onchange="setIterations(document.getElementById('iterations').value)">
+        <p>Juliaset Constant:</p>
+        <input type="number" id="constantRe" value="0" onchange="setConstantX(document.getElementById('constantRe').value);">
+        <input type="number" id="constantIm" value="0" onchange="setConstantY(document.getElementById('constantIm').value);">
+        <p>Interpolate between normal and juliaset:</p>
+        <input type="range" id="nji" value="1" min="0" max="1" step="0.001" oninput="setInterpolation(document.getElementById('nji').value);">
+        <hr>
+        <h3>Side Note:</h3>
+        <p>This project is still very early in development. This means, new features will be added in the future. Until everything is finished, bugs might occur, things might break. If you find anything, please <a href="https://github.com/davidsaltacc/davidsaltacc.github.io/issues/new">open a issue on github.</a></p>
+        <hr>
+        <h3>Other Versions:</h3>
+        <a href="https://davidsaltacc.github.io/pages/generative-art/fractals-v1">Version v1</a><br>
+        <a href="https://davidsaltacc.github.io/pages/generative-art/fractals-v2">Version v2</a><br>
+        <a href="https://turbowarp.org/907856776?fps=60&turbo">Scratch Version I made for some reason</a>
+        <hr>
+        <h3>What are fractals and what is this?</h3>
+        <a href="https://en.wikipedia.org/wiki/Fractal">en.wikipedia.org/wiki/Fractal</a><br>
+        <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">en.wikipedia.org/wiki/Mandelbrot_set</a><br>
+        <a href="https://en.wikipedia.org/wiki/Julia_set">en.wikipedia.org/wiki/Julia_set</a><br>
+        <a href="https://blinry.org/mandelbrot/">blinry.org/mandelbrot</a><br>
+        <a href="https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b">alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b</a><br>
+        <a href="http://www.paulbourke.net/fractals/">www.paulbourke.net/fractals</a>
+        <hr>
+        <h3>Special Thanks:</h3>
+        <p><a href="https://nathansolomon1678.github.io/fractals">This</a> project by nathansolomon1678 on github, where I got a lot of insipration (and code) from</p>
+        <p><a href="https://github.com/BenjaminAster/WebGPU-Mandelbrot">This</a> project by BenjaminAster on github, that helped me a little since I wasn't too good with WGPU</p>
+        <p>Paul Bourke, especially his website page on fractals <a href="http://www.paulbourke.net/fractals/">here</a>, where I got lots of the fractals and insipration from</p>
+        <p>CodeParade (HackerPoet on github) for <a href="https://github.com/HackerPoet/FractalSoundExplorer">this</a> project, where I got the code for the feather fractal and a few others from</p>
+        <p><a href="https://github.com/kbinani/colormap-shaders">This</a> project on github I got some colormaps from.</p>
+        <p>All the amazing people who discovered some of these fractals and made this project possible</p>
+        <p>My friends (they did nothing for this project but still thanks)</p>
+        <p>You, for visiting and testing my project!</p>
+        <hr>
+        <h3>View Fractal Gallery:</h3>
+        <a href="https://davidsaltacc.github.io/pages/gallery/fractals">Fractal Gallery</a>
+    </div>
+</body>
+</html>
