@@ -17,12 +17,29 @@
 	<link rel="stylesheet" type="text/css" href="../../code/css/pages/generative-art/fractals-v3.css">
 </head>
 <body>
+    <div id="loadingscreen">
+        <h2 class="infobar" id="statusbar">Loading... This shouldn't take long at all.</h2>
+        <br>
+        <div id="loadingwave-center">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+    </div>
     <div class="container">
         <canvas id="canvasJul" width="500" height="500"></canvas>
         <canvas id="canvasMain" width="500" height="500"></canvas>
         <h1 id="title">David's Fractal Explorer v3</h1>
         <h4 class="infobar">This is not a finished page. The <a href="fractals-v2">v2 version</a> has more features at the moment.</h4>
-        <h2 class="infobar" id="statusbar">Loading... This shouldn't take long at all.</h2>
         <script src="../../code/js/pages/generative-art/fractals-v3.js"></script>
         <h3>Fractal Selection:</h3>
         <button onclick="setFractal('mandelbrot')">Mandelbrot</button>

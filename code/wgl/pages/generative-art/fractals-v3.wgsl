@@ -190,7 +190,7 @@ fn apply_post_function(z: vec2<f32>) -> vec2<f32> {
 		case 0: { return z; }
 		case 1: { return c_sin(z); }
 		case 2: { return c_cos(z); }
-		case 3: { return c_sinh(z); }
+		case 2: { return c_sinh(z); }
 		case 4: { return c_cosh(z); }
 		case 5: { return c_tan(z); }
 		case 6: { return c_tanh(z); }

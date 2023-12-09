@@ -756,7 +756,7 @@ var exportJul; // i hate this with all of my heart
     exportMain = exportMain2;
     exportJul = exportJul2;
 
-    document.getElementById("statusbar").style.display = "none";
+    document.getElementById("loadingscreen").style.display = "none";
 
     console.log("finished");
 });
