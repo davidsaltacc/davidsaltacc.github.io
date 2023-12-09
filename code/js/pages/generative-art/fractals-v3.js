@@ -526,7 +526,7 @@ var presets_fractals = {
 }
 
 function updateUi() {
-
+    // TODO
 }
 
 var setFractal = function(type) {
@@ -703,13 +703,21 @@ function setCanvasesSticky(sticky) {
 
 setCanvasesSticky(true);
 
+function exportMain() {
+    // TODO
+}
+function exportJul() {
+    // TODO
+}
+
 function setRadius(rad) { radius = rad; renderMain(); renderJul(); }
 function setIterations(i) { maxIterations = i; renderMain(); renderJul(); }
+function setColoroffset(o) { colorOffset = o; renderMain(); renderJul(); }
 function setConstantX(x) { juliasetConstant[0] = x; renderJul(); }
 function setConstantY(y) { juliasetConstant[1] = y; renderJul(); }
 function setInterpolation(v) { juliasetInterpolation = v; renderJul(); }
 
-return [renderMain, renderJul, setFractal, setColormap, setColormethod, setCanvasesSticky,
+return [renderMain, renderJul, setFractal, setColormap, setColormethod, setColoroffset, setCanvasesSticky,
         setRadius, setIterations, setConstantX, setConstantY, setInterpolation, setPostFunction,
         exportMain, exportJul];
 }
@@ -719,6 +727,7 @@ var renderJul;
 var setFractal;
 var setColormap;
 var setColormethod;
+var setColoroffset;
 var setCanvasesSticky;
 var setRadius;
 var setIterations;
@@ -728,7 +737,7 @@ var setInterpolation;
 var setPostFunction;
 var exportMain;
 var exportJul; // i hate this with all of my heart
-(async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColormap2, setColormethod2, setCanvasesSticky2,
+(async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColormap2, setColormethod2, setColoroffset2, setCanvasesSticky2,
                                                 setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2, setPostFunction2,
                                                 exportMain2, exportJul2]) => {
     renderMain = renderMain2;
@@ -736,6 +745,7 @@ var exportJul; // i hate this with all of my heart
     setFractal = setFractal2;
     setColormap = setColormap2;
     setColormethod = setColormethod2;
+    setColoroffset = setColoroffset2;
     setCanvasesSticky = setCanvasesSticky2;
     setRadius = setRadius2;
     setIterations = setIterations2;
