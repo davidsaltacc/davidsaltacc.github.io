@@ -17,6 +17,7 @@ struct Uniforms {
 	fractalType: u32,
 	colorscheme: u32,
     colorMethod: u32,
+	postFracFunc: u32,
 	juliaset: u32 // no uniform bools 
 }
 
@@ -59,6 +60,99 @@ fn c_cos(z: vec2<f32>) -> vec2<f32> {
 fn c_cosh(z: vec2<f32>) -> vec2<f32> {
 	return vec2<f32>(cosh(z.x) * cos(z.y), sinh(z.x) * sin(z.y));
 } 
+fn c_tan(z: vec2<f32>) -> vec2<f32> {
+	let cosx: f32 = cos(z.x);
+	let sinx: f32 = sin(z.x);
+	let sinhy: f32 = sinh(z.y);
+	let coshy: f32 = cosh(z.y);
+	let d: f32 = cosx * coshy - sinx * sinhy;
+	var re: f32 = sinx * coshy / d;
+	var im: f32 = cosx * sinhy / d;
+	return vec2<f32>(re, im);
+} 
+fn c_tanh(z: vec2<f32>) -> vec2<f32> {
+	return c_division(c_sinh(z), c_cosh(z));
+} 
+fn c_log(z: vec2<f32>) -> vec2<f32> {
+	var re: f32 = sqrt(z.x * z.x + z.y * z.y);
+	var im: f32 = atan2(z.y, z.x);
+	if (im > pi) {
+		im = im - 2. * pi;
+	}
+	return vec2<f32>(log(re), im);
+} 
+fn c_sqrt(z: vec2<f32>) -> vec2<f32> {
+	let r: f32 = length(z);
+	let re: f32 = sqrt(0.5 * (r + z.x));
+	var im: f32 = sqrt(0.5 * (r - z.x));
+	if (z.y < 0.) {
+		im = -im;
+	}
+	return vec2<f32>(re, im);
+} 
+fn c_abs(z: vec2<f32>) -> vec2<f32> {
+	return vec2<f32>(abs(z.x), abs(z.y));
+} 
+
+fn c_exp(z: vec2<f32>) -> vec2<f32> {
+	var w: vec2<f32> = vec2<f32>(cos(z.y), sin(z.y));
+	w = w * (exp(z.x));
+	return w;
+} 
+
+fn c_atan(c: vec2<f32>) -> vec2<f32> {
+	var i: vec2<f32> = vec2<f32>(0., 1.);
+	let o: vec2<f32> = vec2<f32>(1., 0.);
+	let t: vec2<f32> = o + o;
+	if (c.x == i.x && c.y == i.y) {
+		return vec2<f32>(0., 1. / 0.0000000001);
+	} else { 	
+		if (c.x == -i.x && c.y == -i.y) {
+			return vec2<f32>(0., -1. / 0.0000000001);
+		}
+	}
+	return c_division(c_log(o + c_multiplication(i, c)) - c_log(o - c_multiplication(i, c)), c_multiplication(t, i));
+} 
+
+fn c_asin(c: vec2<f32>) -> vec2<f32> {
+	var i: vec2<f32> = vec2<f32>(0., 1.);
+	var one: vec2<f32> = vec2<f32>(1., 0.);
+	return c_multiplication(-i, c_log(c_sqrt(vec2<f32>(1., 0.) - c_multiplication(c, c)) + c_multiplication(i, c)));
+} 
+
+fn c_acos(c: vec2<f32>) -> vec2<f32> {
+	let i: vec2<f32> = vec2<f32>(0., 1.);
+	return c_multiplication(-i, c_log(c_multiplication(i, c_sqrt(vec2<f32>(1., 0.) - c_multiplication(c, c))) + c));
+} 
+
+fn c_asinh(c: vec2<f32>) -> vec2<f32> {
+	var one: vec2<f32> = vec2<f32>(1., 0.);
+	return c_log(c + c_sqrt(one + c_multiplication(c, c)));
+} 
+
+fn c_acosh(c: vec2<f32>) -> vec2<f32> {
+	var one: vec2<f32> = vec2<f32>(1., 0.);
+	var two: vec2<f32> = one + one;
+	return c_multiplication(two, c_log(c_sqrt(c_division(c + one, two)) + c_sqrt(c_division(c - one, two))));
+} 
+
+fn c_atanh(c: vec2<f32>) -> vec2<f32> {
+	let one: vec2<f32> = vec2<f32>(1., 0.);
+	let two: vec2<f32> = one + one;
+	if (c.x == one.x && c.y == one.y) {
+		return vec2<f32>(1. / 0.0000000001, 0.);
+	} else { 	
+		if (c.x == -one.x && c.y == -one.y) {
+			return vec2<f32>(-1. / 0.0000000001, 0.);
+		}
+	}
+	return c_division(c_log(one + c) - c_log(one - c), two);
+} 
+
+fn c_inv(c: vec2<f32>) -> vec2<f32> {
+	let n: f32 = length(c);
+	return vec2<f32>(c.x, -c.y) / (n * n);
+} 
 
 fn weierstrass(x: f32) -> f32 {
 	var x_var = x;
@@ -89,64 +183,89 @@ fn c_collatz(z: vec2<f32>) -> vec2<f32> {
 	return 0.25 * (vec2<f32>(1., 0.) + 4. * z - c_multiplication(1. + 2. * z, c_cos(pi * z)));
 } 
 
+fn apply_post_function(z: vec2<f32>) -> vec2<f32> {
+	var post_function: u32 = uniforms.postFracFunc;
+	switch (post_function) {
+		default: { return z; }
+		case 0: { return z; }
+		case 1: { return c_sin(z); }
+		case 2: { return c_cos(z); }
+		case 3: { return c_sinh(z); }
+		case 4: { return c_cosh(z); }
+		case 5: { return c_tan(z); }
+		case 6: { return c_tanh(z); }
+		case 7: { return c_log(z); }
+		case 8: { return c_sqrt(z); }
+		case 9: { return c_abs(z); }
+		case 10: { return c_exp(z); }
+		case 11: { return c_atan(z); }
+		case 12: { return c_asin(z); }
+		case 13: { return c_acos(z); }
+		case 14: { return c_asinh(z); }
+		case 15: { return c_acosh(z); }
+		case 16: { return c_atanh(z); }
+		case 17: { return c_inv(z); }
+	}
+} 
+
 
 fn iterate(z: vec2<f32>, c: vec2<f32>) -> vec2<f32> {
 	var fractalType: u32 = uniforms.fractalType;
 	var power: f32 = uniforms.power;
     if (fractalType == 0) {
-        return c_pow(z, power) + c;
+        return apply_post_function(c_pow(z, power)) + c;
     }
     if (fractalType == 1) {
         var zp: vec2<f32> = c_pow(z, power);
-        return vec2<f32>(zp.x, abs(zp.y)) + c;
+        return apply_post_function(vec2<f32>(zp.x, abs(zp.y))) + c;
     }
     if (fractalType == 2) {
         var zp: vec2<f32> = c_pow(z, power);
-        return vec2<f32>(abs(zp.x), zp.y) + c;
+        return apply_post_function(vec2<f32>(abs(zp.x), zp.y)) + c;
     }
     if (fractalType == 3) {
         var zp: vec2<f32> = c_pow(z, power);
-        return vec2<f32>(abs(zp.x), abs(zp.y)) + c;
+        return apply_post_function(vec2<f32>(abs(zp.x), abs(zp.y))) + c;
     }
     if (fractalType == 4) {
         var zp: vec2<f32> = c_pow(z, power);
-        return vec2<f32>(zp.x, -zp.y) + c;
+        return apply_post_function(vec2<f32>(zp.x, -zp.y)) + c;
     }
     if (fractalType == 5) {
         var polar: vec2<f32> = to_polar(z);
         var r: f32 = pow(polar.x, power);
         var theta: f32 = power * abs(polar.y);
-        return c + r * vec2(cos(theta), sin(theta));
+        return c + apply_post_function(r * vec2(cos(theta), sin(theta)));
     }
     if (fractalType == 6) {
-        return vec2<f32>(
-            z.x * z.x * z.x - z.y * z.y * abs(z.y) + c.x, 
-            2.0 * z.x * z.y + c.y
-        );
+        return apply_post_function(vec2<f32>(
+            z.x * z.x * z.x - z.y * z.y * abs(z.y), 
+            2.0 * z.x * z.y
+        )) + c;
     }
     if (fractalType == 7) {
-        return c_pow(c_sin(z), power) + c;
+        return apply_post_function(c_pow(c_sin(z), power) + c);
     }
     if (fractalType == 8) {
-        return vec2<f32>(z.x - c.x * (z.y + tan(3. * z.y)), z.y - c.y * (z.x + tan(3. * z.x)));
+        return apply_post_function(vec2<f32>(z.x - c.x * (z.y + tan(3. * z.y)), z.y - c.y * (z.x + tan(3. * z.x))));
     }
     if (fractalType == 9) {
-        return vec2<f32>(z.x / cos(z.y), z.y / sin(z.x)) + c;
+        return apply_post_function(vec2<f32>(z.x / cos(z.y), z.y / sin(z.x))) + c;
     }
     if (fractalType == 10) {
-        return vec2<f32>(1. - c.x * z.x * z.x + z.y, c.y * z.x);
+        return apply_post_function(vec2<f32>(1. - c.x * z.x * z.x + z.y, c.y * z.x));
     }
     if (fractalType == 11) {
-        return vec2<f32>(z.y, -1. * c.y * z.x + c.x * z.y - z.y * z.y * z.y);
+        return apply_post_function(vec2<f32>(z.y, -1. * c.y * z.x + c.x * z.y - z.y * z.y * z.y));
     }
     if (fractalType == 12) {
-        return vec2<f32>(z.x + c.x * z.y, c.y + c.y * sin(z.x));
+        return apply_post_function(vec2<f32>(z.x + c.x * z.y, c.y + c.y * sin(z.x)));
     }
     if (fractalType == 13) {
         var t: f32 = 0.4 - 6. / (1. + z.x * z.x + z.y * z.y);
         var sin_t: f32 = sin(t);
         var cos_t: f32 = cos(t);
-        return vec2<f32>(1. + c.x * (z.x * cos_t - z.y * sin_t), c.y * (z.x * sin_t + z.y * cos_t));
+        return apply_post_function(vec2<f32>(1. + c.x * (z.x * cos_t - z.y * sin_t), c.y * (z.x * sin_t + z.y * cos_t)));
     }
     if (fractalType == 14) {
         var dr: f32 = 1. + z.x * z.x;
@@ -156,51 +275,51 @@ fn iterate(z: vec2<f32>, c: vec2<f32>) -> vec2<f32> {
         var zi: f32 = p.y;
         var dvr: f32 = (zr * dr + zi * di) / (dr * dr + di * di);
         var dvi: f32 = (zi * dr - zr * di) / (dr * dr + di * di);
-        return vec2<f32>(dvr, dvi) + c;
+        return apply_post_function(vec2<f32>(dvr, dvi)) + c;
     }
     if (fractalType == 15) {
-        return vec2<f32>(c.x, c.y * -1.) + vec2<f32>(2. * z.x * z.y, abs(z.y) - abs(z.x));
+        return vec2<f32>(c.x, c.y * -1.) + apply_post_function(vec2<f32>(2. * z.x * z.y, abs(z.y) - abs(z.x)));
     }
     if (fractalType == 16) {
-        return c + vec2<f32>(sinh(z.x) * sin(z.y), cosh(z.y) * cos(z.x));
+        return c + apply_post_function(vec2<f32>(sinh(z.x) * sin(z.y), cosh(z.y) * cos(z.x)));
     }
     if (fractalType == 17) {
-        return c + vec2<f32>(sin(z.x) * sinh(z.y), cos(z.y) * cosh(z.x));
+        return c + apply_post_function(vec2<f32>(sin(z.x) * sinh(z.y), cos(z.y) * cosh(z.x)));
     }
     if (fractalType == 18) {
-        return c + vec2<f32>(z.x * z.x - abs(z.y) * z.y, z.x * z.y * 2.);
+        return c + apply_post_function(vec2<f32>(z.x * z.x - abs(z.y) * z.y, z.x * z.y * 2.));
     }
     if (fractalType == 19) {
         var re: f32 = z.x * z.x - z.y * z.y + c.x;
         var im: f32 = 2. * re * z.y + c.y;
-        return vec2<f32>(re, im);
+        return apply_post_function(vec2<f32>(re, im));
     }
     if (fractalType == 20) {
-        return c_pow(z, power) + c_division(c, z);
+        return apply_post_function(c_pow(z, power)) + c_division(c, z);
     }
     if (fractalType == 21) {
-        return c_pow(c_sinh(z), power) + c;
+        return apply_post_function(c_pow(c_sinh(z), power)) + c;
     }
     if (fractalType == 22) {
-        return c_pow(z, power) - c_pow(-z, c.x) + vec2<f32>(c.y, 0.);
+        return apply_post_function(c_pow(z, power) - c_pow(-z, c.x) + vec2<f32>(c.y, 0.));
     }
     if (fractalType == 23) {
-        return c_pow(z - c_division(c_pow(z, 3.) - vec2<f32>(1., 0.), 3. * c_pow(z, 2.)), power) + c;
+        return apply_post_function(c_pow(z - c_division(c_pow(z, 3.) - vec2<f32>(1., 0.), 3. * c_pow(z, 2.)), power)) + c;
     }
     if (fractalType == 24) {
-        return c_pow(c_division(c_pow(z, power) + c - vec2<f32>(1., 0.), c_multiplication(z, vec2<f32>(2., 2.)) + c - vec2<f32>(2., 0.)), power);
+        return apply_post_function(c_pow(c_division(c_pow(z, power) + c - vec2<f32>(1., 0.), c_multiplication(z, vec2<f32>(2., 2.)) + c - vec2<f32>(2., 0.)), power));
     }
     if (fractalType == 25) {
-        return c + vec2<f32>(abs(z.x - z.y), 2. * z.x * z.y);
+        return c + apply_post_function(vec2<f32>(abs(z.x - z.y), 2. * z.x * z.y));
     }
     if (fractalType == 26) {
         var x: f32 = z.y + 1. - (1.4 + sin(z.y * pi) * 0.4 + c.x) * pow(z.x, 2.);
         var y: f32 = (0.3 + cos((z.x + z.y) * pi) * 0.2 + c.y) * x;
         x = (4. + cos(z.x * pi) * 3. + (c.x + c.y)) * x * (1. - x);
-        return vec2<f32>(x, y);
+        return apply_post_function(vec2<f32>(x, y));
     }
     if (fractalType == 27) {
-        return c_collatz(z) + c;
+        return apply_post_function(c_collatz(z)) + c;
     }
 
     return z;
@@ -261,6 +380,7 @@ fn ultrafractal_colorscheme(x: f32) -> vec4<f32> {
 	}
 	return vec4<f32>(black, 1.);
 } 
+
 
 fn red_blue_colorscheme(x: f32) -> vec4<f32> {
 	var x_var: f32 = x;
@@ -491,7 +611,6 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 	}
 
 	for (; iteration <= maxIterations; iteration++) {
-        last_z = z;
         z = iterate(z, c);
 
         if (colorMethod == 0) {
@@ -552,6 +671,7 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
                 color_black = true;
             }
         }
+        last_z = z;
 	}
 
 	if (color_black) {
@@ -565,3 +685,4 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 		return color(color_v);
 	}
 }
+

@@ -80,13 +80,39 @@
         <button onclick="setColormethod('spiky')">Spiky</button>
         <button onclick="setColormethod('stripy rings')">Stripy rings</button>
         <hr>
+        <h3>After fractal function:</h3>
+        <button onclick="setPostFunction('none')">None</button>
+        <button onclick="setPostFunction('sin')">Sine</button>
+        <button onclick="setPostFunction('sinh')">Hyperbolic sine</button>
+        <button onclick="setPostFunction('cos')">Cosine</button>
+        <button onclick="setPostFunction('cosh')">Hyperbolic cosine</button>
+        <button onclick="setPostFunction('tan')">Tangent</button>
+        <button onclick="setPostFunction('tanh')">Hyperbolic tangent</button>
+        <button onclick="setPostFunction('log')">Logarithm</button>
+        <button onclick="setPostFunction('sqrt')">Square root</button>
+        <button onclick="setPostFunction('abs')">Absolute</button>
+        <button onclick="setPostFunction('exp')">Exponential</button>
+        <button onclick="setPostFunction('atan')">Arctangent</button>
+        <button onclick="setPostFunction('asin')">Arcsine</button>
+        <button onclick="setPostFunction('acos')">Arccosine</button>
+        <button onclick="setPostFunction('asinh')">Hyperbolic Arcsine</button>
+        <button onclick="setPostFunction('acosh')">Hyperbolic Arccosine</button>
+        <button onclick="setPostFunction('atanh')">Hyperbolic Arctangent</button>
+        <button onclick="setPostFunction('inv')">Inversed</button>
+        <!-- 
+        <hr>
+        <h3>Export</h3>
+        <button onclick="exportMain()">Export Main</button>
+        <button onclick="exportJul()">Export Juliaset</button>
+        -->
+        <hr>
         <h3>Settings:</h3>
         <p>Sticky canvases:</p>
         <input type="checkbox" id="stickycanvases" checked="true" onchange="setCanvasesSticky(document.getElementById('stickycanvases').checked);">
         <p>Escape Radius:</p>
         <input type="number" id="radius" value="100000" onchange="setRadius(document.getElementById('radius').value)">
         <p>Iterations:</p>
-        <input type="number" id="iterations" value="200" onchange="setIterations(document.getElementById('iterations').value)">
+        <input type="number" id="iterations" value="100" onchange="setIterations(document.getElementById('iterations').value)">
         <p>Juliaset Constant:</p>
         <input type="number" id="constantRe" value="0" onchange="setConstantX(document.getElementById('constantRe').value);">
         <input type="number" id="constantIm" value="0" onchange="setConstantY(document.getElementById('constantIm').value);">

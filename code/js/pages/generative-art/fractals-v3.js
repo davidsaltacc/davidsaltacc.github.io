@@ -2,14 +2,26 @@
 async function init() {
 
 const canvasMain = document.getElementById("canvasMain");
-const contextMain = canvasMain.getContext("webgpu");
+const contextMain = canvasMain.getContext("webgpu", { preserveDrawingBuffer: true });
 
 const canvasJul = document.getElementById("canvasJul");
-const contextJul = canvasJul.getContext("webgpu");
+const contextJul = canvasJul.getContext("webgpu", { preserveDrawingBuffer: true });
 
+function status(s) {
+    console.log(s);
+    document.getElementById("statusbar").innerHTML = s;
+}
+
+status("STATUS: requesting adapter");
 var adapter = await navigator.gpu.requestAdapter();
+status("STATUS: requesting device");
 var device = await adapter.requestDevice();
 
+device.lost.then(() => {
+    alert("Lost contact to your GPU. Please reload this page, and if neccessary, restart your browser.");
+});
+
+status("STATUS: setting up uniform buffer");
 const format = navigator.gpu.getPreferredCanvasFormat();
 const uniformBufferSize = Math.ceil((
     + 2 * Float32Array.BYTES_PER_ELEMENT // center: vec2<f32>
@@ -24,6 +36,7 @@ const uniformBufferSize = Math.ceil((
     + Uint32Array.BYTES_PER_ELEMENT // fractalType: u32
     + Uint32Array.BYTES_PER_ELEMENT // colorscheme: u32
     + Uint32Array.BYTES_PER_ELEMENT // colorMethod: u32
+    + Uint32Array.BYTES_PER_ELEMENT // postFracFunc: u32
     + Uint32Array.BYTES_PER_ELEMENT // juliaset: u32
 ) / 8) * 8;
 
@@ -31,6 +44,8 @@ const uniformBuffer = device.createBuffer({
     size: uniformBufferSize,
     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
 });
+
+status("STATUS: fetching shader code");
 
 var code = null;
 await fetch("../../code/wgl/pages/generative-art/fractals-v3.wgsl") 
@@ -40,9 +55,24 @@ await fetch("../../code/wgl/pages/generative-art/fractals-v3.wgsl")
     }
 );
 
+status("STATUS: creating shader module");
+
 const shaderModule = device.createShaderModule({ code: code });
-const pipeline = await device.createRenderPipelineAsync({
-    layout: "auto",
+
+status("STATUS: creating render pipeline. why is this taking so long? no idea. but it definitely is normal. hey, DON'T LEAVE! TRUST ME, ITS WORTH WAITING! okay, if you don't want to stay, go to the <a href=\"fractals-v2\">v2 version</a>.");
+
+const pipeline = await device.createRenderPipelineAsync({ // freezes here
+    layout: device.createPipelineLayout({ bindGroupLayouts: [
+        device.createBindGroupLayout({
+            entries: [
+                {
+                    binding: 0,
+                    visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
+                    buffer: {},
+                }
+            ]
+        })
+    ]}),
     vertex: {
         module: shaderModule,
         entryPoint: "vertex",
@@ -54,8 +84,10 @@ const pipeline = await device.createRenderPipelineAsync({
     },
     primitive: {
         topology: "triangle-strip",
-    },
+    }
 });
+
+status("STATUS: creating bind group");
 
 const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
@@ -63,11 +95,13 @@ const bindGroup = device.createBindGroup({
         {
             binding: 0,
             resource: {
-                buffer: uniformBuffer,
-            },
-        },
-    ],
+                buffer: uniformBuffer
+            }
+        }
+    ]
 });
+
+status("STATUS: configuring canvases webgpu context");
 
 contextMain.configure({
     device,
@@ -80,18 +114,21 @@ contextJul.configure({
     alphaMode: "opaque",
 });
 
+status("STATUS: initializing fractal explorer");
+
 var centerMain = [0, 0];
 var zoomMain = 1 / 2.5;
 var centerJul = [0, 0];
 var zoomJul = 1 / 2.5;
 
-var maxIterations = 200;
+var maxIterations = 100;
 var radius = 100000;
 var power = 2;
 var colorOffset = 0;
 var fractalType = 0;
 var colorscheme = 0;
 var colorMethod = 1;
+var postFracFunc = 0;
 var juliasetConstant = [0., 0.];
 var juliasetInterpolation = 1;
 
@@ -115,6 +152,7 @@ function frame(context, juliaset, center, zoom) {
         fractalType,
         colorscheme,
         colorMethod,
+        postFracFunc,
         juliaset
     ]);
 	device.queue.writeBuffer(uniformBuffer, 0, arrayBuffer);
@@ -240,6 +278,81 @@ var presets_colormaps = {
         "description": "A colorscheme I just came up with. Has this chocolate-y color to it. Apparently it changes into a rainbow and back when zooming in. Unintended. Also, this only looks good with smooth coloring. Tho it really makes most fractals look amazing."
     }
 };
+
+var presets_functions = {
+    "none": {
+        "id": 0,
+        "radius": null
+    },
+    "sin": {
+        "id": 1,
+        "radius": 10
+    },
+    "sinh": {
+        "id": 2,
+        "radius": 10
+    },
+    "cos": {
+        "id": 3,
+        "radius": 10
+    },
+    "cosh": {
+        "id": 4,
+        "radius": 10
+    },
+    "tan": {
+        "id": 5,
+        "radius": 10
+    },
+    "tanh": {
+        "id": 6,
+        "radius": 10
+    },
+    "log": {
+        "id": 7,
+        "radius": 10
+    },
+    "sqrt": {
+        "id": 8,
+        "radius": 10
+    },
+    "abs": {
+        "id": 9,
+        "radius": 10
+    },
+    "exp": {
+        "id": 10,
+        "radius": 100
+    },
+    "atan": {
+        "id": 11,
+        "radius": 10
+    },
+    "asin": {
+        "id": 12,
+        "radius": 10
+    },
+    "acos": {
+        "id": 13,
+        "radius": 10
+    },
+    "asinh": {
+        "id": 14,
+        "radius": 10
+    },
+    "acosh": {
+        "id": 15,
+        "radius": 10
+    },
+    "atanh": {
+        "id": 16,
+        "radius": 10
+    },
+    "inv": {
+        "id": 17,
+        "radius": 10
+    }
+}
 
 var presets_fractals = {
     "mandelbrot": {
@@ -444,6 +557,28 @@ function setColormethod(name) {
     renderJul();
 }
 
+function setPostFunction(name) {
+    for (f in presets_functions) {
+        if (f == name) {
+            postFracFunc = presets_functions[f]["id"];
+            if (presets_functions[f]["radius"] != null) {
+                radius = presets_functions[f]["radius"];
+            } else {
+                for (f in presets_fractals) {
+                    if (presets_fractals[f]["id"] == fractalType) {
+                        radius = presets_fractals[f]["radius"];
+                    }
+                };
+            }
+        }
+    };
+
+    updateUi();
+
+    renderMain();
+    renderJul();
+}
+
 var mouse_x_main = 0;
 var mouse_y_main = 0;
 var mouse_clicked_main = false;
@@ -508,7 +643,6 @@ function mouse_move_main(e) {
 
 var mouse_x_jul = 0;
 var mouse_y_jul = 0;
-var mouse_clicked_jul = false;
 var mouse_clicked_right_jul = false;
 function updateMouseCoords_jul(e) {
     mouse_x_jul = (2 * (e.pageX - e.target.offsetLeft) - canvasJul.clientWidth ) / Math.min(canvasJul.clientWidth, canvasJul.clientHeight);
@@ -576,7 +710,8 @@ function setConstantY(y) { juliasetConstant[1] = y; renderJul(); }
 function setInterpolation(v) { juliasetInterpolation = v; renderJul(); }
 
 return [renderMain, renderJul, setFractal, setColormap, setColormethod, setCanvasesSticky,
-        setRadius, setIterations, setConstantX, setConstantY, setInterpolation];
+        setRadius, setIterations, setConstantX, setConstantY, setInterpolation, setPostFunction,
+        exportMain, exportJul];
 }
 
 var renderMain;
@@ -590,8 +725,12 @@ var setIterations;
 var setConstantX;
 var setConstantY;
 var setInterpolation;
+var setPostFunction;
+var exportMain;
+var exportJul; // i hate this with all of my heart
 (async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColormap2, setColormethod2, setCanvasesSticky2,
-                                                setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2]) => {
+                                                setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2, setPostFunction2,
+                                                exportMain2, exportJul2]) => {
     renderMain = renderMain2;
     renderJul = renderJul2;
     setFractal = setFractal2;
@@ -603,7 +742,12 @@ var setInterpolation;
     setConstantX = setConstantX2;
     setConstantY = setConstantY2;
     setInterpolation = setInterpolation2;
+    setPostFunction = setPostFunction2;
+    exportMain = exportMain2;
+    exportJul = exportJul2;
 
     document.getElementById("statusbar").style.display = "none";
+
+    console.log("finished");
 });
 
