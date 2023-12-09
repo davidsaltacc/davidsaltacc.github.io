@@ -59,9 +59,9 @@ status("STATUS: creating shader module");
 
 const shaderModule = device.createShaderModule({ code: code });
 
-status("STATUS: creating render pipeline. why is this taking so long? no idea. but it definitely is normal. hey, DON'T LEAVE! TRUST ME, ITS WORTH WAITING! okay, if you don't want to stay, go to the <a href=\"fractals-v2\">v2 version</a>.");
+status("STATUS: creating render pipeline. why is this taking so long? no idea. but it isn't normal. You probably have a bad device (It happened for me using a Microsoft Surface Go 2). okay, if you don't want to stay, go to the <a href=\"fractals-v2\">v2 version</a>.");
 
-const pipeline = await device.createRenderPipelineAsync({ // freezes here
+const pipeline = await device.createRenderPipelineAsync({
     layout: device.createPipelineLayout({ bindGroupLayouts: [
         device.createBindGroupLayout({
             entries: [
