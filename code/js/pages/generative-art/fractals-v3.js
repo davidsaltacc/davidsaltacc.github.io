@@ -715,10 +715,20 @@ function setCanvasesSticky(sticky) {
 setCanvasesSticky(true);
 
 function exportMain() {
-    // TODO
+    var data = canvasMain.toDataURL("image/png");
+    var a = document.createElement("a");
+    a.href = data;
+    a.download = "fractal.png";
+    a.click();
+    a.remove();
 }
 function exportJul() {
-    // TODO
+    var data = canvasJul.toDataURL("image/png");
+    var a = document.createElement("a");
+    a.href = data;
+    a.download = "fractal.png";
+    a.click();
+    a.remove();
 }
 
 function setRadius(rad) { radius = rad; renderMain(); renderJul(); }
