@@ -1,6 +1,14 @@
 
 async function init() {
 
+if (!navigator.gpu) {
+    if (confirm("WebGPU not supported on your browser. Go back to possibly supported WebGL version?")) {
+        window.location.href = "fractals-v2";
+    }
+    document.getElementById("statusbar").innerHTML = "WebGPU is not supported on your browser. Please go to the <a href=\"fractals-v2\">v2 version</a> instead.";
+    return;
+}
+
 const canvasMain = document.getElementById("canvasMain");
 const contextMain = canvasMain.getContext("webgpu", { preserveDrawingBuffer: true });
 
@@ -22,6 +30,7 @@ device.lost.then(() => {
 });
 
 status("STATUS: setting up uniform buffer");
+
 const format = navigator.gpu.getPreferredCanvasFormat();
 const uniformBufferSize = Math.ceil((
     + 2 * Float32Array.BYTES_PER_ELEMENT // center: vec2<f32>
@@ -44,6 +53,8 @@ const uniformBuffer = device.createBuffer({
     size: uniformBufferSize,
     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
 });
+
+status("STATUS: uniform buffer size " + uniformBufferSize + " bytes");
 
 status("STATUS: fetching shader code");
 
@@ -132,7 +143,7 @@ var postFracFunc = 0;
 var juliasetConstant = [0., 0.];
 var juliasetInterpolation = 1;
 
-function frame(context, juliaset, center, zoom) {
+function draw(context, juliaset, center, zoom) {
 	const arrayBuffer = new ArrayBuffer(uniformBufferSize);
 	new Float32Array(arrayBuffer, 0).set([
 		center[0],
@@ -176,10 +187,10 @@ function frame(context, juliaset, center, zoom) {
 };
 
 function renderMain() {
-    frame(contextMain, 0, centerMain, zoomMain);
+    draw(contextMain, 0, centerMain, zoomMain);
 }
 function renderJul() {
-    frame(contextJul, 1, centerJul, zoomJul);
+    draw(contextJul, 1, centerJul, zoomJul);
 }
 
 renderMain();
@@ -717,9 +728,24 @@ function setConstantX(x) { juliasetConstant[0] = x; renderJul(); }
 function setConstantY(y) { juliasetConstant[1] = y; renderJul(); }
 function setInterpolation(v) { juliasetInterpolation = v; renderJul(); }
 
+function setCanvasSize(size) {
+    canvasMain.width = canvasMain.height = size;
+    canvasJul.width = canvasJul.height = size;
+    canvasMain.clientWidth = canvasMain.clientHeight = size;
+    canvasJul.clientWidth = canvasJul.clientHeight = size;
+    if (size > (window.innerWidth - window.innerWidth / 6) / 2 && size > window.innerHeight - window.innerHeight / 4) {
+        setCanvasesSticky(false);
+    } else {
+        setCanvasesSticky(true);
+    }
+    
+    renderMain();
+    renderJul();
+}
+
 return [renderMain, renderJul, setFractal, setColormap, setColormethod, setColoroffset, setCanvasesSticky,
         setRadius, setIterations, setConstantX, setConstantY, setInterpolation, setPostFunction,
-        exportMain, exportJul];
+        exportMain, exportJul, setCanvasSize];
 }
 
 var renderMain;
@@ -736,10 +762,11 @@ var setConstantY;
 var setInterpolation;
 var setPostFunction;
 var exportMain;
-var exportJul; // i hate this with all of my heart
+var exportJul;
+var setCanvasSize; // i hate this with all of my heart
 (async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColormap2, setColormethod2, setColoroffset2, setCanvasesSticky2,
                                                 setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2, setPostFunction2,
-                                                exportMain2, exportJul2]) => {
+                                                exportMain2, exportJul2, setCanvasSize2]) => {
     renderMain = renderMain2;
     renderJul = renderJul2;
     setFractal = setFractal2;
@@ -755,6 +782,7 @@ var exportJul; // i hate this with all of my heart
     setPostFunction = setPostFunction2;
     exportMain = exportMain2;
     exportJul = exportJul2;
+    setCanvasSize = setCanvasSize2;
 
     document.getElementById("loadingscreen").style.display = "none";
 

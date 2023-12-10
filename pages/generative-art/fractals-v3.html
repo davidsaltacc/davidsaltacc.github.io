@@ -137,6 +137,8 @@
         <input type="number" id="constantIm" value="0" onchange="setConstantY(document.getElementById('constantIm').value);">
         <p>Interpolate between normal and juliaset:</p>
         <input type="range" id="nji" value="1" min="0" max="1" step="0.001" oninput="setInterpolation(document.getElementById('nji').value);">
+        <p>Canvas Size:</p>
+        <input type="number" id="canvasSize" value="500" onchange="setCanvasSize(document.getElementById('canvasSize').value)">
         <hr>
         <h3>Side Note:</h3>
         <p>This project is still very early in development. This means, new features will be added in the future. Until everything is finished, bugs might occur, things might break. If you find anything, please <a href="https://github.com/davidsaltacc/davidsaltacc.github.io/issues/new">open a issue on github.</a></p>
