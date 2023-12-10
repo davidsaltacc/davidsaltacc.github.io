@@ -82,7 +82,7 @@
         <button onclick="setColormap('morning glory')">Morning glory</button>
         <button onclick="setColormap('chocolate')">Chocolate</button>
         <p>Color offset:</p>
-        <input type="range" min="0" max="1" step="0.001" value="0" id="coloroffset" oninput="setColorOffset;">
+        <input type="range" min="0" max="1" step="0.001" value="0" id="coloroffset" oninput="setColorOffset(document.getElementById('coloroffset').value);">
         <hr>
         <h3>Color Method Selection:</h3>
         <button onclick="setColormethod('terraced')">Terraced</button>
