@@ -41,6 +41,7 @@ const uniformBufferSize = Math.ceil((
     + Float32Array.BYTES_PER_ELEMENT // power: f32
     + Float32Array.BYTES_PER_ELEMENT // colorOffset: f32
     + Float32Array.BYTES_PER_ELEMENT // juliasetInterpolation: f32
+    + Float32Array.BYTES_PER_ELEMENT // colorfulness: f32
     + Uint32Array.BYTES_PER_ELEMENT // maxIterations: u32
     + Uint32Array.BYTES_PER_ELEMENT // fractalType: u32
     + Uint32Array.BYTES_PER_ELEMENT // colorscheme: u32
@@ -70,7 +71,7 @@ status("STATUS: creating shader module");
 
 const shaderModule = device.createShaderModule({ code: code });
 
-status("STATUS: creating render pipeline. why is this taking so long? no idea. but it isn't normal. You probably have a bad device (It happened for me using a Microsoft Surface Go 2). okay, if you don't want to stay, go to the <a href=\"fractals-v2\">v2 version</a>.");
+status("STATUS: creating render pipeline. if you don't want to stay, go to the <a href=\"fractals-v3-min\">v3 minified</a>, which has just a few less features, or the <a href=\"fractals-v2\">v2 version</a>.");
 
 const pipeline = await device.createRenderPipelineAsync({
     layout: device.createPipelineLayout({ bindGroupLayouts: [
@@ -142,6 +143,7 @@ var colorMethod = 1;
 var postFracFunc = 0;
 var juliasetConstant = [0., 0.];
 var juliasetInterpolation = 1;
+var colorfulness = 1;
 
 function draw(context, juliaset, center, zoom) {
 	const arrayBuffer = new ArrayBuffer(uniformBufferSize);
@@ -156,9 +158,10 @@ function draw(context, juliaset, center, zoom) {
         radius,
         power, 
         colorOffset,
-        juliasetInterpolation
+        juliasetInterpolation,
+        colorfulness
 	]);
-	new Uint32Array(arrayBuffer, 11 * Float32Array.BYTES_PER_ELEMENT).set([
+	new Uint32Array(arrayBuffer, 12 * Float32Array.BYTES_PER_ELEMENT).set([
         maxIterations,
         fractalType,
         colorscheme,
@@ -365,7 +368,7 @@ var presets_functions = {
     }
 }
 
-var presets_fractals = {
+var presets_fractals = { // TODO 28: untitled 4
     "mandelbrot": {
         "id": 0,
         "radius": 10000000,
@@ -533,6 +536,42 @@ var presets_fractals = {
         "radius": 20,
         "formula": "no idea TODO add",
         "description": "A fractal from the complex plane collatz conjecture, apparently."
+    },
+    "unnamed 4": {
+        "id": 28,
+        "radius": 10000000,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "septagon": {
+        "id": 29,
+        "radius": 10,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "unnamed 5": {
+        "id": 30,
+        "radius": 10000000,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "unnamed 6": {
+        "id": 31,
+        "radius": 1000000,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "cactus": {
+        "id": 32,
+        "radius": 10000000,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "unnamed 7": {
+        "id": 33,
+        "radius": 10,
+        "formula": "no idea TODO add",
+        "description": "idk"
     }
 }
 
@@ -737,6 +776,7 @@ function setColoroffset(o) { colorOffset = o; renderMain(); renderJul(); }
 function setConstantX(x) { juliasetConstant[0] = x; renderJul(); }
 function setConstantY(y) { juliasetConstant[1] = y; renderJul(); }
 function setInterpolation(v) { juliasetInterpolation = v; renderJul(); }
+function setColorfulness(c) { colorfulness = c; renderMain(); renderJul(); }
 
 function setCanvasSize(size) {
     canvasMain.width = canvasMain.height = size;
@@ -755,7 +795,7 @@ function setCanvasSize(size) {
 
 return [renderMain, renderJul, setFractal, setColormap, setColormethod, setColoroffset, setCanvasesSticky,
         setRadius, setIterations, setConstantX, setConstantY, setInterpolation, setPostFunction,
-        exportMain, exportJul, setCanvasSize];
+        exportMain, exportJul, setCanvasSize, setColorfulness];
 }
 
 var renderMain;
@@ -773,10 +813,11 @@ var setInterpolation;
 var setPostFunction;
 var exportMain;
 var exportJul;
-var setCanvasSize; // i hate this with all of my heart
+var setCanvasSize; 
+var setColorfulness; // i hate this with all of my heart
 (async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColormap2, setColormethod2, setColoroffset2, setCanvasesSticky2,
                                                 setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2, setPostFunction2,
-                                                exportMain2, exportJul2, setCanvasSize2]) => {
+                                                exportMain2, exportJul2, setCanvasSize2, setColorfulness2]) => {
     renderMain = renderMain2;
     renderJul = renderJul2;
     setFractal = setFractal2;
@@ -793,6 +834,7 @@ var setCanvasSize; // i hate this with all of my heart
     exportMain = exportMain2;
     exportJul = exportJul2;
     setCanvasSize = setCanvasSize2;
+    setColorfulness = setColorfulness2;
 
     document.getElementById("loadingscreen").style.display = "none";
 

@@ -39,8 +39,8 @@
         <canvas id="canvasJul" width="500" height="500"></canvas>
         <canvas id="canvasMain" width="500" height="500"></canvas>
         <h1 id="title">David's Fractal Explorer v3 Minified</h1>
-        <h4 class="infobar">This is not a finished page. The <a href="fractals-v2">v2 version</a> has more features at the moment.</h4>
-        <h4 class="infobar">This is the minified version of the fractal explorer. Please wait while the full one is loading.</h4>
+        <h4 class="infobar">This is not a finished page. The <a href="fractals-v2">v2 version</a> has some features that this page doesn't at the moment.</h4>
+        <h4 class="infobar">This is the minified version of the fractal explorer. </h4>
         <script src="../../code/js/pages/generative-art/fractals-v3-min.js"></script>
         <h3>Fractal Selection:</h3>
         <button onclick="setFractal('mandelbrot')">Mandelbrot</button>
@@ -71,6 +71,12 @@
         <button onclick="setFractal('fish')">Fish</button>
         <button onclick="setFractal('wavy')">Wavy</button>
         <button onclick="setFractal('collatz')">Collatz</button>
+        <button onclick="setFractal('unnamed 4')">Unnamed 4</button>
+        <button onclick="setFractal('septagon')">Septagon</button>
+        <button onclick="setFractal('unnamed 5')">Unnamed 5</button>
+        <button onclick="setFractal('unnamed 6')">Unnamed 6</button>
+        <button onclick="setFractal('cactus')">Cactus</button>
+        <button onclick="setFractal('unnamed 7')">Unnamed 7</button>
         <hr>
         <h3>Colormap Selection:</h3>
         <button onclick="setColormap('classic')">Classic</button>
@@ -113,6 +119,8 @@
         <input type="number" id="canvasSize" value="500" onchange="setCanvasSize(document.getElementById('canvasSize').value)">
         <p>Color offset:</p>
         <input type="range" min="0" max="1" step="0.001" value="0" id="coloroffset" oninput="setColoroffset(document.getElementById('coloroffset').value);">
+        <p>Colorfulness:</p>
+        <input type="range" min="0" max="10" step="0.001" value="0" id="colorfulness" oninput="setColorfulness(document.getElementById('colorfulness').value);">
         <hr>
         <h3>Side Note:</h3>
         <p>This project is still very early in development. This means, new features will be added in the future. Until everything is finished, bugs might occur, things might break. If you find anything, please <a href="https://github.com/davidsaltacc/davidsaltacc.github.io/issues/new">open a issue on github.</a></p>

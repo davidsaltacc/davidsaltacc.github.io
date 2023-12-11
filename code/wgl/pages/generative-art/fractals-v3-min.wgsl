@@ -12,6 +12,7 @@ struct Uniforms {
     radius: f32,
     power: f32,
     colorOffset: f32,
+	colorfulness: f32,
 	maxIterations: u32,
 	fractalType: u32,
 	colorscheme: u32,
@@ -90,6 +91,10 @@ fn c_sqrt(z: vec2<f32>) -> vec2<f32> {
 } 
 fn c_abs(z: vec2<f32>) -> vec2<f32> {
 	return vec2<f32>(abs(z.x), abs(z.y));
+} 
+fn c_inv(c: vec2<f32>) -> vec2<f32> {
+	let n: f32 = length(c);
+	return vec2<f32>(c.x, -c.y) / (n * n);
 } 
 
 fn weierstrass(x: f32) -> f32 {
@@ -232,17 +237,24 @@ fn iterate(z: vec2<f32>, c: vec2<f32>) -> vec2<f32> {
     }
     if (fractalType == 27) {
         return c_collatz(z) + c;
-    }
-	// TODO implement fractals from other pc here lol
-	
+	}
 	if (fractalType == 28) {
+		return c_pow(vec2<f32>(z.y - sign(z.x) * sqrt(abs(c.y * z.x - (c.x + c.y))), c.x - z.x), power);
+	}
+	if (fractalType == 29) { // radius 10
+		return c_division(c_pow(z, 7.) + c.x / c.y, z);
+	}
+	if (fractalType == 30) {
+		return c_pow(z, power) + c_division(c_abs(z) + vec2<f32>(0., 1.), c_abs(z) + vec2<f32>(1., 0.)) + c;
+	}
+	if (fractalType == 31) {
 		return c_division(c_pow(z, 4.) + 1 + c.x, c_pow(z, 2.) + 1 + c.y);
 	}
-	if (fractalType == 29) {
+	if (fractalType == 32) {
 		return c_pow(z, 3.) + c_multiplication(c - vec2<f32>(1., 0.), z) - c;
 	}
-	if (fractalType == 30) { // TODO better interior coloring for this
-		return c_multiplication(c, c_multiplication(c_pow(z, 2.), c_division(c_pow(z, 2.) + vec2<f32>(1., 0.), c_pow(c_pow(z, 2.) - vec2<f32>(1., 0.), 2.))));
+	if (fractalType == 33) {
+		return c_inv(c_multiplication(c, c_multiplication(c_pow(z, 2.), c_division(c_pow(z, 2.) + vec2<f32>(1., 0.), c_pow(c_pow(z, 2.) - vec2<f32>(1., 0.), 2.)))));
 	}
 
     return z;
@@ -406,8 +418,9 @@ fn davids_colorscheme(x: f32) -> vec4<f32> {
 	return vec4<f32>(0., 0., 0., 1.);
 } 
 
-fn color(x: f32) -> vec4<f32> {
+fn color(x: f32) -> vec4<f32> { // TODO add power field
 	var xv: f32 = x;
+	xv = xv * uniforms.colorfulness;
 	xv = xv + uniforms.colorOffset;
     var colorscheme: u32 = uniforms.colorscheme;
 	if (colorscheme == 0) {

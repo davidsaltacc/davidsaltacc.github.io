@@ -40,7 +40,7 @@ const uniformBufferSize = Math.ceil((
     + Float32Array.BYTES_PER_ELEMENT // radius: f32
     + Float32Array.BYTES_PER_ELEMENT // power: f32
     + Float32Array.BYTES_PER_ELEMENT // colorOffset: f32
-    + Float32Array.BYTES_PER_ELEMENT // juliasetInterpolation: f32
+    + Float32Array.BYTES_PER_ELEMENT // colorfulness: f32
     + Uint32Array.BYTES_PER_ELEMENT // maxIterations: u32
     + Uint32Array.BYTES_PER_ELEMENT // fractalType: u32
     + Uint32Array.BYTES_PER_ELEMENT // colorscheme: u32
@@ -69,7 +69,7 @@ status("STATUS: creating shader module");
 
 const shaderModule = device.createShaderModule({ code: code });
 
-status("STATUS: creating render pipeline. shouldn't take too long.");
+status("STATUS: creating render pipeline. this shouldn't take too long.");
 
 const pipeline = await device.createRenderPipelineAsync({
     layout: device.createPipelineLayout({ bindGroupLayouts: [
@@ -135,10 +135,11 @@ var maxIterations = 100;
 var radius = 100000;
 var power = 2;
 var colorOffset = 0;
-var fractalType = 30;
+var fractalType = 0;
 var colorscheme = 0;
 var colorMethod = 1;
 var juliasetConstant = [0., 0.];
+var colorfulness = 1;
 
 function draw(context, juliaset, center, zoom) {
 	const arrayBuffer = new ArrayBuffer(uniformBufferSize);
@@ -152,9 +153,10 @@ function draw(context, juliaset, center, zoom) {
         zoom,
         radius,
         power, 
-        colorOffset
+        colorOffset,
+        colorfulness
 	]);
-	new Uint32Array(arrayBuffer, 10 * Float32Array.BYTES_PER_ELEMENT).set([
+	new Uint32Array(arrayBuffer, 11 * Float32Array.BYTES_PER_ELEMENT).set([
         maxIterations,
         fractalType,
         colorscheme,
@@ -284,81 +286,6 @@ var presets_colormaps = {
         "description": "A colorscheme I just came up with. Has this chocolate-y color to it. Apparently it changes into a rainbow and back when zooming in. Unintended. Also, this only looks good with smooth coloring. Tho it really makes most fractals look amazing."
     }
 };
-
-var presets_functions = {
-    "none": {
-        "id": 0,
-        "radius": null
-    },
-    "sin": {
-        "id": 1,
-        "radius": 10
-    },
-    "sinh": {
-        "id": 2,
-        "radius": 10
-    },
-    "cos": {
-        "id": 3,
-        "radius": 10
-    },
-    "cosh": {
-        "id": 4,
-        "radius": 10
-    },
-    "tan": {
-        "id": 5,
-        "radius": 10
-    },
-    "tanh": {
-        "id": 6,
-        "radius": 10
-    },
-    "log": {
-        "id": 7,
-        "radius": 10
-    },
-    "sqrt": {
-        "id": 8,
-        "radius": 10
-    },
-    "abs": {
-        "id": 9,
-        "radius": 10
-    },
-    "exp": {
-        "id": 10,
-        "radius": 100
-    },
-    "atan": {
-        "id": 11,
-        "radius": 10
-    },
-    "asin": {
-        "id": 12,
-        "radius": 10
-    },
-    "acos": {
-        "id": 13,
-        "radius": 10
-    },
-    "asinh": {
-        "id": 14,
-        "radius": 10
-    },
-    "acosh": {
-        "id": 15,
-        "radius": 10
-    },
-    "atanh": {
-        "id": 16,
-        "radius": 10
-    },
-    "inv": {
-        "id": 17,
-        "radius": 10
-    }
-}
 
 var presets_fractals = {
     "mandelbrot": {
@@ -528,6 +455,42 @@ var presets_fractals = {
         "radius": 20,
         "formula": "no idea TODO add",
         "description": "A fractal from the complex plane collatz conjecture, apparently."
+    },
+    "unnamed 4": {
+        "id": 28,
+        "radius": 10000000,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "septagon": {
+        "id": 29,
+        "radius": 10,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "unnamed 5": {
+        "id": 30,
+        "radius": 10000000,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "unnamed 6": {
+        "id": 31,
+        "radius": 1000000,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "cactus": {
+        "id": 32,
+        "radius": 10000000,
+        "formula": "no idea TODO add",
+        "description": "idk"
+    },
+    "unnamed 7": {
+        "id": 33,
+        "radius": 10,
+        "formula": "no idea TODO add",
+        "description": "idk"
     }
 }
 
@@ -710,6 +673,7 @@ function setIterations(i) { maxIterations = i; renderMain(); renderJul(); }
 function setColoroffset(o) { colorOffset = o; renderMain(); renderJul(); }
 function setConstantX(x) { juliasetConstant[0] = x; renderJul(); }
 function setConstantY(y) { juliasetConstant[1] = y; renderJul(); }
+function setColorfulness(c) { colorfulness = c; renderMain(); renderJul(); }
 
 function setCanvasSize(size) {
     canvasMain.width = canvasMain.height = size;
@@ -728,7 +692,7 @@ function setCanvasSize(size) {
 
 return [renderMain, renderJul, setFractal, setColormap, setColormethod, setColoroffset, setCanvasesSticky,
         setRadius, setIterations, setConstantX, setConstantY, 
-        exportMain, exportJul, setCanvasSize];
+        exportMain, exportJul, setCanvasSize, setColorfulness];
 }
 
 var renderMain;
@@ -744,10 +708,11 @@ var setConstantX;
 var setConstantY;
 var exportMain;
 var exportJul;
-var setCanvasSize; // i hate this with all of my heart
+var setCanvasSize; 
+var setColorfulness; // i hate this with all of my heart
 (async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColormap2, setColormethod2, setColoroffset2, setCanvasesSticky2,
                                                 setRadius2, setIterations2, setConstantX2, setConstantY2,
-                                                exportMain2, exportJul2, setCanvasSize2]) => {
+                                                exportMain2, exportJul2, setCanvasSize2, setColorfulness2]) => {
     renderMain = renderMain2;
     renderJul = renderJul2;
     setFractal = setFractal2;
@@ -762,6 +727,7 @@ var setCanvasSize; // i hate this with all of my heart
     exportMain = exportMain2;
     exportJul = exportJul2;
     setCanvasSize = setCanvasSize2;
+    setColorfulness = setColorfulness2;
 
     document.getElementById("loadingscreen").style.display = "none";
 

@@ -13,6 +13,7 @@ struct Uniforms {
     power: f32,
     colorOffset: f32,
     juliasetInterpolation: f32,
+	colorfulness: f32,
 	maxIterations: u32,
 	fractalType: u32,
 	colorscheme: u32,
@@ -25,6 +26,7 @@ struct Uniforms {
 
 const pi: f32 = 3.1415926535897932384626433832795;
 const e: f32 = 2.7182818284590452353602874713527;
+const phi: f32 = (sqrt(5.) - 1.) / 2.;
 
 @vertex
 fn vertex(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
@@ -93,6 +95,12 @@ fn c_sqrt(z: vec2<f32>) -> vec2<f32> {
 fn c_abs(z: vec2<f32>) -> vec2<f32> {
 	return vec2<f32>(abs(z.x), abs(z.y));
 } 
+fn c_inv(c: vec2<f32>) -> vec2<f32> {
+	let n: f32 = length(c);
+	return vec2<f32>(c.x, -c.y) / (n * n);
+} 
+
+
 
 fn c_exp(z: vec2<f32>) -> vec2<f32> {
 	var w: vec2<f32> = vec2<f32>(cos(z.y), sin(z.y));
@@ -149,10 +157,8 @@ fn c_atanh(c: vec2<f32>) -> vec2<f32> {
 	return c_division(c_log(one + c) - c_log(one - c), two);
 } 
 
-fn c_inv(c: vec2<f32>) -> vec2<f32> {
-	let n: f32 = length(c);
-	return vec2<f32>(c.x, -c.y) / (n * n);
-} 
+
+
 
 fn weierstrass(x: f32) -> f32 {
 	var x_var = x;
@@ -209,7 +215,7 @@ fn apply_post_function(z: vec2<f32>) -> vec2<f32> {
 } 
 
 
-fn iterate(z: vec2<f32>, c: vec2<f32>) -> vec2<f32> {
+fn iterate(z: vec2<f32>, c: vec2<f32>, last_z: vec2<f32>) -> vec2<f32> {
 	var fractalType: u32 = uniforms.fractalType;
 	var power: f32 = uniforms.power;
     if (fractalType == 0) {
@@ -321,6 +327,24 @@ fn iterate(z: vec2<f32>, c: vec2<f32>) -> vec2<f32> {
     if (fractalType == 27) {
         return apply_post_function(c_collatz(z)) + c;
     }
+	if (fractalType == 28) {
+		return apply_post_function(c_pow(vec2<f32>(z.y - sign(z.x) * sqrt(abs(c.y * z.x - (c.x + c.y))), c.x - z.x), power));
+	}
+	if (fractalType == 29) { // radius 10
+		return apply_post_function(c_division(c_pow(z, 7.) + c.x / c.y, z));
+	}
+	if (fractalType == 30) {
+		return apply_post_function(c_pow(z, power) + c_division(c_abs(z) + vec2<f32>(0., 1.), c_abs(z) + vec2<f32>(1., 0.))) + c;
+	}
+	if (fractalType == 31) {
+		return apply_post_function(c_division(c_pow(z, 4.) + 1 + c.x, c_pow(z, 2.) + 1 + c.y));
+	}
+	if (fractalType == 32) {
+		return apply_post_function(c_pow(z, 3.) + c_multiplication(c - vec2<f32>(1., 0.), z) - c);
+	}
+	if (fractalType == 33) {
+		return apply_post_function(c_multiplication(c, c_multiplication(c_pow(z, 2.), c_division(c_pow(z, 2.) + vec2<f32>(1., 0.), c_pow(c_pow(z, 2.) - vec2<f32>(1., 0.), 2.)))));
+	}
 
     return z;
 }
@@ -522,6 +546,7 @@ fn chocolate_colormap(x: f32) -> vec4<f32> {
 
 fn color(x: f32) -> vec4<f32> {
 	var xv: f32 = x;
+	xv = xv * uniforms.colorfulness;
 	xv = xv + uniforms.colorOffset;
     var colorscheme: u32 = uniforms.colorscheme;
 	if (colorscheme == 0) {
@@ -588,6 +613,7 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
     c = vec2<f32>(c.x, -c.y);
 	var z: vec2<f32> = c;
 	var last_z: vec2<f32> = z;
+	var p_z: vec2<f32> = z;
 	var iteration: u32 = 0u;
 	var maxIterations: u32 = uniforms.maxIterations;
 	var colorMethod: u32 = uniforms.colorMethod;
@@ -611,7 +637,10 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 	}
 
 	for (; iteration <= maxIterations; iteration++) {
-        z = iterate(z, c);
+
+		var t_z: vec2<f32> = z;
+        z = iterate(z, c, p_z); // get previous iter z
+		p_z = z;
 
         if (colorMethod == 0) {
             if (magnitude(z) > radius) {
@@ -671,6 +700,7 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
                 color_black = true;
             }
         }
+		
         last_z = z;
 	}
 
