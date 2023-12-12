@@ -343,7 +343,7 @@ fn iterate(z: vec2<f32>, c: vec2<f32>, last_z: vec2<f32>) -> vec2<f32> {
 		return apply_post_function(c_pow(z, 3.) + c_multiplication(c - vec2<f32>(1., 0.), z) - c);
 	}
 	if (fractalType == 33) {
-		return apply_post_function(c_multiplication(c, c_multiplication(c_pow(z, 2.), c_division(c_pow(z, 2.) + vec2<f32>(1., 0.), c_pow(c_pow(z, 2.) - vec2<f32>(1., 0.), 2.)))));
+		return apply_post_function(c_inv(c_multiplication(c, c_multiplication(c_pow(z, 2.), c_division(c_pow(z, 2.) + vec2<f32>(1., 0.), c_pow(c_pow(z, 2.) - vec2<f32>(1., 0.), 2.))))));
 	}
 
     return z;
