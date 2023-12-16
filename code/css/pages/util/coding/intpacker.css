@@ -1,0 +1,73 @@
+body {
+    background-color: rgb(33, 33, 33);
+    color: rgb(223, 223, 223);
+    padding-left: 5px;
+}
+
+button, input, select {
+    background-color: rgb(63, 63, 63);
+    color: rgb(223, 223, 223);
+    border-width: 0;
+    border-radius: 2px;
+    font-size: 16px;
+}
+
+p, h3 {
+    margin-top: 5px;
+    padding-top: 5px;
+}
+
+button:disabled {
+    background-color: rgb(36, 36, 36);
+    color: rgb(158, 158, 158);
+}
+
+.inttopack {
+    border-radius: 3px;
+    background-color: rgb(63, 63, 63);
+    max-width: max-content;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin: 1px;
+    display: flex;
+}
+
+#packbutton {
+    font-size: larger;
+}
+
+.removebutton { 
+    background-color: rgb(86, 86, 86);
+}
+
+#toolarge {
+    color: crimson;
+    display: none;
+}
+
+hr.separator {
+    border-color: rgb(0, 0, 0);
+    border-width: 1px;
+}
+
+code {
+    border-radius: 8px;
+}
+
+.disclaimer {
+    color: crimson;
+}
+
+.small {
+    font-size: 11px;
+}
+
+.code-large {
+    font-size: 15px;
+    color: rgb(181, 181, 181);
+}
+
+#testedhelp {
+    display: hidden;
+    color: crimson;
+}

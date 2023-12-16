@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integer Packer</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="shortcut icon" type="image/png" href="../../../assets/favicon.png">
+    <link rel="stylesheet" href="../../../code/css/pages/util/coding/intpacker.css">
+    <script src="../../../code/js/pages/util/coding/intpacker.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/highlight.min.js"></script>
+
+</head>
+<body>
+    <h1>Integer Packer</h1>
+    <p>Integer Packer is a little tool used to store multiple small (positive) integers.<br><br>
+    <i>Warning</i>: This project might not always work properly, but in case the packing code generated is wrong, you will be informed and told how to posssibly fix it.</p>
+    <hr class="separator">
+    <p class="disclaimer" id="disclaimer"><i>Warning 2</i>: This tool is meant for packing <i>small</i> integers. If you enter large numbers, like 100000, the results will break due to bitshifting outside of the Integer limit. <i>Always</i> test if the generated code works, before implementing it into your own project. <button type="button" onclick="document.getElementById('disclaimer').style.display = 'none';document.getElementById('disclaimerSep').style.display = 'none';">Okay, I understand</button></p>
+    <hr class="separator" id="disclaimerSep"><br>
+    <h2>Start Packing!</h2>
+    <label for="inttype">Integer Type that the ints will be packed into (usually language-specific):</label>
+    <select name="inttype" title="Integer Type" id="inttype" onchange="intTypeChanged();">
+        <option value="int32">Int32</option>
+        <option value="int64">Int64</option>
+    </select>
+    <hr class="separator">
+    <h3>Add a Integer to be packed</h2>
+    <p>Max Value it will reach</p>
+    <input type="number" step="1" value="1" min="0" id="maxval">
+    <button type="button" onclick="addIntegerToPack();" id="addint">Add Integer</button>
+    <h4 id="toolarge">Number too large.</h4>
+    <hr class="separator">
+    <h3>Integers to be packed:</h3>
+    <div id="intstopack"></div>
+    <br><p>Bits occupied in total: <span id="totalbits">0</span></p>
+    <hr class="separator">
+    <h3>Packing Functions</h3>
+    <p>Select Language:</p>
+    <button type="button" onclick="packIntegersJs(); packFunctionL = packIntegersJs;">Javascript</button>
+    <button type="button" onclick="packIntegersPy(); packFunctionL = packIntegersPy;">Python</button>
+    <pre id="packcode"><code class="language-javascript" id="codecontainer"></code></pre>
+    <p id="testedinfo">The generated functions have been tested, here are the results.<br>
+        <code class="code-large">Input: <span id="testedinput">INPUT</span></code><br>
+        <code class="code-large">Packed: <span id="testedpacked">PACKED</span></code><br>
+        <code class="code-large">Unpacked: <span id="testedunpacked">UNPACKED</span></code><br>
+        After packing and unpacking, <span id="testedamountsuccess">SUCCESS</span> out of <span id="testedamounttotal">TOTAL</span> integers have correctly been recovered.<br>
+        <span id="testedhelp">Sometimes fixing errors can easily be done. Try a few of the following things: <br>1. Make the numbers a bit smaller, if they are large. <br>2. Try changing the order of the numbers. This can solve the issue too. <br>3. Try making some very small numbers (~1-2) a little bit bigger. Often this works too.<br><br>If you think there is a issue with the generated code, and you know whats wrong, <a href="https://github.com/davidsaltacc/davidsaltacc.github.io/issues/new">then please open an issue on the github repo</a>, thanks.</span>
+    </p>
+    <script>packFunctionL();</script>
+</body>
+</html>
