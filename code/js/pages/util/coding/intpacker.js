@@ -140,7 +140,7 @@ function packIntegersJs(testOnly) { // what in the name of the holy goose have i
     for (var i = integersToPack.length - 1; i >= 0; i--) {
         var isFirst = i == integersToPack.length - 1;
         returnLine = (isFirst ? "" : "(") + "i" + i + (isFirst ? "" : (" << " + shiftAmount)) + (isFirst ? "" : ") | ") + returnLine;
-        var shiftBy = integersToPack[integersToPack.length - i - 1].len;
+        var shiftBy = integersToPack[i].len;
         shiftAmounts.push({ amt: shiftAmount, len: shiftBy });
         shiftAmount += shiftBy;
     }
@@ -156,7 +156,7 @@ function packIntegersJs(testOnly) { // what in the name of the holy goose have i
         unpackFunction += (isLast ? "" : "(") + "packed ";
         var index2 = shiftAmounts.length - index - 1;
         unpackFunction += isLast ? "" : (">>> " + shiftAmounts[index2].amt + ") ");
-        unpackFunction += "& 0b" + "1".repeat(shiftAmounts[index].len) + ";\n";
+        unpackFunction += "& 0b" + "1".repeat(shiftAmounts[index2].len) + ";\n";
     });
     unpackFunction += "    return [";
     for (var i = 0; i < integersToPack.length; i++) {
@@ -195,7 +195,7 @@ function packIntegersPy() { // python
     for (var i = integersToPack.length - 1; i >= 0; i--) {
         var isFirst = i == integersToPack.length - 1;
         returnLine = (isFirst ? "" : "(") + "i" + i + (isFirst ? "" : (" << " + shiftAmount)) + (isFirst ? "" : ") | ") + returnLine;
-        var shiftBy = integersToPack[integersToPack.length - i - 1].len;
+        var shiftBy = integersToPack[i].len;
         shiftAmounts.push({ amt: shiftAmount, len: shiftBy });
         shiftAmount += shiftBy;
     }
@@ -211,7 +211,7 @@ function packIntegersPy() { // python
         unpackFunction += (isLast ? "" : "(") + "packed ";
         var index2 = shiftAmounts.length - index - 1;
         unpackFunction += isLast ? "" : (">> " + shiftAmounts[index2].amt + ") ");
-        unpackFunction += "& 0b" + "1".repeat(shiftAmounts[index].len) + "\n";
+        unpackFunction += "& 0b" + "1".repeat(shiftAmounts[index2].len) + "\n";
     });
     unpackFunction += "    return [";
     for (var i = 0; i < integersToPack.length; i++) {
