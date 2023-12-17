@@ -199,7 +199,7 @@ function packIntegersPy() { // python
         shiftAmounts.push({ amt: shiftAmount, len: shiftBy });
         shiftAmount += shiftBy;
     }
-    packFunction += returnLine == "" ? "" : (" (" + returnLine + ") + 2 ** 32");
+    packFunction += returnLine == "" ? "" : returnLine;
     packFunction += "\n";
 
     var unpackFunction = "";
