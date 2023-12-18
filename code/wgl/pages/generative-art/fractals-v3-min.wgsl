@@ -256,6 +256,16 @@ fn iterate(z: vec2<f32>, c: vec2<f32>) -> vec2<f32> {
 	if (fractalType == 33) {
 		return c_inv(c_multiplication(c, c_multiplication(c_pow(z, 2.), c_division(c_pow(z, 2.) + vec2<f32>(1., 0.), c_pow(c_pow(z, 2.) - vec2<f32>(1., 0.), 2.)))));
 	}
+	// if (fractalType == 34) {
+		// return c_pow(c_division(
+		// 	c_pow(z, 2.) + c - 1,
+		// 	2. * z + c - 2
+		// ), 2.);
+	// }
+	if (fractalType == 34) {
+		// complex(1 - z.imag * abs(z.real), z.real ** 2) ** 2 + c
+		return vec2<f32>();
+	}
 
     return z;
 }
