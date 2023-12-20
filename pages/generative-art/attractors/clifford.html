@@ -11,11 +11,10 @@
 
 <body>
     <p>a, b, c, d:</p>
-    <input type="range" class="slider" min="-3.141" max="3.141" step="0.001" value="-1.4" id="a">
-    <input type="range" class="slider" min="-3.141" max="3.141" step="0.001" value="1.6" id="b">
-    <input type="range" class="slider" min="-3.141" max="3.141" step="0.001" value="1.0" id="c">
-    <input type="range" class="slider" min="-3.141" max="3.141" step="0.001" value="0.7" id="d">
-    <button type="button" onclick="requestAnimationFrame(draw);">Rerender!</button>
+    <input type="range" class="slider" min="-3.141" max="3.141" step="0.001" value="-2" id="a" onchange="draw();">
+    <input type="range" class="slider" min="-3.141" max="3.141" step="0.001" value="-2" id="b" onchange="draw();">
+    <input type="range" class="slider" min="-3.141" max="3.141" step="0.001" value="-1.2" id="c" onchange="draw();">
+    <input type="range" class="slider" min="-3.141" max="3.141" step="0.001" value="2" id="d" onchange="draw();">
     <button type="button" onclick="exportCanvas();">Export</button>
     <script src="../../../code/js/pages/generative-art/attractors-common.js"></script>
     <script src="../../../code/js/pages/generative-art/attractors/clifford.js"></script>

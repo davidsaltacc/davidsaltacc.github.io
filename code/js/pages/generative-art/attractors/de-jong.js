@@ -1,20 +1,29 @@
 
-var iterationAmount = 100;
-var pointAlpha = 0.25;
+var iterationAmount = 50;
+var pointAlpha = 0.2;
+var maxParticles = 200000;
+
+var req = null;
 
 function draw() {
+
+    cancelAnimationFrame(req);
     
     var a = document.getElementById("a").value;
     var b = document.getElementById("b").value;
     var c = document.getElementById("c").value;
     var d = document.getElementById("d").value;
-    
-    var particles = [];
 
-    for (var x = 0; x < canvas.width; x += canvas.width / (canvas.width / 2)) {
-        for (var y = 0; y < canvas.height; y += canvas.height / (canvas.height / 2)) {
+    var amount = 0;
+
+    function iter() {
+        if (amount >= maxParticles) {
+            return;
+        }
+        var particles = [];
+        for (var i = 0; i < 100; i++) {
             particles.push(new Particle(
-                x, y, 
+                Math.random() * canvas.width, Math.random() * canvas.height, 
                 (x_, y_) => {
                     return [
                         Math.sin(a * y_) - Math.cos(b * x_),
@@ -22,23 +31,24 @@ function draw() {
                     ];
                 }
             ));
+            particles.forEach((particle) => {
+                for (var i = 0; i < iterationAmount; i++) {
+                    particle.update();
+                }
+                
+                particle.show();
+            });
+            amount += i;
         }
+        req = requestAnimationFrame(iter);
     }
 
     ctx.fillStyle = "rgba(0, 0, 0, 1)";
-
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     ctx.strokeStyle = "rgba(255, 255, 255, " + pointAlpha + ")";
 
-    particles.forEach((particle) => {
-        for (var i = 0; i < iterationAmount; i++) {
-            particle.update();
-        }
-        
-        particle.show();
-    });
+    req = requestAnimationFrame(iter);
 
 }
 
-requestAnimationFrame(draw);
+draw();
