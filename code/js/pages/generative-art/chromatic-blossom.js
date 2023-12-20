@@ -258,7 +258,7 @@ function randomizeValues() {
     d = (((Math.random() - 0.5) * 2) * 15).toFixed(2);
     e = (((Math.random() - 0.5) * 2) * 10).toFixed(2);
     f = (((Math.random() - 0.5) * 2) * 6).toFixed(2);
-    g = (((Math.random() - 0.5) * 2) * 2).toFixed(2);
+    g = (((Math.random() - 0.5) * 2) * 2).toFixed(1);
     updateUi();
     renderMain();
 };
