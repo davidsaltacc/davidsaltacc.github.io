@@ -21,7 +21,7 @@ const uniformBufferSize = Math.ceil((
     + 2 * Float32Array.BYTES_PER_ELEMENT // center: vec2<f32>
     + 2 * Float32Array.BYTES_PER_ELEMENT // canvasDimensions: vec2<f32>
     + Float32Array.BYTES_PER_ELEMENT // zoom: f32
-    + 4 * Float32Array.BYTES_PER_ELEMENT // a, b, c, d : f32
+    + 7 * Float32Array.BYTES_PER_ELEMENT // a, b, c, d, e, f, g : f32
     + Uint32Array.BYTES_PER_ELEMENT // maxIterations: u32
     + Uint32Array.BYTES_PER_ELEMENT // radius: u32
 ) / 8) * 8;
@@ -100,6 +100,9 @@ var a = 0.5;
 var b = 0.5;
 var c = 8;
 var d = 4;
+var e = 1;
+var f = 1;
+var g = 1;
 
 const texture = device.createTexture({
     size: [canvasMain.clientWidth, canvasMain.clientHeight],
@@ -117,9 +120,9 @@ function draw(context, center, zoom) {
         canvasMain.clientWidth, 
         canvasMain.clientHeight,
         zoom,
-        a, b, c, d
+        a, b, c, d, e, f, g
 	]);
-	new Uint32Array(arrayBuffer, 9 * Float32Array.BYTES_PER_ELEMENT).set([
+	new Uint32Array(arrayBuffer, 12 * Float32Array.BYTES_PER_ELEMENT).set([
         maxIterations,
         radius
     ]);
@@ -228,6 +231,16 @@ function setCanvasSize(size) {
     renderMain();
 }
 
+function updateUi() {
+    document.getElementById("a").value = a;
+    document.getElementById("b").value = b;
+    document.getElementById("c").value = c;
+    document.getElementById("d").value = d;
+    document.getElementById("e").value = e;
+    document.getElementById("f").value = f;
+    document.getElementById("g").value = g;
+}
+
 function setIterations(i) { maxIterations = i; renderMain(); }
 function setRadius(r) { radius = r; renderMain(); }
 
@@ -235,8 +248,22 @@ function setA(a_) { a = a_; renderMain(); }
 function setB(b_) { b = b_; renderMain(); }
 function setC(c_) { c = c_; renderMain(); }
 function setD(d_) { d = d_; renderMain(); }
+function setE(e_) { e = e_; renderMain(); }
+function setF(f_) { f = f_; renderMain(); }
+function setG(g_) { g = g_; renderMain(); }
+function randomizeValues() {
+    a = (((Math.random() - 0.5) * 2) * 4).toFixed(2);
+    b = (((Math.random() - 0.5) * 2) * 5).toFixed(2);
+    c = Math.floor(((Math.random() - 0.5) * 2) * 10);
+    d = (((Math.random() - 0.5) * 2) * 15).toFixed(2);
+    e = (((Math.random() - 0.5) * 2) * 10).toFixed(2);
+    f = (((Math.random() - 0.5) * 2) * 6).toFixed(2);
+    g = (((Math.random() - 0.5) * 2) * 2).toFixed(2);
+    updateUi();
+    renderMain();
+};
 
-return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setA, setB, setC, setD];
+return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setA, setB, setC, setD, setE, setF, setG, randomizeValues];
 }
 
 var renderMain;
@@ -244,8 +271,9 @@ var exportMain;
 var setCanvasSize; 
 var setIterations; 
 var setRadius; 
-var setA, setB, setC, setD; 
-(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setA2, setB2, setC2, setD2]) => {
+var setA, setB, setC, setD, setE, setF, setG;
+var randomizeValues; 
+(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, randomizeValues2]) => {
     renderMain = renderMain2;
     exportMain = exportMain2;
     setCanvasSize = setCanvasSize2;
@@ -255,5 +283,9 @@ var setA, setB, setC, setD;
     setB = setB2;
     setC = setC2;
     setD = setD2;
+    setE = setE2;
+    setF = setF2;
+    setG = setG2;
+    randomizeValues = randomizeValues2;
 });
 

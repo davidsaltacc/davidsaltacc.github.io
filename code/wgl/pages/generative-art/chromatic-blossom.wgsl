@@ -12,6 +12,9 @@ struct Uniforms {
 	b: f32,
 	c: f32,
 	d: f32,
+	e: f32,
+	f: f32,
+	g: f32,
 	maxIterations: u32,
     radius: u32
 }
@@ -42,6 +45,9 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 	var b: f32 = uniforms.b;
 	var c: f32 = uniforms.c;
 	var d: f32 = uniforms.d;
+	var e: f32 = uniforms.e;
+	var f: f32 = uniforms.f;
+	var g: f32 = uniforms.g;
 
 	var window: vec2<f32> = uniforms.canvasDimensions / min(uniforms.canvasDimensions.x, uniforms.canvasDimensions.y);
 	var rc: vec2<f32> = input.fragmentPosition * window / uniforms.zoom + uniforms.center;
@@ -55,9 +61,9 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
         if (r2 > f32(uniforms.radius)) {
             break;
         } 
-        var th: f32 = atan2(sqrt(cx * cx + cy * cy), cz);
-        var ph: f32 = atan2(cy, cx);
-        var r: f32 = cr * pow(r2, 1 / c);
+        var th: f32 = atan2(sqrt(cx * cx + cy * cy), cz * f);
+        var ph: f32 = atan2(cy, cx) * g;
+        var r: f32 = cr * pow(r2, e / c);
         cx = r * sin(th * c + fi / d) * cos(ph * c + fi / d) + cx;
         cy = r * sin(th * c + fi / d) * sin(ph * c + fi / d) + cy;
         cz = r * cos(th * c + fi / d) + cz;
