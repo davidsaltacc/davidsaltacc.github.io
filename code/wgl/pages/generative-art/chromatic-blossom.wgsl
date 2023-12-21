@@ -15,6 +15,9 @@ struct Uniforms {
 	e: f32,
 	f: f32,
 	g: f32,
+	h: f32,
+	i: f32,
+	j: f32,
 	maxIterations: u32,
     radius: u32
 }
@@ -48,29 +51,37 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 	var e: f32 = uniforms.e;
 	var f: f32 = uniforms.f;
 	var g: f32 = uniforms.g;
+	var h: f32 = uniforms.h;
+	var i: f32 = uniforms.i;
+	var j: f32 = uniforms.j;
 
 	var window: vec2<f32> = uniforms.canvasDimensions / min(uniforms.canvasDimensions.x, uniforms.canvasDimensions.y);
 	var rc: vec2<f32> = input.fragmentPosition * window / uniforms.zoom + uniforms.center;
-    var cx: f32 = rc.x;
+    
+	var cx: f32 = rc.x;
     var cy: f32 = -rc.y;
     var cz: f32 = a;
     var cr: f32 = b;
-    for (var i: u32 = 0; i < uniforms.maxIterations; i++) {
-        var fi: f32 = f32(i);
+    for (var it: u32 = 0; it < uniforms.maxIterations; it++) {
+        var fi: f32 = f32(it);
         var r2: f32 = cx * cx + cy * cy + cz * cz;
         if (r2 > f32(uniforms.radius)) {
             break;
         } 
-        var th: f32 = atan2(sqrt(cx * cx + cy * cy), cz * f);
-        var ph: f32 = atan2(cy, cx) * g;
-        var r: f32 = cr * pow(r2, e / c);
+        var th: f32 = atan2(sqrt(cx * cx + cy * cy + h * (cz * cz)), cz * f);
+        var ph: f32 = atan2(cy, cx) * g + cz * i;
+		var div: f32 = 1.;
+		if (j != 0) {
+			div = th * j;
+		}
+        var r: f32 = cr * pow(r2, e / c) / div;
         cx = r * sin(th * c + fi / d) * cos(ph * c + fi / d) + cx;
         cy = r * sin(th * c + fi / d) * sin(ph * c + fi / d) + cy;
         cz = r * cos(th * c + fi / d) + cz;
     }
 	
     return vec4<f32>(
-        cx,
+		cx,
 		cy,
 		cz,
 		1.0,
