@@ -7,8 +7,8 @@ function drawF() {
 
     draw((x, y) => {
         return [
-            Math.sin(a * y) - Math.cos(b * x),
-            Math.sin(c * x) - Math.cos(d * y)
+            Math.cos(x * x - y * y) * b + Math.sin(y * x - x) * a,
+            Math.sin(2 * x * y) * c - Math.cos(x * 2 - y) * d
         ];
     });
 }

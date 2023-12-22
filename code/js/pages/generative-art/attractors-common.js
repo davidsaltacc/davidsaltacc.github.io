@@ -15,6 +15,49 @@ ctx.scale(dpr, dpr);
 canvas.style.width = `${rect.width}px`;
 canvas.style.height = `${rect.height}px`;
 
+
+var iterationAmount = 50;
+var pointAlpha = 0.2;
+var maxParticles = 300000;
+
+var req = null;
+
+function draw(func) {
+
+    cancelAnimationFrame(req);
+
+    var amount = 0;
+
+    function iter() {
+        if (amount >= maxParticles) {
+            return;
+        }
+        var particles = [];
+        for (var i = 0; i < 100; i++) {
+            particles.push(new Particle(
+                Math.random() * canvas.width, Math.random() * canvas.height, 
+                func
+            ));
+            particles.forEach((particle) => {
+                for (var i = 0; i < iterationAmount; i++) {
+                    particle.update();
+                }
+                
+                particle.show();
+            });
+            amount += i;
+        }
+        req = requestAnimationFrame(iter);
+    }
+
+    ctx.fillStyle = "rgba(0, 0, 0, 1)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "rgba(255, 255, 255, " + pointAlpha + ")";
+
+    req = requestAnimationFrame(iter);
+
+}
+
 function exportCanvas() {
     var data = canvas.toDataURL("image/png");
     var a = document.createElement("a");
