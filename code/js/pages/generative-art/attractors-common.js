@@ -17,8 +17,8 @@ canvas.style.height = `${rect.height}px`;
 
 
 var iterationAmount = 50;
-var pointAlpha = 0.2;
-var maxParticles = 300000;
+var pointAlpha = 0.1;
+var maxParticles = 600000;
 
 var req = null;
 
@@ -67,6 +67,8 @@ function exportCanvas() {
     a.remove();
 }
 
+var zoom = 1;
+
 function normalize(x, y) {
     return [
         (x / canvas.width * 2 - 1) * 2,
@@ -76,9 +78,13 @@ function normalize(x, y) {
 
 function denormalize(x, y) {
     return [
-        (x / 2 + 1) / 2 * canvas.width,
-        (y / 2 + 1) / 2 * canvas.height,
+        (x / 2 * zoom + zoom / zoom) / 2 * canvas.width,
+        (y / 2 * zoom + -zoom / zoom) / 2 * -canvas.height,
     ];
+}
+
+function setZoom(z) {
+    zoom = z;
 }
 
 function Vector2(x, y) {
