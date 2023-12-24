@@ -2,7 +2,7 @@
 async function init() {
 
 if (!navigator.gpu) {
-    alert("WebGPU not supported on your browser. Go back to possibly supported WebGL version?");
+    alert("WebGPU is not supported in your browser.");
     return;
 }
 
