@@ -17,7 +17,7 @@ canvas.style.height = `${rect.height}px`;
 
 
 var iterationAmount = 50;
-var pointAlpha = 0.1;
+var pointAlpha = 0.15;
 var maxParticles = 600000;
 
 var req = null;
