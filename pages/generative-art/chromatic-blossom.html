@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chromatic Blossom</title>
+    <title>Chromablossom</title>
     <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="../../code/css/pages/generative-art/chromatic-blossom.css">
     <link rel="shortcut icon" type="image/png" href="../../assets/favicon.png">
 </head>
 <body>
-    <h1 style="font-size: 50px;">Chromatic Blossom</h1>
-    <p style="font-size: xx-large;">Chromatic Blossom is a zoomable and configurable flower-like beautiful pattern based on just a bit of math, creating interesting patterns upon zooming in.</p>
-    <h1 style="color: crimson;">Make Sure to be Zoomed Out! Just press Ctrl+Minus on your keyboard. Why? Don't ask. Just zoom out to ~50%.</h1>
-    <p style="font-size: xx-large;">Radius:</p>
-    <input type="number" onchange="setRadius(this.value);" value="100" style="font-size: x-large; border-radius: 5px;">
-    <p style="font-size: xx-large;">Iterations:</p>
-    <input type="number" onchange="setIterations(this.value);" value="20" style="font-size: x-large; border-radius: 5px;">
-    <p style="font-size: xx-large;">a, b, c, d, e, f, g, h, i, j:</p>
-    <input id="a" type="number" onchange="setA(this.value);" value="0.5" style="font-size: x-large; border-radius: 5px;">
-    <input id="b" type="number" onchange="setB(this.value);" value="0.5" style="font-size: x-large; border-radius: 5px;">
-    <input id="c" type="number" onchange="setC(this.value);" value="8" style="font-size: x-large; border-radius: 5px;">
-    <input id="d" type="number" onchange="setD(this.value);" value="4" style="font-size: x-large; border-radius: 5px;">
-    <input id="e" type="number" onchange="setE(this.value);" value="1" style="font-size: x-large; border-radius: 5px;">
-    <input id="f" type="number" onchange="setF(this.value);" value="1" style="font-size: x-large; border-radius: 5px;">
-    <input id="g" type="number" onchange="setG(this.value);" value="1" style="font-size: x-large; border-radius: 5px;">
-    <input id="h" type="number" onchange="setH(this.value);" value="0" style="font-size: x-large; border-radius: 5px;">
-    <input id="i" type="number" onchange="setI(this.value);" value="0" style="font-size: x-large; border-radius: 5px;">
-    <input id="j" type="number" onchange="setJ(this.value);" value="0" style="font-size: x-large; border-radius: 5px;">
+    <h1>Chromatic Blossom</h1>
+    <p>Chromatic Blossom is a zoomable and configurable flower-like beautiful pattern based on just a bit of math, creating interesting patterns upon zooming in.</p>
+    <p style="color: crimson;">Make Sure to be Zoomed Out! Just press Ctrl+Minus on your keyboard. Why? Don't ask. Just zoom out to ~50%.</p>
+    <p>Radius:</p>
+    <input type="number" onchange="setRadius(this.value);" value="100">
+    <p>Iterations:</p>
+    <input type="number" onchange="setIterations(this.value);" value="20">
+    <p>a, b, c, d, e, f, g, h, i, j:</p>
+    <input type="number" onchange="setA(this.value);" value="0.5">
+    <input type="number" onchange="setB(this.value);" value="0.5">
+    <input type="number" onchange="setC(this.value);" value="8">
+    <input type="number" onchange="setD(this.value);" value="4">
+    <input type="number" onchange="setE(this.value);" value="1">
+    <input type="number" onchange="setF(this.value);" value="1">
+    <input type="number" onchange="setG(this.value);" value="1">
+    <input type="number" onchange="setH(this.value);" value="0">
+    <input type="number" onchange="setI(this.value);" value="0">
+    <input type="number" onchange="setJ(this.value);" value="0">
     <br>
-    <button style="font-size: xx-large;" type="button" onclick="randomizeValues();">Randomize</button>
-    <br>
+    <button type="button" onclick="randomizeValues();">Randomize</button>
     <hr>
     <canvas id="canvasMain" width="2200" height="2200"></canvas>
     <script src="../../code/js/pages/generative-art/chromatic-blossom.js"></script>

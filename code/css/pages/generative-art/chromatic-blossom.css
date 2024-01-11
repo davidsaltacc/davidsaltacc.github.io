@@ -1,0 +1,26 @@
+h1 {
+    font-size: 50px;
+}
+
+p {
+    font-size: xx-large;
+}
+
+input, button {
+    font-size: x-large; 
+    border-radius: 5px;
+}
+
+input {
+    max-width: 6%;
+}
+
+h2 {
+    font-size: 40px;
+}
+
+.keyframe {
+    background-color: rgb(22, 19, 44);
+    padding: 1px 1px 1px 1px;
+    margin: 2px;
+}
