@@ -202,7 +202,7 @@ function exportMain() {
     var data = canvasMain.toDataURL("image/png");
     var a = document.createElement("a");
     a.href = data;
-    a.download = "thing.png";
+    a.download = "chromatic-blossom.png";
     a.click();
     a.remove();
 }
