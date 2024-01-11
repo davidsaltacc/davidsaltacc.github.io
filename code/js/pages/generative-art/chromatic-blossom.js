@@ -146,7 +146,6 @@ renderMain();
 
 var mouse_x_main = 0;
 var mouse_y_main = 0;
-var mouse_clicked_main = false;
 var mouse_clicked_right_main = false;
 function updateMouseCoords_main(e) {
     mouse_x_main = (2 * (e.pageX - e.target.offsetLeft) - canvasMain.clientWidth ) / Math.min(canvasMain.clientWidth, canvasMain.clientHeight);
@@ -248,7 +247,7 @@ function randomizeValues() {
     d = (((Math.random() - 0.5) * 2) * 15).toFixed(2);
     e = (((Math.random() - 0.5) * 2) * 10).toFixed(2);
     f = (((Math.random() - 0.5) * 2) * 6).toFixed(2);
-    g = (((Math.random() - 0.5) * 2) * 2).toFixed(1);
+    g = Math.floor(((Math.random() - 0.5) * 2) * 4) / 2;
     h = (((Math.random() - 0.5) * 2) * 5).toFixed(2);
     i = (((Math.random() - 0.5) * 2) * 10).toFixed(2);
     j = (((Math.random() - 0.5) * 2) * 4).toFixed(2);
