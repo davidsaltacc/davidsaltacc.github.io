@@ -24,9 +24,8 @@ const uniformBufferSize = Math.ceil((
     + 10 * Float32Array.BYTES_PER_ELEMENT // a, b, c, d, e, f, g, h, i, j : f32
     + Uint32Array.BYTES_PER_ELEMENT // maxIterations: u32
     + Uint32Array.BYTES_PER_ELEMENT // radius: u32
+    + Uint32Array.BYTES_PER_ELEMENT // sampleCount: u32
 ) / 8) * 8;
-
-const AA = 4;
 
 const uniformBuffer = device.createBuffer({
     size: uniformBufferSize,
@@ -66,9 +65,6 @@ const pipeline = await device.createRenderPipelineAsync({
     },
     primitive: {
         topology: "triangle-strip",
-    },
-    multisample: {
-        count: AA
     }
 });
 
@@ -95,6 +91,7 @@ var zoomMain = 1 / 2.5;
 
 var maxIterations = 20;
 var radius = 100;
+var sampleCount = 1;
 
 var a = 0.5;
 var b = 0.5;
@@ -109,7 +106,6 @@ var j = 0;
 
 const texture = device.createTexture({
     size: [canvasMain.clientWidth, canvasMain.clientHeight],
-    sampleCount: AA,
     format: format,
     usage: GPUTextureUsage.RENDER_ATTACHMENT
 });
@@ -127,7 +123,8 @@ function draw(context, center, zoom) {
 	]);
 	new Uint32Array(arrayBuffer, 15 * Float32Array.BYTES_PER_ELEMENT).set([
         maxIterations,
-        radius
+        radius,
+        sampleCount
     ]);
 	device.queue.writeBuffer(uniformBuffer, 0, arrayBuffer);
 
@@ -249,6 +246,7 @@ function updateUi() {
 
 function setIterations(i) { maxIterations = i; renderMain(); }
 function setRadius(r) { radius = r; renderMain(); }
+function setSampleCount(s) { sampleCount = s; renderMain(); }
 
 function setA(a_) { a = a_; renderMain(); }
 function setB(b_) { b = b_; renderMain(); }
@@ -276,7 +274,7 @@ function randomizeValues() {
     renderMain();
 };
 
-return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues];
+return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, setSampleCount];
 }
 
 var renderMain;
@@ -284,14 +282,16 @@ var exportMain;
 var setCanvasSize; 
 var setIterations; 
 var setRadius; 
+var setSampleCount;
 var setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ;
 var randomizeValues; 
-(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2]) => {
+(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, setSampleCount2]) => {
     renderMain = renderMain2;
     exportMain = exportMain2;
     setCanvasSize = setCanvasSize2;
     setIterations = setIterations2;
     setRadius = setRadius2;
+    setSampleCount = setSampleCount2;
     setA = setA2;
     setB = setB2;
     setC = setC2;
@@ -304,4 +304,3 @@ var randomizeValues;
     setJ = setJ2;
     randomizeValues = randomizeValues2;
 });
-
