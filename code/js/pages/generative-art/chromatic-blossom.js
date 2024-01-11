@@ -104,13 +104,6 @@ var h = 0;
 var i = 0;
 var j = 0;
 
-const texture = device.createTexture({
-    size: [canvasMain.clientWidth, canvasMain.clientHeight],
-    format: format,
-    usage: GPUTextureUsage.RENDER_ATTACHMENT
-});
-const view = texture.createView();
-
 function draw(context, center, zoom) {
 	const arrayBuffer = new ArrayBuffer(uniformBufferSize);
 	new Float32Array(arrayBuffer, 0).set([
@@ -131,11 +124,10 @@ function draw(context, center, zoom) {
 	const encoder = device.createCommandEncoder();
 	const renderPass = encoder.beginRenderPass({
 		colorAttachments: [{
-			view,
-            resolveTarget: context.getCurrentTexture().createView(),
+			view: context.getCurrentTexture().createView(),
 			loadOp: "clear",
-			clearValue: [0, 0, 0, 1],
-			storeOp: "store"
+			clearValue: [0, 0, 0, 0],
+			storeOp: "store",
 		}]
 	});
 
