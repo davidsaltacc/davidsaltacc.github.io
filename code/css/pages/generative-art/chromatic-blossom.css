@@ -1,22 +1,10 @@
-h1 {
-    font-size: 50px;
-}
-
-p {
-    font-size: xx-large;
-}
 
 input, button {
-    font-size: x-large; 
     border-radius: 5px;
 }
 
 input {
-    max-width: 6%;
-}
-
-h2 {
-    font-size: 40px;
+    max-width: 8%;
 }
 
 .keyframe {

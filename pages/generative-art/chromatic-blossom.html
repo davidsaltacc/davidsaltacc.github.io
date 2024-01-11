@@ -10,13 +10,14 @@
 <body>
     <h1>Chromatic Blossom</h1>
     <p>Chromatic Blossom is a zoomable and configurable flower-like beautiful pattern based on just a bit of math, creating interesting patterns upon zooming in.</p>
-    <p style="color: crimson;">Make Sure to be Zoomed Out! Just press Ctrl+Minus on your keyboard. Why? Don't ask. Just zoom out to ~50%.</p>
     <p>Radius:</p>
-    <input type="number" onchange="setRadius(this.value);" value="100">
+    <input type="number" onchange="setRadius(this.value);" value="1000">
     <p>Iterations:</p>
     <input type="number" onchange="setIterations(this.value);" value="20">
-    <p>Sample Count:</p>
-    <input type="number" onchange="setSampleCount(this.value);" value="1">
+    <p>Sample Count (Quality/Smoothnes Increase):</p>
+    <input type="number" onchange="setSampleCount(this.value);" value="6">
+    <p>Canvas Size:</p>
+    <input type="number" onchange="setCanvasSize(this.value);" value="1000">
     <p>a, b, c, d, e, f, g, h, i, j:</p>
     <input type="number" onchange="setA(this.value);" value="0.5">
     <input type="number" onchange="setB(this.value);" value="0.5">
@@ -30,8 +31,18 @@
     <input type="number" onchange="setJ(this.value);" value="0">
     <br>
     <button type="button" onclick="randomizeValues();">Randomize</button>
+    <!--
+    <h2>Animate</h2>
+    <p>Keyframes</p>
+    <button type="button" onclick="addKeyframe();">Add keyframe</button>
+    <div id="keyframes"></div>
+    <p>Settings</p>
+    <p>Frames per Second: <input value="20" id="fps"></p>
+    <button type="button" onclick="animateFrames();">Animate!</button>
+    <br>
+    -->
     <hr>
-    <canvas id="canvasMain" width="2200" height="2200"></canvas>
+    <canvas id="canvasMain" width="1000" height="1000"></canvas>
     <script src="../../code/js/pages/generative-art/chromatic-blossom.js"></script>
 </body>
 </html>

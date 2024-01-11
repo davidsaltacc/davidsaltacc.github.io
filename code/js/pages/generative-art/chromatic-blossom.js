@@ -1,4 +1,3 @@
-
 async function init() {
 
 if (!navigator.gpu) {
@@ -90,8 +89,8 @@ var centerMain = [0, 0];
 var zoomMain = 1 / 2.5;
 
 var maxIterations = 20;
-var radius = 100;
-var sampleCount = 1;
+var radius = 1000;
+var sampleCount = 6;
 
 var a = 0.5;
 var b = 0.5;
@@ -105,38 +104,38 @@ var i = 0;
 var j = 0;
 
 function draw(context, center, zoom) {
-	const arrayBuffer = new ArrayBuffer(uniformBufferSize);
-	new Float32Array(arrayBuffer, 0).set([
-		center[0],
+    const arrayBuffer = new ArrayBuffer(uniformBufferSize);
+    new Float32Array(arrayBuffer, 0).set([
+        center[0],
         center[1],
         canvasMain.clientWidth, 
         canvasMain.clientHeight,
         zoom,
         a, b, c, d, e, f, g, h, i, j
-	]);
-	new Uint32Array(arrayBuffer, 15 * Float32Array.BYTES_PER_ELEMENT).set([
+    ]);
+    new Uint32Array(arrayBuffer, 15 * Float32Array.BYTES_PER_ELEMENT).set([
         maxIterations,
         radius,
         sampleCount
     ]);
-	device.queue.writeBuffer(uniformBuffer, 0, arrayBuffer);
+    device.queue.writeBuffer(uniformBuffer, 0, arrayBuffer);
 
-	const encoder = device.createCommandEncoder();
-	const renderPass = encoder.beginRenderPass({
-		colorAttachments: [{
-			view: context.getCurrentTexture().createView(),
-			loadOp: "clear",
-			clearValue: [0, 0, 0, 0],
-			storeOp: "store",
-		}]
-	});
+    const encoder = device.createCommandEncoder();
+    const renderPass = encoder.beginRenderPass({
+        colorAttachments: [{
+            view: context.getCurrentTexture().createView(),
+            loadOp: "clear",
+            clearValue: [0, 0, 0, 0],
+            storeOp: "store",
+        }]
+    });
 
-	renderPass.setPipeline(pipeline);
-	renderPass.setBindGroup(0, bindGroup);
-	renderPass.draw(4);
-	renderPass.end();
+    renderPass.setPipeline(pipeline);
+    renderPass.setBindGroup(0, bindGroup);
+    renderPass.draw(4);
+    renderPass.end();
 
-	device.queue.submit([encoder.finish()]);
+    device.queue.submit([encoder.finish()]);
 };
 
 function renderMain() {
@@ -181,13 +180,6 @@ function mouse_up_main(e) {
     }
 }
 function mouse_move_main(e) {
-    if (mouse_clicked_main) {
-        updateMouseCoords_main(e);
-        juliasetConstant[0] = mouse_x_main;
-        juliasetConstant[1] = mouse_y_main;
-        updateUi();
-        renderJul();
-    }
     if (mouse_clicked_right_main) {
         var old_x = mouse_x_main;
         var old_y = mouse_y_main;
@@ -217,9 +209,7 @@ function exportMain() {
 
 function setCanvasSize(size) {
     canvasMain.width = canvasMain.height = size;
-    canvasJul.width = canvasJul.height = size;
     canvasMain.clientWidth = canvasMain.clientHeight = size;
-    canvasJul.clientWidth = canvasJul.clientHeight = size;
     renderMain();
 }
 
@@ -266,7 +256,65 @@ function randomizeValues() {
     renderMain();
 };
 
-return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, setSampleCount];
+var keyframes = [];
+
+function addKeyframe() {
+    var element = document.createElement("div");
+    element.className = "keyframe";
+    element.innerHTML = `
+<p>Keyframe:</p>
+<p>a, b, c, d, e, f, g, h, i, j:</p>
+<input class="inputA" type="number" value="0.5">
+<input class="inputB" type="number" value="0.5">
+<input class="inputC" type="number" value="8">
+<input class="inputD" type="number" value="4">
+<input class="inputE" type="number" value="1">
+<input class="inputF" type="number" value="1">
+<input class="inputG" type="number" value="1">
+<input class="inputH" type="number" value="0">
+<input class="inputI" type="number" value="0">
+<input class="inputJ" type="number" value="0">
+<p>Time (seconds):</p>
+<input type="number" value="0" class="inputTime"><br><br>
+<button type="button" onclick="removeKeyframe(this);">Remove Keyframe</button>
+`;
+    keyframes.push({
+        el: element
+    });
+    document.getElementById("keyframes").appendChild(element);
+}
+
+function removeKeyframe(button) {
+    keyframes.splice(keyframes.indexOf({
+        el: button.parentElement
+    }), 1);
+    button.parentElement.remove();
+}
+
+function animate() {
+    var frames = [];
+    keyframes.forEach((frame) => {
+        frames.push({
+            a: parseFloat(frame.el.getElementsByClassName("inputA")[0].value),
+            b: parseFloat(frame.el.getElementsByClassName("inputB")[0].value),
+            c: parseFloat(frame.el.getElementsByClassName("inputC")[0].value),
+            d: parseFloat(frame.el.getElementsByClassName("inputD")[0].value),
+            e: parseFloat(frame.el.getElementsByClassName("inputE")[0].value),
+            f: parseFloat(frame.el.getElementsByClassName("inputF")[0].value),
+            g: parseFloat(frame.el.getElementsByClassName("inputG")[0].value),
+            h: parseFloat(frame.el.getElementsByClassName("inputH")[0].value),
+            i: parseFloat(frame.el.getElementsByClassName("inputI")[0].value),
+            j: parseFloat(frame.el.getElementsByClassName("inputJ")[0].value),
+            time: parseFloat(frame.el.getElementsByClassName("inputTime")[0].value)
+        });
+    });
+    console.log(frames);
+    var animationFrames = [];
+
+    // lerping
+}
+
+return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setSampleCount, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, addKeyframe, removeKeyframe, animate];
 }
 
 var renderMain;
@@ -277,7 +325,10 @@ var setRadius;
 var setSampleCount;
 var setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ;
 var randomizeValues; 
-(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, setSampleCount2]) => {
+var addKeyframe; 
+var removeKeyframe; 
+var animateFrames;
+(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setSampleCount2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, addKeyframe2, removeKeyframe2, animate2]) => {
     renderMain = renderMain2;
     exportMain = exportMain2;
     setCanvasSize = setCanvasSize2;
@@ -295,4 +346,8 @@ var randomizeValues;
     setI = setI2;
     setJ = setJ2;
     randomizeValues = randomizeValues2;
+    addKeyframe = addKeyframe2;
+    removeKeyframe = removeKeyframe2;
+    animateFrames = animate2;
 });
+
