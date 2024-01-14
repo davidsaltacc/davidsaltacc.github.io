@@ -652,6 +652,7 @@ function setCanvasesSticky(sticky) {
 setCanvasesSticky(true);
 
 function exportMain() {
+    renderMain();
     var data = canvasMain.toDataURL("image/png");
     var a = document.createElement("a");
     a.href = data;
@@ -660,6 +661,7 @@ function exportMain() {
     a.remove();
 }
 function exportJul() {
+    renderJul();
     var data = canvasJul.toDataURL("image/png");
     var a = document.createElement("a");
     a.href = data;

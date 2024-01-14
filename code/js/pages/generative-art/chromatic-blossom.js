@@ -198,6 +198,7 @@ canvasMain.onmousemove = mouse_move_main;
 canvasMain.oncontextmenu = function(e) { e.preventDefault() };
 
 function exportMain() {
+    renderMain();
     var data = canvasMain.toDataURL("image/png");
     var a = document.createElement("a");
     a.href = data;
