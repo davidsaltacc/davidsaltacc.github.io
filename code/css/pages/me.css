@@ -14,8 +14,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url("../../../assets/me-background.png");
-    background-size: cover;
+    background: url("../../../assets/me-background.png");
+    background-size: 100vh;
+    background-attachment: fixed;
     background-repeat: no-repeat;
 }
 
@@ -78,4 +79,9 @@ body {
     color: #bbd5ff;
     text-decoration: none;
     text-shadow: 0px 0px 10px rgba(183, 211, 255, 0.9);
+}
+
+body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
 }
