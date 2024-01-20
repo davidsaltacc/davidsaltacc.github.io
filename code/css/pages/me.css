@@ -78,19 +78,18 @@ body {
 }
 
 body {
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: none;
+    overscroll-behavior: none;
 }
 
 #background { /* safari doesn't like background-attachment: fixed; for some reason */
     z-index: -1; 
+    display: block;
     position: fixed;
     top: 0;
+    right: 0;
+    bottom: 0;
     left: 0;
-    height: 100%;
-    width: 100%;
-    background: url("../../../assets/me-background.png");
-    background-size: 100vmax;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
 }
