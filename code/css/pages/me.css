@@ -1,27 +1,81 @@
-#tree {
-	display: none;
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins";
+    -webkit-user-select: none;
+    user-select: none;
 }
+
 body {
-    background-color: #0b0b0b;
-    color: #a9b7c6;
-    font-family: system-ui;
-    text-shadow: 0 0 8px #4c545c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url("../../../assets/me-background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
-details, p {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    padding-left: 4px;
-    border-color: #a9b7c6;
-    border-style: groove;
-    border-width: 2px;
-    border-radius: 2px;
-    box-shadow: #9ca6b13e 0px 0px 8px, #9ca6b13e 0px 0px 16px;
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    flex-wrap: wrap;
+    z-index: 1;
 }
-p {
-    padding: 4px;
+
+.container .card {
+    position: relative;
+    width: 320px;
+    margin: 20px;
+    box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    height: min-content;
+    transition: 0.5s;
 }
-summary {
-    cursor: pointer;
-    padding: 4px;
-    padding-bottom: 2px;
+
+.container .card:hover {
+    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.container .card .content {
+    padding: 20px;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.container .card .content h3 {
+    font-size: 1.8em;
+    color: #efefff;
+    z-index: 1;
+}
+
+.container .card .content .text {
+    font-size: 1em;
+    color: #ffffff;
+    font-weight: 300;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+}
+
+.container .card .content .text a {
+    color: #bbd5ff;
+    text-decoration: none;
+    text-shadow: 0px 0px 10px rgba(183, 211, 255, 0.9);
 }
