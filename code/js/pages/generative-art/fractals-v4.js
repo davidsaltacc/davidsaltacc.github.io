@@ -550,13 +550,13 @@ var presets_fractals = {
     },
     "ass_2": {
         "id": 16,
-        "radius": 10000000,
+        "radius": 10000,
         "description": "Looks a little bit like another.. Anyway. \"Description\", huh? More like \"Probably a sarcastic comment by david\"...",
         "formula": "<p>x<sub>n+1</sub> = sinh(x<sub>n</sub>) * sin(y<sub>n</sub>) + c<sub>x</sub><br>y<sub>n+1</sub> = cosh(y<sub>n</sub>) * cos(x<sub>n</sub>) + c<sub>y</sub></p>"
     },
     "triangle": {
         "id": 17,
-        "radius": 10000000,
+        "radius": 10000,
         "description": "Literally just a triangle. Did you know that a² + b² = c² for every right triangle? ",
         "formula": "<p>x<sub>n+1</sub> = sin(x<sub>n</sub>) * sinh(y<sub>n</sub>) + c<sub>x</sub><br>y<sub>n+1</sub> = cos(y<sub>n</sub>) * cosh(x<sub>n</sub>) + c<sub>y</sub></p>"
     },
