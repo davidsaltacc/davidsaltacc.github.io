@@ -428,7 +428,7 @@ fn davids_colorscheme(x: f32) -> vec4<f32> {
 	return vec4<f32>(0., 0., 0., 1.);
 } 
 
-fn color(x: f32) -> vec4<f32> { // TODO add power field
+fn color(x: f32) -> vec4<f32> {
 	var xv: f32 = x;
 	xv = xv * uniforms.colorfulness;
 	xv = xv + uniforms.colorOffset;

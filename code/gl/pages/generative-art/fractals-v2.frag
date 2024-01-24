@@ -623,7 +623,7 @@ void main() {
     }
     if (color_black) {
         if (color_method == 12) {
-            fragmentColor = vec4(0., 0., 0., 0.); // TODO make transparent a custom option, so you still can have normal coloring + add image upload for bg images
+            fragmentColor = vec4(0., 0., 0., 0.); 
         } else {
             fragmentColor = vec4(0., 0., 0., 1.);
         }

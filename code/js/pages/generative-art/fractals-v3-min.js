@@ -495,7 +495,6 @@ var presets_fractals = {
 }
 
 function updateUi() {
-    // TODO
 }
 
 var setFractal = function(type) {

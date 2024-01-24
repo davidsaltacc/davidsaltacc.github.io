@@ -1,0 +1,1 @@
+return apply_post_function(c_pow(z, power)) + c_division(c, z);

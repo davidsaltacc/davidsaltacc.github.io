@@ -368,7 +368,7 @@ var presets_functions = {
     }
 }
 
-var presets_fractals = { // TODO 28: untitled 4
+var presets_fractals = {
     "mandelbrot": {
         "id": 0,
         "radius": 10000000,
@@ -576,7 +576,7 @@ var presets_fractals = { // TODO 28: untitled 4
 }
 
 function updateUi() {
-    // TODO
+    
 }
 
 var setFractal = function(type) {

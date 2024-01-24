@@ -1,0 +1,1 @@
+return apply_post_function(c_pow(z - c_division(c_pow(z, 3.) - vec2<f32>(1., 0.), 3. * c_pow(z, 2.)), power)) + c;
