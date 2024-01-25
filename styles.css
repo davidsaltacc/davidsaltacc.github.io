@@ -155,3 +155,53 @@ hr {
 .active, .dot:hover {
 	background-color: #69748d;
 }
+
+.support-banner {
+	color: #ffffff;
+	background-image: url("/assets/support-bg.png");
+	background-size: cover;
+	background-position: center;
+	padding: 0px 24px 0px 24px;
+	max-width: max-content;
+	font-size: xx-large;
+	font-family: 'Courier New', Courier, monospace;
+	font-weight: 600;
+	cursor: pointer;
+	position: sticky;
+	left: 20px;
+	bottom: 20px;
+	z-index: 90;
+	border-radius: 8px;
+	border-style: solid;
+	border-top: rgb(189, 61, 82) 2px solid;
+	border-right: rgb(189, 61, 82) 2px solid;
+	border-bottom: rgb(228, 95, 118) 2px solid;
+	border-left: rgb(228, 95, 118) 2px solid;
+	transition: 0.5s;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.support-banner:hover {
+	transform: translateX(2px);
+}
+
+.support-banner p {
+    margin: 20px;
+	padding-right: 36px;
+}
+
+.support-banner span {
+	position: absolute;
+	top: 4px;
+	right: 8px;
+	font-size: x-large;
+	color: #ffffff;
+	transition: 0.1s;
+	font-family: sans-serif;
+	opacity: 0.6;
+}
+
+.support-banner span:hover {
+	color: #ffb4b6;
+}

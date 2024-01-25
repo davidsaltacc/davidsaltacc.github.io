@@ -355,6 +355,18 @@ var presets_colorschemes = {
     "twilight": {
         "id": 11,
         "description": "Twilight colormap from matplotlib."
+    },
+    "red": {
+        "id": 12,
+        "description": "Red."
+    },
+    "green": {
+        "id": 13,
+        "description": "Blue."
+    },
+    "blue": {
+        "id": 14,
+        "description": "Green."
     }
 };
 
