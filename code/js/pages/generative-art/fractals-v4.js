@@ -22,7 +22,7 @@ function status(s) {
 
 status("STATUS: requesting adapter");
 var adapter = await navigator.gpu.requestAdapter();
-status("STATUS: requesting GPU device. if this takes more than a few seconds, something probably went terribly wrong. your computer might exploder. to fix this issue, simply restart your browser.");
+status("STATUS: requesting GPU device. if this takes more than a few seconds, something probably went terribly wrong. your computer might exploder. to fix this issue, simply restart your browser. UNLESS you use a browser that doesn't support webgpu. 'The chrome://flags/#enable-unsafe-webgpu flag must be enabled. Linux experimental support also requires launching the browser with --enable-features=Vulkan.'");
 var device = await adapter.requestDevice();
 
 device.lost.then(() => {
