@@ -399,7 +399,7 @@ var presets_functions = {
     "tan": {
         "id": 5,
         "radius": 10,
-        "description": "Complex tangent. Looks noisy. Maybe you want to set a higher sample rate."
+        "description": "Complex tangent. Looks noisy. Maybe you want to set a higher sample count."
     },
     "tanh": {
         "id": 6,
