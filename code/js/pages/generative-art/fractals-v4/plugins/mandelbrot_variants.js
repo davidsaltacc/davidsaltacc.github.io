@@ -11,7 +11,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Apparently the lower half of the Burning Ship, mirrored horizontally.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -23,7 +23,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Like the celtic, but a little different.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -35,7 +35,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Its mouth looks a little like the one the celtic fractal has.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -47,7 +47,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Shares a lot of features with the mandelbrot set.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -59,7 +59,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Already in the fractal explorer as the \"Duck\" fractal, but I decided to put it in here anyways.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -71,7 +71,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Looks a little similar to the Celtic Mandlebar.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -82,8 +82,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -94,8 +94,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -106,8 +106,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -118,8 +118,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -131,7 +131,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Already Included as a standart fractal. Still put it in here for completeness.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -143,7 +143,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Pizza slice near its needle. I wonder how it tastes.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -154,8 +154,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -167,7 +167,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Really tiny and hidden halo.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -178,8 +178,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -191,7 +191,7 @@ return vec2<f32>(
 `, 
 1000000,
 "The head of the duck/perpendicular burning ship?",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -203,7 +203,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Buffalo but no buffalo.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -215,7 +215,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Turn it upside down, maybe then you can see it.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -227,7 +227,7 @@ return vec2<f32>(
 `, 
 1000000,
 "I didn't name it. I also have no idea where there might be a snake.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -239,7 +239,7 @@ return vec2<f32>(
 `, 
 1000000,
 "... What snake?",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -250,8 +250,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -263,7 +263,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Buffalo go fast. Upside down, for some reason.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -275,7 +275,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Buffalo go even more fast. Also upside down for some reason.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -287,7 +287,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Aerodynamic. Kind of looks like a buffalo fractal variation.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -299,7 +299,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Why are they all upside down? Are they stupid?",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -311,7 +311,7 @@ return vec2<f32>(
 `, 
 1000000,
 "\"Smart\"? Is he really? Oh, and its upside down, again.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -322,8 +322,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -334,8 +334,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -346,8 +346,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -358,8 +358,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -370,8 +370,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -382,8 +382,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -395,7 +395,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Not to be confused with the other heart fractal.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -406,8 +406,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -418,8 +418,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -430,8 +430,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -442,8 +442,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -455,7 +455,7 @@ return vec2<f32>(
 `, 
 1000000,
 "A <i>what</i>?",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -466,8 +466,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -478,8 +478,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -490,8 +490,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -502,8 +502,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -514,8 +514,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -527,7 +527,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Two pizzas.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -538,8 +538,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -550,8 +550,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -562,8 +562,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -574,8 +574,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -586,8 +586,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -598,8 +598,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -610,8 +610,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -622,8 +622,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -634,8 +634,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -646,8 +646,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -658,8 +658,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -671,7 +671,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Its upside down. Great.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -682,8 +682,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -694,8 +694,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -707,7 +707,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Again, not to be confused with the other fish.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -718,8 +718,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -730,8 +730,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -743,7 +743,7 @@ return vec2<f32>(
 `, 
 1000000,
 "A little like the power drill. IT HAS A PIZZA SLICE!",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -754,8 +754,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -766,8 +766,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -779,7 +779,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Just a messed up pizza slice.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -791,7 +791,7 @@ return vec2<f32>(
 `, 
 1000000,
 "Again just a messed up pizza slice.",
-"FORMULA GO HERE FRFR"
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -802,8 +802,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -814,8 +814,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -826,8 +826,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -838,8 +838,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -850,8 +850,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -862,8 +862,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 FRXPlugins.CustomShaderCode.addCustomFractal(
@@ -874,8 +874,8 @@ return vec2<f32>(
 ) + c;
 `, 
 1000000,
-"DESCR",
-"FORMULA GO HERE FRFR"
+"ill add the description later.",
+"ill add the formula later."
 );
 
 ui.createCustomFractalButton("burn_ship_mand_bar", "Burning Ship Mandlebar");
