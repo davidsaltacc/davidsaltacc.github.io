@@ -171,7 +171,7 @@ hr {
     background-color: #272f51;
 }
 
-.ftabcontent, .cstabcontent {
+.ftabcontent, .cstabcontent, .ptabcontent {
     display: none;
     padding: 6px 12px;
     border: 1px solid #101743;
@@ -190,6 +190,10 @@ textarea {
     background-color: #252e44;
     color: #cadeff;
     outline: none;
+}
+
+#pcodearea {
+    margin-left: 0px;
 }
 
 .fixedCode {
@@ -301,4 +305,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 
 textarea {
     height: 51px;
+}
+
+.pluginButton {
+    margin-left: 4px;
 }

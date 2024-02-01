@@ -1,3 +1,6 @@
+if (document.cookie == "h=1") { // :P
+    document.getElementById("sb").style.display = "none";
+}
 
 async function init() {
 
@@ -62,7 +65,10 @@ status("STATUS: uniform buffer size " + uniformBufferSize + " bytes");
 var pipeline;
 var bindGroup;
 
-async function fetchSubCode(name, type) {
+async function fetchSubCode(name, type, customCode) {
+    if (customCode) {
+        return customCode;
+    }
     var code = null;
     await fetch("../../code/wgl/pages/generative-art/fractals-v4/" + type + "/" + name + ".wgsl") 
         .then(response => response.text())
@@ -166,11 +172,14 @@ async function compileShaderCode_(cmethod, cscheme, fractal, postf) {
 var customFractal = false;
 var customCs = false;
 
+var pluginFractal = null;
+var pluginCs = null;
+
 async function compileShaderCode(cmethod, cscheme, fractal, postf) {
     return await compileShaderCode_(
         await fetchSubCode(cmethod, "colormethods"),
-        customCs ? document.getElementById("cscodei").value : await fetchSubCode(cscheme, "colorschemes"),
-        customFractal ? document.getElementById("fcodei").value : await fetchSubCode(fractal, "fractals"),
+        customCs ? document.getElementById("cscodei").value : await fetchSubCode(cscheme, "colorschemes", pluginCs),
+        customFractal ? document.getElementById("fcodei").value : await fetchSubCode(fractal, "fractals", pluginFractal),
         await fetchSubCode(postf, "post_functions")
     );
 }
@@ -283,7 +292,7 @@ var presets_colormethods = {
     },
     "floor": {
         "id": 8,
-        "description": "Yet *another* stripes variant, but this ones my favourite, it looks really cool."
+        "description": "Yet <i>another</i> stripes variant."
     },
     "squared": {
         "id": 9,
@@ -342,7 +351,7 @@ var presets_colorschemes = {
     },
     "chocolate": {
         "id": 8,
-        "description": "A colorscheme I just came up with. Has this chocolate-y color to it. Apparently it changes into a rainbow and back when zooming in. Unintended. Also, this only looks good with smooth coloring. Tho it really makes most fractals look amazing."
+        "description": "A colorscheme I just came up with. Has this chocolate-y color to it. Changes into a rainbow and back when zooming in. Unintended. "
     },
     "contrasted_classic": {
         "id": 9,
@@ -362,11 +371,11 @@ var presets_colorschemes = {
     },
     "green": {
         "id": 13,
-        "description": "Blue."
+        "description": "Green."
     },
     "blue": {
         "id": 14,
-        "description": "Green."
+        "description": "Blue."
     }
 };
 
@@ -706,6 +715,22 @@ var presets_fractals = {
     }
 }
 
+function __addPFractal(id, radius, description, formula, code) {
+    presets_fractals[id] = {
+        "radius": radius,
+        "description": description,
+        "formula": formula,
+        "code": code
+    };
+}
+
+function __addPCs(id, description, code) {
+    presets_colorschemes[id] = {
+        "description": description,
+        "code": code
+    };
+}
+
 function showUrlWarning() {
     document.getElementById("urlaoutdatedwarn").style.display = "block";
 }
@@ -749,6 +774,13 @@ function updateDescriptions() {
 }
 
 async function setFractal(type) {
+
+    if (presets_fractals[type]["code"]) {
+        pluginFractal = presets_fractals[type]["code"];
+    } else {
+        pluginFractal = null;
+    }
+
     fractalType = type;
     customFractal = false;
     document.getElementById("tgshdf").innerHTML = "Enable Custom Fractal Shader"; 
@@ -769,6 +801,13 @@ async function setFractal(type) {
 }
 
 async function setColorscheme(name) {
+
+    if (presets_colorschemes[name]["code"]) {
+        pluginCs = presets_colorschemes[name]["code"];
+    } else {
+        pluginCs = null;
+    }
+
     colorscheme = name;
     customCs = false;
     document.getElementById("tgshdcs").innerHTML = "Enable Custom Colorscheme Shader"; 
@@ -1034,11 +1073,11 @@ async function applyUrlParams() {
     radius = parseFloat(params.get("r") ?? radius);
     maxIterations = parseFloat(params.get("i") ?? maxIterations);
     colorMethod = params.get("cm") ?? colorMethod;
-    colorscheme = params.get("cs") ?? colorscheme;
+    colorscheme = presets_colorschemes[params.get("cs")] ? (params.get("cs") ?? colorscheme) : colorscheme;
     colorOffset = parseFloat(params.get("co") ?? colorOffset);
     colorfulness = parseFloat(params.get("cf") ?? colorfulness);
     sampleCount = parseInt(params.get("sc") ?? sampleCount);
-    fractalType = params.get("f") ?? fractalType;
+    fractalType = presets_fractals[params.get("f")] ? (params.get("f") ?? fractalType) : fractalType;
     juliasetInterpolation = parseFloat(params.get("nji") ?? juliasetInterpolation);
     power = parseFloat(params.get("p") ?? power);
     postFracFunc = params.get("pf") ?? postFracFunc;
@@ -1049,7 +1088,31 @@ async function applyUrlParams() {
     updateUi();
     createUrlParams();
     updateDescriptions();
-} 
+}
+
+async function randomizeFractal() {
+    var allFractals = [];
+    Object.keys(presets_fractals).forEach(f => { allFractals.push(f); });
+    var allColorschemes = [];
+    Object.keys(presets_colorschemes).forEach(s => { allColorschemes.push(s); });
+    var allFuncs = [];
+    Object.keys(presets_functions).forEach(f => { allFuncs.push(f); });
+
+    fractalType = allFractals[Math.floor(Math.random() * allFractals.length)];
+    colorscheme = allColorschemes[Math.floor(Math.random() * allColorschemes.length)];
+    postFracFunc = allFuncs[Math.floor(Math.random() * allFuncs.length)];
+
+    var rrand = Math.random();
+    radius = rrand > 0.333 ? (rrand > 0.666 ? 10 : 1000) : 1000000;
+    power = Math.sign(Math.random() - 0.5) * (Math.floor(Math.random() * 8) + 2);
+    juliasetConstant = [Math.random() * Math.random() * 6, Math.random() * Math.random() * 6];
+
+    await compileShaderCode(colorMethod, colorscheme, fractalType, postFracFunc);
+    renderMain();
+    renderJul();
+    updateUi();
+    updateDescriptions();
+}
 
 async function resetSettings() {
     centerMain = [0, 0];
@@ -1149,7 +1212,7 @@ async function updateShader(t) {
 return [renderMain, renderJul, setFractal, setColorscheme, setColormethod, setColoroffset, setCanvasesSticky,
         setRadius, setIterations, setConstantX, setConstantY, setInterpolation, setPostFunction,
         exportMain, exportJul, setCanvasSize, setColorfulness, setSampleCount, setPower, toggleShader, updateShader,
-        createUrlParams, resetSettings];
+        createUrlParams, resetSettings, __addPFractal, __addPCs, randomizeFractal];
 }
 
 var renderMain;
@@ -1174,11 +1237,14 @@ var setPower;
 var toggleShader;
 var updateShader; 
 var createUrlParams; 
-var resetSettings; // async magic go crazy
+var resetSettings; 
+var __addPFractal; 
+var __addPCs; 
+var randomizeFractal; 
 (async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColorscheme2, setColormethod2, setColoroffset2, setCanvasesSticky2,
                                                 setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2, setPostFunction2,
                                                 exportMain2, exportJul2, setCanvasSize2, setColorfulness2, setSampleCount2, setPower2, toggleShader2, updateShader2,
-                                                createUrlParams2, resetSettings2]) => {
+                                                createUrlParams2, resetSettings2, __addPFractal2, __addPCs2, randomizeFractal2]) => {
     renderMain = renderMain2;
     renderJul = renderJul2;
     setFractal = setFractal2;
@@ -1202,9 +1268,11 @@ var resetSettings; // async magic go crazy
     updateShader = updateShader2;
     createUrlParams = createUrlParams2;
     resetSettings = resetSettings2;
+    __addPFractal = __addPFractal2;
+    __addPCs = __addPCs2;
+    randomizeFractal = randomizeFractal2;
 
     document.getElementById("loadingscreen").style.display = "none";
 
     console.log("finished initialization");
-
 });

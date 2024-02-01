@@ -252,10 +252,10 @@
         </div>
         <div class="toggleable">
             <div id="fmareatoggle" class="collapsToggle">
-                <span id="fmareaind" class="areaind">&#11206;</span>
+                <span id="fmareaind" class="areaind">&#11208;</span>
                 <h3>Fractal Modifier:</h3>
             </div>
-            <div id="fmarea" style="display: block;">
+            <div id="fmarea" style="display: none;">
                 <script>
                     var fme = document.getElementById("fmareatoggle");
                     var fme2 = document.getElementById("fmarea");
@@ -296,10 +296,10 @@
         </div>
         <div class="toggleable">
             <div id="exareatoggle" class="collapsToggle">
-                <span id="exareaind" class="areaind">&#11206;</span>
+                <span id="exareaind" class="areaind">&#11208;</span>
                 <h3>Export</h3>
             </div>
-            <div id="exarea" style="display: block;">
+            <div id="exarea" style="display: none;">
                 <script>
                     var exe = document.getElementById("exareatoggle");
                     var exe2 = document.getElementById("exarea");
@@ -351,6 +351,7 @@
                     });
                 </script>
                 <button onclick="resetSettings();">Reset Settings</button>
+                <button onclick="randomizeFractal();">Randomize Settings</button>
                 <br><br>
                 <p>Sticky canvases:</p>
                 <input type="checkbox" id="stickycanvases" checked="true" onchange="setCanvasesSticky(this.checked);">
@@ -376,12 +377,13 @@
                 <hr>
             </div>
         </div>
+        <div id="pluginContainer"></div>
         <div class="toggleable">
             <div id="ccareatoggle" class="collapsToggle">
-                <span id="ccareaind" class="areaind">&#11206;</span>
+                <span id="ccareaind" class="areaind">&#11208;</span>
                 <h3>Customize Code:</h3>
             </div>
-            <div id="ccarea" style="display: block;">
+            <div id="ccarea" style="display: none;">
                 <script>
                     var cce = document.getElementById("ccareatoggle");
                     var cce2 = document.getElementById("ccarea");
@@ -558,6 +560,61 @@ return vec4&lt;f32&gt;(0., 0., 0., 1.);
                 <hr>
             </div>
         </div>
+
+        <div class="toggleable">
+            <div id="plgloadareatoggle" class="collapsToggle">
+                <span id="plgloadareaind" class="areaind">&#11208;</span>
+                <h3>Load Plugin</h3>
+            </div>
+            <div id="plgloadarea" style="display: none;">
+                <script>
+                    var plgloade = document.getElementById("plgloadareatoggle");
+                    var plgloade2 = document.getElementById("plgloadarea");
+                    var plgloade3 = document.getElementById("plgloadareaind");
+                    plgloade.addEventListener("click", ev => {
+                        if (plgloade2.style.display == "none") {
+                            plgloade2.style.display = "block";
+                            plgloade3.innerHTML = "&#11206;";
+                            return;
+                        }
+                        if (plgloade2.style.display == "block") {
+                            plgloade2.style.display = "none";
+                            plgloade3.innerHTML = "&#11208;";
+                            return;
+                        }
+                    });
+                </script>
+                <div>
+                    <div class="tab">
+                        <button class="ptablink" id="purlb" onclick="openTabP(event, 'purl');">From Url</button>
+                        <button class="ptablink" onclick="openTabP(event, 'pcode');">From Code</button>
+                    </div>
+                    <div id="purl" class="ptabcontent">
+                        <input id="purlinp" spellcheck="false" type="text"><br><br>
+                        <button onclick="loadPluginUrl(document.getElementById('purlinp').value);">Submit</button>
+                    </div>
+                    <div id="pcode" class="ptabcontent">
+                        <textarea id="pcodearea" spellcheck="false" type="text"></textarea><br>
+                        <button onclick="loadPluginCode(document.getElementById('pcodearea').value);">Submit</button>
+                    </div>
+                </div>
+                <script>
+                    function openTabP(e, n) {
+                        for (c of document.getElementsByClassName("ptabcontent")) {
+                            c.style.display = "none";
+                        }
+                        for (l of document.getElementsByClassName("ptablink")) {
+                            l.className = l.className.replace(" active", "");
+                        }
+                        document.getElementById(n).style.display = "block";
+                        e.currentTarget.className += " active";
+                    }
+                    document.getElementById("purlb").click();
+                </script>
+                <hr>
+            </div>
+        </div>
+
         <div class="toggleable">
             <div id="infareatoggle" class="collapsToggle">
                 <span id="infareaind" class="areaind">&#11206;</span>
@@ -615,9 +672,10 @@ return vec4&lt;f32&gt;(0., 0., 0., 1.);
             </div>
         </div>
     </div>
-    <div class="support-banner">
+    <div class="support-banner" id="sb">
         <p onclick="console.log(this); window.location.href = 'https:\/\/ko-fi.com\/justacoder';">Support my work! </p><span onclick="this.parentElement.remove();">X</span>
     </div>
-    <script src="../../code/js/pages/generative-art/fractals-v4.js"></script>
+    <script src="../../code/js/pages/generative-art/fractals-v4/main.js"></script>
+    <script src="../../code/js/pages/generative-art/fractals-v4/plugins.js"></script>
 </body>
 </html>
