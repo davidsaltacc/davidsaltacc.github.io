@@ -50,6 +50,9 @@ const uniformBufferSize = Math.ceil((
     + Float32Array.BYTES_PER_ELEMENT // colorOffset: f32
     + Float32Array.BYTES_PER_ELEMENT // juliasetInterpolation: f32
     + Float32Array.BYTES_PER_ELEMENT // colorfulness: f32
+    + Float32Array.BYTES_PER_ELEMENT // cloudSeed: f32
+    + Float32Array.BYTES_PER_ELEMENT // cloudAmplitude: f32
+    + Float32Array.BYTES_PER_ELEMENT // cloudMultiplier: f32
     + Uint32Array.BYTES_PER_ELEMENT // maxIterations: u32
     + Uint32Array.BYTES_PER_ELEMENT // sampleCount: u32
     + Uint32Array.BYTES_PER_ELEMENT // juliaset: u32
@@ -203,6 +206,9 @@ var juliasetConstant = [0., 0.];
 var juliasetInterpolation = 1;
 var colorfulness = 1;
 var sampleCount = 1;
+var cloudSeed = 33333;
+var cloudAmplitude = 0;
+var cloudMultiplier = 0.8;
 
 await compileShaderCode(colorMethod, colorscheme, fractalType, postFracFunc);
 
@@ -220,9 +226,12 @@ function draw(context, juliaset, center, zoom) {
         power, 
         colorOffset,
         juliasetInterpolation,
-        colorfulness
+        colorfulness,
+        cloudSeed,
+        cloudAmplitude,
+        cloudMultiplier
 	]);
-	new Uint32Array(arrayBuffer, 12 * Float32Array.BYTES_PER_ELEMENT).set([
+	new Uint32Array(arrayBuffer, 15 * Float32Array.BYTES_PER_ELEMENT).set([
         maxIterations,
         sampleCount,
         juliaset
@@ -753,6 +762,9 @@ function updateUi() {
     el("coloroffset").value = colorOffset;
     el("colorfulness").value = colorfulness;
     el("sampleCount").value = sampleCount;
+    el("cloudSeed").value = cloudSeed;
+    el("cloudAmplitude").value = cloudAmplitude;
+    el("cloudMultiplier").value = cloudMultiplier;
 
     el("frfm").innerHTML = presets_fractals[fractalType].formula.replaceAll("POWER", power);
 
@@ -1016,6 +1028,9 @@ function setConstantY(y) { juliasetConstant[1] = y; renderJul(); updateUi(); }
 function setInterpolation(v) { juliasetInterpolation = v; renderJul(); updateUi();}
 function setColorfulness(c) { colorfulness = c; renderMain(); renderJul(); updateUi(); }
 function setSampleCount(s) { sampleCount = s; renderMain(); renderJul(); updateUi(); }
+function setCloudSeed(s) { cloudSeed = s; renderMain(); renderJul(); }
+function setCloudAmplitude(a) { cloudAmplitude = a; renderMain(); renderJul(); }
+function setCloudMultiplier(m) { cloudMultiplier = m; renderMain(); renderJul(); }
 
 function setCanvasSize(size) {
     canvasMain.width = canvasMain.height = size;
@@ -1056,6 +1071,9 @@ function createUrlParams() {
     params.append("nji", juliasetInterpolation);
     params.append("p", power);
     params.append("pf", postFracFunc);
+    params.append("csd", cloudSeed);
+    params.append("cam", cloudAmplitude);
+    params.append("cml", cloudMultiplier);
     document.getElementById("url").innerText = document.getElementById("url").href = url.href;
     hideUrlWarning();
 }
@@ -1081,6 +1099,9 @@ async function applyUrlParams() {
     juliasetInterpolation = parseFloat(params.get("nji") ?? juliasetInterpolation);
     power = parseFloat(params.get("p") ?? power);
     postFracFunc = params.get("pf") ?? postFracFunc;
+    cloudSeed = parseFloat(params.get("csd") ?? cloudSeed);
+    cloudAmplitude = parseFloat(params.get("cam") ?? cloudAmplitude);
+    cloudMultiplier = parseFloat(params.get("cml") ?? cloudMultiplier);
 
     await compileShaderCode(colorMethod, colorscheme, fractalType, postFracFunc);
     renderMain();
@@ -1131,6 +1152,9 @@ async function resetSettings() {
     juliasetInterpolation = 1;
     colorfulness = 1;
     sampleCount = 1;
+    cloudSeed = 43758.5453123;
+    cloudAmplitude = 0;
+    cloudMultiplier = 0.8;
 
     await compileShaderCode(colorMethod, colorscheme, fractalType, postFracFunc);
     renderMain();
@@ -1212,7 +1236,8 @@ async function updateShader(t) {
 return [renderMain, renderJul, setFractal, setColorscheme, setColormethod, setColoroffset, setCanvasesSticky,
         setRadius, setIterations, setConstantX, setConstantY, setInterpolation, setPostFunction,
         exportMain, exportJul, setCanvasSize, setColorfulness, setSampleCount, setPower, toggleShader, updateShader,
-        createUrlParams, resetSettings, __addPFractal, __addPCs, randomizeFractal];
+        createUrlParams, resetSettings, __addPFractal, __addPCs, randomizeFractal, 
+        setCloudSeed, setCloudAmplitude, setCloudMultiplier];
 }
 
 var renderMain;
@@ -1241,10 +1266,14 @@ var resetSettings;
 var __addPFractal; 
 var __addPCs; 
 var randomizeFractal; 
+var setCloudSeed;
+var setCloudAmplitude;
+var setCloudMultiplier;
 (async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColorscheme2, setColormethod2, setColoroffset2, setCanvasesSticky2,
                                                 setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2, setPostFunction2,
                                                 exportMain2, exportJul2, setCanvasSize2, setColorfulness2, setSampleCount2, setPower2, toggleShader2, updateShader2,
-                                                createUrlParams2, resetSettings2, __addPFractal2, __addPCs2, randomizeFractal2]) => {
+                                                createUrlParams2, resetSettings2, __addPFractal2, __addPCs2, randomizeFractal2, 
+                                                setCloudSeed2, setCloudAmplitude2, setCloudMultiplier2]) => {
     renderMain = renderMain2;
     renderJul = renderJul2;
     setFractal = setFractal2;
@@ -1271,6 +1300,9 @@ var randomizeFractal;
     __addPFractal = __addPFractal2;
     __addPCs = __addPCs2;
     randomizeFractal = randomizeFractal2;
+    setCloudSeed = setCloudSeed2;
+    setCloudAmplitude = setCloudAmplitude2;
+    setCloudMultiplier = setCloudMultiplier2;
 
     document.getElementById("loadingscreen").style.display = "none";
 

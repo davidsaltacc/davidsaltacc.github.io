@@ -296,10 +296,10 @@
         </div>
         <div class="toggleable">
             <div id="exareatoggle" class="collapsToggle">
-                <span id="exareaind" class="areaind">&#11208;</span>
+                <span id="exareaind" class="areaind">&#11206;</span>
                 <h3>Export</h3>
             </div>
-            <div id="exarea" style="display: none;">
+            <div id="exarea" style="display: block;">
                 <script>
                     var exe = document.getElementById("exareatoggle");
                     var exe2 = document.getElementById("exarea");
@@ -374,6 +374,39 @@
                 <input type="range" class="slider" min="0" max="10" step="0.001" value="1" id="colorfulness" oninput="setColorfulness(this.value);">
                 <p>Sample Count:</p>
                 <input type="number" id="sampleCount" min="0" value="1" onchange="setSampleCount(this.value)">
+                <hr>
+            </div>
+        </div>
+        <div class="toggleable">
+            <div id="cloudsareatoggle" class="collapsToggle">
+                <span id="cloudsareaind" class="areaind">&#11208;</span>
+                <h3>Clouds</h3>
+            </div>
+            <div id="cloudsarea" style="display: none;">
+                <script>
+                    var cloudse = document.getElementById("cloudsareatoggle");
+                    var cloudse2 = document.getElementById("cloudsarea");
+                    var cloudse3 = document.getElementById("cloudsareaind");
+                    cloudse.addEventListener("click", ev => {
+                        if (cloudse2.style.display == "none") {
+                            cloudse2.style.display = "block";
+                            cloudse3.innerHTML = "&#11206;";
+                            return;
+                        }
+                        if (cloudse2.style.display == "block") {
+                            cloudse2.style.display = "none";
+                            cloudse3.innerHTML = "&#11208;";
+                            return;
+                        }
+                    });
+                </script>
+                
+                <p>Cloud Seed:</p>
+                <input type="number" id="cloudSeed" oninput="setCloudSeed(this.value);">
+                <p>Cloud Amplitude:</p>
+                <input type="range" class="slider" min="0" max="5" step="0.01" value="0" id="cloudAmplitude" oninput="setCloudAmplitude(this.value);">
+                <p>Cloud Multiplier:</p>
+                <input type="range" class="slider" min="0" max="1" step="0.01" value="0.8" id="cloudMultiplier" oninput="setCloudMultiplier(this.value);">
                 <hr>
             </div>
         </div>

@@ -13,6 +13,9 @@ struct Uniforms {
     colorOffset: f32,
     juliasetInterpolation: f32,
 	colorfulness: f32,
+	cloudSeed: f32,
+	cloudAmplitude: f32,
+	cloudMultiplier: f32,
 	maxIterations: u32,
 	sampleCount: u32,
 	juliaset: u32 // no uniform bools 
@@ -228,8 +231,47 @@ fn colorscheme(x: f32) -> vec4<f32> {
 	///COLORSCHEME
 }
 
-fn color(x: f32) -> vec4<f32> {
-	return colorscheme(x * uniforms.colorfulness * (f32(uniforms.maxIterations) / 100.) + uniforms.colorOffset);
+fn rand2d(pos: vec2<f32>) -> f32 {
+
+	var p: vec2<f32> = vec2<f32>(pos.x % 1000, pos.y % 1000);
+	return fract(sin(dot(p.xy, vec2<f32>(12.9898, 78.233))) * uniforms.cloudSeed);
+}
+
+fn sm_noise(pos: vec2<f32>) -> f32 {
+	var i: vec2<f32> = floor(pos);
+	var f: vec2<f32> = fract(pos);
+	var a: f32 = rand2d(i);
+	var b: f32 = rand2d(i + vec2<f32>(1., 0.));
+	var c: f32 = rand2d(i + vec2<f32>(0., 1.));
+	var d: f32 = rand2d(i + vec2<f32>(1., 1.));
+	var u: vec2<f32> = f * f * (3. - 2. * f);
+	return mix(a, b, u.x) + 
+		(c - a) * u.y * (1. - u.x) +
+		(d - b) * u.x * u.y - .5;
+}
+
+fn clouds(pos: vec2<f32>) -> f32 {
+
+	var p: vec2<f32> = pos + 5.;
+	var v: f32 = 0.;
+	if (uniforms.cloudAmplitude == 0.) {
+		return 0.;
+	}
+	var a: f32 = uniforms.cloudAmplitude * (1.3 - uniforms.cloudMultiplier);
+	for (var i: i32; i < 20; i++) {
+		v += a * sm_noise(p);
+		var m: mat2x2<f32> = mat2x2<f32>(
+			vec2<f32>(1.2, 0.9),
+			vec2<f32>(-0.9, 1.2)
+		);
+		p = m * p;
+		a *= uniforms.cloudMultiplier;
+	}
+	return v;
+}
+
+fn color(x: f32, pos: vec2<f32>) -> vec4<f32> {
+	return colorscheme(x * uniforms.colorfulness * (f32(uniforms.maxIterations) / 100.) + clouds(pos) + uniforms.colorOffset);
 } 
 
 fn ms_rand(c: vec2<f32>) -> f32 {
@@ -291,7 +333,7 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 				1.0,
 			);
 		} else {
-			rcolor += color(color_v);
+			rcolor += color(color_v, input.fragmentPosition);
 		}
 	}
 	return rcolor / sampleCount;
