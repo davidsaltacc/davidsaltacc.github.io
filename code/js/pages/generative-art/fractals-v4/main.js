@@ -368,7 +368,7 @@ var presets_colorschemes = {
     },
     "contrasted_classic": {
         "id": 9,
-        "description": "The classinc colorscheme, but more contrasted."
+        "description": "The classic colorscheme, but more contrasted."
     },
     "black_white": {
         "id": 10,
