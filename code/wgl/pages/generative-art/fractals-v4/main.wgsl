@@ -232,7 +232,6 @@ fn colorscheme(x: f32) -> vec4<f32> {
 }
 
 fn rand2d(pos: vec2<f32>) -> f32 {
-
 	var p: vec2<f32> = vec2<f32>(pos.x % 1000, pos.y % 1000);
 	return fract(sin(dot(p.xy, vec2<f32>(12.9898, 78.233))) * uniforms.cloudSeed);
 }
@@ -251,7 +250,6 @@ fn sm_noise(pos: vec2<f32>) -> f32 {
 }
 
 fn clouds(pos: vec2<f32>) -> f32 {
-
 	var p: vec2<f32> = pos + 5.;
 	var v: f32 = 0.;
 	if (uniforms.cloudAmplitude == 0.) {
@@ -260,11 +258,7 @@ fn clouds(pos: vec2<f32>) -> f32 {
 	var a: f32 = uniforms.cloudAmplitude * (1.3 - uniforms.cloudMultiplier);
 	for (var i: i32; i < 20; i++) {
 		v += a * sm_noise(p);
-		var m: mat2x2<f32> = mat2x2<f32>(
-			vec2<f32>(1.2, 0.9),
-			vec2<f32>(-0.9, 1.2)
-		);
-		p = m * p;
+		p *= mat2x2<f32>( 1.2, 0.9, -0.9, 1.2 );
 		a *= uniforms.cloudMultiplier;
 	}
 	return v;
