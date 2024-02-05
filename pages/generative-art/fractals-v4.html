@@ -621,6 +621,7 @@ return vec4&lt;f32&gt;(0., 0., 0., 1.);
                     <div class="tab">
                         <button class="ptablink" id="purlb" onclick="openTabP(event, 'purl');">From Url</button>
                         <button class="ptablink" onclick="openTabP(event, 'pcode');">From Code</button>
+                        <button class="ptablink" onclick="openTabP(event, 'pfeat');">Featured (mine :P)</button>
                     </div>
                     <div id="purl" class="ptabcontent">
                         <input id="purlinp" spellcheck="false" type="text"><br><br>
@@ -629,6 +630,9 @@ return vec4&lt;f32&gt;(0., 0., 0., 1.);
                     <div id="pcode" class="ptabcontent">
                         <textarea id="pcodearea" spellcheck="false" type="text"></textarea><br>
                         <button onclick="loadPluginCode(document.getElementById('pcodearea').value);">Submit</button>
+                    </div>
+                    <div id="pfeat" class="ptabcontent">
+                        <button onclick="loadPluginUrl('/code/js/pages/generative-art/fractals-v4/plugins/mandelbrot_variants.js');">Mandelbrot Variants</button>
                     </div>
                 </div>
                 <script>
