@@ -610,7 +610,7 @@ var presets_fractals = {
         "id": 20,
         "radius": 10000000,
         "description": "Looks really interesting. ",
-        "formula": "<p>z<sub>n+1</sub> = z<sup>POWER</sup> + c / z;</p>"
+        "formula": "<p>z<sub>n+1</sub> = z<sup>POWER</sup> + c / z</p>"
     },
     "sinh": {
         "id": 21,
