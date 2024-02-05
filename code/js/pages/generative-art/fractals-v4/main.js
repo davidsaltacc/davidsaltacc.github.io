@@ -2,6 +2,10 @@ if (document.cookie == "h=1") { // :P
     document.getElementById("sb").style.display = "none";
 }
 
+function __h__() {
+    document.cookie = "h=1";
+}
+
 async function init() {
 
 if (!navigator.gpu) {
@@ -1152,7 +1156,7 @@ async function resetSettings() {
     juliasetInterpolation = 1;
     colorfulness = 1;
     sampleCount = 1;
-    cloudSeed = 43758.5453123;
+    cloudSeed = 33333;
     cloudAmplitude = 0;
     cloudMultiplier = 0.8;
 
@@ -1237,7 +1241,7 @@ return [renderMain, renderJul, setFractal, setColorscheme, setColormethod, setCo
         setRadius, setIterations, setConstantX, setConstantY, setInterpolation, setPostFunction,
         exportMain, exportJul, setCanvasSize, setColorfulness, setSampleCount, setPower, toggleShader, updateShader,
         createUrlParams, resetSettings, __addPFractal, __addPCs, randomizeFractal, 
-        setCloudSeed, setCloudAmplitude, setCloudMultiplier];
+        setCloudSeed, setCloudAmplitude, setCloudMultiplier, __h__];
 }
 
 var renderMain;
@@ -1269,11 +1273,12 @@ var randomizeFractal;
 var setCloudSeed;
 var setCloudAmplitude;
 var setCloudMultiplier;
+var __h__;
 (async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColorscheme2, setColormethod2, setColoroffset2, setCanvasesSticky2,
                                                 setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2, setPostFunction2,
                                                 exportMain2, exportJul2, setCanvasSize2, setColorfulness2, setSampleCount2, setPower2, toggleShader2, updateShader2,
                                                 createUrlParams2, resetSettings2, __addPFractal2, __addPCs2, randomizeFractal2, 
-                                                setCloudSeed2, setCloudAmplitude2, setCloudMultiplier2]) => {
+                                                setCloudSeed2, setCloudAmplitude2, setCloudMultiplier2, __h__2]) => {
     renderMain = renderMain2;
     renderJul = renderJul2;
     setFractal = setFractal2;
@@ -1303,6 +1308,7 @@ var setCloudMultiplier;
     setCloudSeed = setCloudSeed2;
     setCloudAmplitude = setCloudAmplitude2;
     setCloudMultiplier = setCloudMultiplier2;
+    __h__ = __h__2;
 
     document.getElementById("loadingscreen").style.display = "none";
 
