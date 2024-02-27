@@ -31,6 +31,8 @@
     <input id="j" type="number" onchange="setJ(this.value);" value="0">
     <br>
     <button type="button" onclick="randomizeValues();">Randomize</button>
+    <p>Skeleton Mode</p>
+    <button onclick="this.innerHTML = 'Toggle Skeleton mode ' + (toggleSkeleton() ? 'off' : 'on');">Toggle Skeleton mode on</button>
     <!--
     <h2>Animate</h2>
     <p>Keyframes</p>

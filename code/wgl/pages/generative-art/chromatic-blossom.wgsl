@@ -20,7 +20,8 @@ struct Uniforms {
 	j: f32,
 	maxIterations: u32,
     radius: u32,
-	sampleCount: u32
+	sampleCount: u32,
+	skeleton: u32
 }
 
 @group(0) @binding(0) var<uniform> uniforms: Uniforms;
@@ -65,11 +66,12 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 	var rc: vec2<f32> = input.fragmentPosition / uniforms.zoom + uniforms.center;
     
 	var color: vec3<f32> = vec3<f32>(0., 0., 0.);  
+	var rr: f32 = 0.; 
 
 	for (var sample: f32 = 0.0; sample < sampleCount; sample += 1) {
 		var pos: vec2<f32> = vec2<f32>(
 			rand(rc + sample),
-			rand(100. + rc + sample)
+			rand(50. + rc + sample)
 		) / uniforms.zoom / uniforms.canvasDimensions;
 		pos += rc;
 		var cx: f32 = pos.x;
@@ -92,8 +94,13 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 			cx = r * sin(th * c + fi / d) * cos(ph * c + fi / d) + cx;
 			cy = r * sin(th * c + fi / d) * sin(ph * c + fi / d) + cy;
 			cz = r * cos(th * c + fi / d) + cz;
+			rr = r * r * r * r;
 		}
-		color += vec3(cx, cy, cz);
+		if (uniforms.skeleton == 1) {
+			color += vec3(rr, rr, rr);
+		} else {
+			color += vec3(cx, cy, cz);
+		}
 	}
 	
     return vec4<f32>(

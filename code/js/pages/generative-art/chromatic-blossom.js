@@ -24,6 +24,7 @@ const uniformBufferSize = Math.ceil((
     + Uint32Array.BYTES_PER_ELEMENT // maxIterations: u32
     + Uint32Array.BYTES_PER_ELEMENT // radius: u32
     + Uint32Array.BYTES_PER_ELEMENT // sampleCount: u32
+    + Uint32Array.BYTES_PER_ELEMENT // skeleton: u32
 ) / 8) * 8;
 
 const uniformBuffer = device.createBuffer({
@@ -91,6 +92,7 @@ var zoomMain = 1 / 2.5;
 var maxIterations = 20;
 var radius = 1000;
 var sampleCount = 6;
+var skeleton = false;
 
 var a = 0.5;
 var b = 0.5;
@@ -102,6 +104,7 @@ var g = 1;
 var h = 0;
 var i = 0;
 var j = 0;
+
 
 function draw(context, center, zoom) {
     const arrayBuffer = new ArrayBuffer(uniformBufferSize);
@@ -116,7 +119,8 @@ function draw(context, center, zoom) {
     new Uint32Array(arrayBuffer, 15 * Float32Array.BYTES_PER_ELEMENT).set([
         maxIterations,
         radius,
-        sampleCount
+        sampleCount,
+        skeleton
     ]);
     device.queue.writeBuffer(uniformBuffer, 0, arrayBuffer);
 
@@ -230,6 +234,8 @@ function setIterations(i) { maxIterations = i; renderMain(); }
 function setRadius(r) { radius = r; renderMain(); }
 function setSampleCount(s) { sampleCount = s; renderMain(); }
 
+function toggleSkeleton() { skeleton = !skeleton; renderMain(); return skeleton; }
+
 function setA(a_) { a = a_; renderMain(); }
 function setB(b_) { b = b_; renderMain(); }
 function setC(c_) { c = c_; renderMain(); }
@@ -314,7 +320,7 @@ function animate() {
     // lerping
 }
 
-return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setSampleCount, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, addKeyframe, removeKeyframe, animate];
+return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setSampleCount, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, addKeyframe, removeKeyframe, animate, toggleSkeleton];
 }
 
 var renderMain;
@@ -328,7 +334,8 @@ var randomizeValues;
 var addKeyframe; 
 var removeKeyframe; 
 var animateFrames;
-(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setSampleCount2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, addKeyframe2, removeKeyframe2, animate2]) => {
+var toggleSkeleton;
+(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setSampleCount2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, addKeyframe2, removeKeyframe2, animate2, toggleSkeleton2]) => {
     renderMain = renderMain2;
     exportMain = exportMain2;
     setCanvasSize = setCanvasSize2;
@@ -349,5 +356,6 @@ var animateFrames;
     addKeyframe = addKeyframe2;
     removeKeyframe = removeKeyframe2;
     animateFrames = animate2;
+    toggleSkeleton = toggleSkeleton2;
 });
 
