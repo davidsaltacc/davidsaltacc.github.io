@@ -58,8 +58,8 @@ input {
 }
 
 .sticky {
-    position: -webkit-sticky;
-    position: sticky;
+    position: -webkit-sticky !important;
+    position: sticky !important;
 }
 
 #title {
@@ -309,4 +309,76 @@ textarea {
 
 .pluginButton {
     margin-left: 4px;
+}
+
+#walkthroughDarken {
+    position: fixed;
+    z-index: 98;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: none;
+}
+
+.hl {
+    z-index: 99;
+    position: relative;
+}
+
+.support-banner {
+    z-index: 101;
+}
+
+@keyframes flash {
+    0% {
+        color: #95beff;
+    }
+    50% {
+        color: #d8e1e2;
+    }
+    100% {
+        color: #95beff;
+    }
+}
+
+.walkthroughConfirm {
+    position: fixed;
+    display: flex;
+    top: 20px;
+    right: 0;
+    margin-right: 20px;
+    width: 500px;
+    height: 120px;
+    background-color: #202233ea;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    text-align: center;
+    animation-name: flash;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    z-index: 20;
+}
+
+.walkthroughDialog {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    text-align: center;
+    width: 600px;
+    height: auto;
+    background-color: #202233ea;
+    animation-name: flash;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    padding: 20px;
+    z-index: 100;
 }

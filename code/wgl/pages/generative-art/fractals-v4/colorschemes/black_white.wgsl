@@ -1,7 +1,5 @@
-var xp: f32 = x * pi * 1.6;
+var c: f32 = .5 + sin(x * pi * 1.6 + 1.) / 2.;
 return vec4<f32>(
-    .5 + sin(xp + 1.) / 2.,
-    .5 + sin(xp + 1.) / 2.,
-    .5 + sin(xp + 1.) / 2.,
+    c, c, c,
     1.
 );

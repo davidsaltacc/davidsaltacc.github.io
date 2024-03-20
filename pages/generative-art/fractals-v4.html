@@ -27,8 +27,10 @@
         </div>
     </div>
     <div class="container">
-        <canvas id="canvasJul" width="500" height="500"></canvas>
-        <canvas id="canvasMain" width="500" height="500"></canvas>
+        <span id="canvasContainer"><!-- putting canvases in div makes them stick to div top not page top, could fix with css but im too lazy so span is the solution -->
+            <canvas id="canvasJul" width="500" height="500"></canvas>
+            <canvas id="canvasMain" width="500" height="500"></canvas>
+        </span>
         <h1 id="title">David's Fractal Explorer v4</h1>
 
         <!--
@@ -166,6 +168,7 @@
                 <button onclick="setFractal('unnamed_9')">Unnamed 9</button>
                 <button onclick="setFractal('smol_brot')">Smallbrot</button>
                 <button onclick="setFractal('magnet')">Magnet</button>
+                <button onclick="setFractal('tree')">Tree</button>
                 <hr>
             </div>
         </div>
@@ -350,7 +353,7 @@
                         }
                     });
                 </script>
-                <button onclick="resetSettings();">Reset Settings</button>
+                <button onclick="resetSettings();" id="settingsReset">Reset Settings</button>
                 <button onclick="randomizeFractal();">Randomize Settings</button>
                 <br><br>
                 <p>Sticky canvases:</p>
@@ -684,13 +687,15 @@ return vec4&lt;f32&gt;(0., 0., 0., 1.);
                 <a href="https://davidsaltacc.github.io/pages/generative-art/fractals-v3">Version v3</a><br>
                 <a href="https://turbowarp.org/907856776?fps=60&turbo">Scratch Version I made for some reason</a>
                 <hr>
-                <h3>What are fractals?</h3>
-                <a href="https://en.wikipedia.org/wiki/Fractal">en.wikipedia.org/wiki/Fractal</a><br>
-                <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">en.wikipedia.org/wiki/Mandelbrot_set</a><br>
-                <a href="https://en.wikipedia.org/wiki/Julia_set">en.wikipedia.org/wiki/Julia_set</a><br>
-                <a href="https://blinry.org/mandelbrot/">blinry.org/mandelbrot</a><br>
-                <a href="https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b">alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b</a><br>
-                <a href="http://www.paulbourke.net/fractals/">www.paulbourke.net/fractals</a>
+                <div id="whatarefractalsContainer">
+                    <h3 id="whatarefractals">What are fractals?</h3>
+                    <a href="https://en.wikipedia.org/wiki/Fractal">en.wikipedia.org/wiki/Fractal</a><br>
+                    <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">en.wikipedia.org/wiki/Mandelbrot_set</a><br>
+                    <a href="https://en.wikipedia.org/wiki/Julia_set">en.wikipedia.org/wiki/Julia_set</a><br>
+                    <a href="https://blinry.org/mandelbrot/">blinry.org/mandelbrot</a><br>
+                    <a href="https://alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b">alonso-delarte.medium.com/a-quick-explanation-of-the-mandelbrot-set-41102d7182b</a><br>
+                    <a href="http://www.paulbourke.net/fractals/">www.paulbourke.net/fractals</a>
+                </div>
                 <hr>
                 <h3>Special Thanks:</h3>
                 <p><a href="https://nathansolomon1678.github.io/fractals">This</a> project by nathansolomon1678 on github, where I got a lot of insipration (and code) from</p>
@@ -709,9 +714,11 @@ return vec4&lt;f32&gt;(0., 0., 0., 1.);
             </div>
         </div>
     </div>
+    <div id="walkthroughDarken"></div>
     <div class="support-banner" id="sb">
         <p onclick="console.log(this); window.location.href = 'https:\/\/ko-fi.com\/justacoder';">Support my work! </p><span onclick="this.parentElement.remove();">X</span>
     </div>
+    <script src="../../code/js/pages/generative-art/fractals-v4/walkthrough.js"></script>
     <script src="../../code/js/pages/generative-art/fractals-v4/main.js"></script>
     <script src="../../code/js/pages/generative-art/fractals-v4/plugins.js"></script>
 </body>

@@ -250,11 +250,11 @@ fn sm_noise(pos: vec2<f32>) -> f32 {
 }
 
 fn clouds(pos: vec2<f32>) -> f32 {
-	var p: vec2<f32> = pos + 5.;
-	var v: f32 = 0.;
 	if (uniforms.cloudAmplitude == 0.) {
 		return 0.;
 	}
+	var p: vec2<f32> = pos + 5.;
+	var v: f32 = 0.;
 	var a: f32 = uniforms.cloudAmplitude * (1.3 - uniforms.cloudMultiplier);
 	for (var i: i32; i < 20; i++) {
 		v += a * sm_noise(p);

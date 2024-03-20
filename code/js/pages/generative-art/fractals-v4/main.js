@@ -456,22 +456,22 @@ var presets_functions = {
     "asin": {
         "id": 12,
         "radius": 10,
-        "description": "Complex arcsine. Enable interior coloring."
+        "description": "Complex arcsine. Enable interior coloring. With higher powers, this can create interesting effects."
     },
     "acos": {
         "id": 13,
         "radius": 10,
-        "description": "Complex arccosine. Enable interior coloring."
+        "description": "Complex arccosine. Enable interior coloring. With higher powers, this can create interesting effects."
     },
     "asinh": {
         "id": 14,
         "radius": 10,
-        "description": "Complex hyperbolic arcsine. Enable interior coloring."
+        "description": "Complex hyperbolic arcsine. Enable interior coloring. With higher powers, this can create interesting effects."
     },
     "acosh": {
         "id": 15,
         "radius": 10,
-        "description": "Complex hyperbolic arccosine. Enable interior coloring."
+        "description": "Complex hyperbolic arccosine. Enable interior coloring. With higher powers, this can create interesting effects."
     },
     "atanh": {
         "id": 16,
@@ -725,6 +725,12 @@ var presets_fractals = {
         "radius": 10000000,
         "description": "Magnet fractal. Maybe turn on interior coloring?",
         "formula": "<p>((z<sub>n</sub><sup>POWER</sup> + c - 1) / (2 * z<sub>n</sub> + c - 2))<sup>POWER</sup></p>"
+    },
+    "tree": {
+        "id": 40,
+        "radius": 10,
+        "description": "Square root makes tree, apparently. Changes its appearance a lot with different powers.",
+        "formula": "add formula here"
     }
 }
 
@@ -1313,4 +1319,10 @@ var __h__;
     document.getElementById("loadingscreen").style.display = "none";
 
     console.log("finished initialization");
+
+    confirmWalkthrough().onInteracted(accepted => {
+        if (accepted) {
+            startWalkthrough();
+        }
+    });
 });
