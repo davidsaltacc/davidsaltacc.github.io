@@ -1,9 +1,5 @@
-if (document.cookie == "h=1") { // :P
+if (window.location.href.startsWith("http://127.0.0.1")) { // :P
     document.getElementById("sb").style.display = "none";
-}
-
-function __h__() {
-    document.cookie = "h=1";
 }
 
 async function init() {
@@ -1010,23 +1006,46 @@ function setCanvasesSticky(sticky) {
 
 setCanvasesSticky(true);
 
-function exportMain() {
-    renderMain();
-    var data = canvasMain.toDataURL("image/png");
-    var a = document.createElement("a");
-    a.href = data;
+function _export(dURL) {
+    var pURL = createUrlParams();
+    var s = dURL.split(",");
+    
+    var a = document.createElement("a");   // long text to avoid it accidentally occuring in png files' image data
+    a.href = s[0] + "," + btoa(atob(s[1]) + "301210301210301210_FRACTALEXPLORERPARAMETERURL:" + pURL);
     a.download = "fractal.png";
     a.click();
     a.remove();
 }
+function exportMain() {
+    renderMain();
+    var data = canvasMain.toDataURL("image/png");
+    _export(data);
+}
 function exportJul() {
     renderJul();
     var data = canvasJul.toDataURL("image/png");
-    var a = document.createElement("a");
-    a.href = data;
-    a.download = "fractal.png";
-    a.click();
-    a.remove();
+    _export(data);
+}
+
+function loadParamsFromFile() {
+    var input = document.createElement("input");
+    input.type = "file";
+    input.onchange = e => { 
+        var file = e.target.files[0]; 
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = readerEvent => {
+            var content = readerEvent.target.result;
+            var split = content.split("301210301210301210_FRACTALEXPLORERPARAMETERURL:");
+            if (split.length == 2) {
+                applyUrlParams_(split[1]);
+            } else {
+                alert("No URL could be found in the uploaded image.");
+            }
+        }
+    }
+
+    input.click();
 }
 
 function setRadius(rad) { radius = rad; renderMain(); renderJul(); updateUi(); }
@@ -1086,10 +1105,16 @@ function createUrlParams() {
     params.append("cml", cloudMultiplier);
     document.getElementById("url").innerText = document.getElementById("url").href = url.href;
     hideUrlWarning();
+
+    return url.href;
 }
 
 async function applyUrlParams() {
-    var params = new URL(window.location.href).searchParams;
+    applyUrlParams_(window.location.href);
+}
+
+async function applyUrlParams_(url) {
+    var params = new URL(url).searchParams;
     centerMain[0] = parseFloat(params.get("cxm") ?? centerMain[0]);
     centerMain[1] = parseFloat(params.get("cym") ?? centerMain[1]);
     centerJul[0] = parseFloat(params.get("cxj") ?? centerJul[0]);
@@ -1247,7 +1272,7 @@ return [renderMain, renderJul, setFractal, setColorscheme, setColormethod, setCo
         setRadius, setIterations, setConstantX, setConstantY, setInterpolation, setPostFunction,
         exportMain, exportJul, setCanvasSize, setColorfulness, setSampleCount, setPower, toggleShader, updateShader,
         createUrlParams, resetSettings, __addPFractal, __addPCs, randomizeFractal, 
-        setCloudSeed, setCloudAmplitude, setCloudMultiplier, __h__];
+        setCloudSeed, setCloudAmplitude, setCloudMultiplier, loadParamsFromFile, applyUrlParams_];
 }
 
 var renderMain;
@@ -1279,12 +1304,13 @@ var randomizeFractal;
 var setCloudSeed;
 var setCloudAmplitude;
 var setCloudMultiplier;
-var __h__;
+var loadParamsFromFile;
+var applyUrlParams;
 (async () => { return await init(); })().then(([renderMain2, renderJul2, setFractal2, setColorscheme2, setColormethod2, setColoroffset2, setCanvasesSticky2,
                                                 setRadius2, setIterations2, setConstantX2, setConstantY2, setInterpolation2, setPostFunction2,
                                                 exportMain2, exportJul2, setCanvasSize2, setColorfulness2, setSampleCount2, setPower2, toggleShader2, updateShader2,
                                                 createUrlParams2, resetSettings2, __addPFractal2, __addPCs2, randomizeFractal2, 
-                                                setCloudSeed2, setCloudAmplitude2, setCloudMultiplier2, __h__2]) => {
+                                                setCloudSeed2, setCloudAmplitude2, setCloudMultiplier2, loadParamsFromFile2, applyUrlParams2]) => {
     renderMain = renderMain2;
     renderJul = renderJul2;
     setFractal = setFractal2;
@@ -1314,15 +1340,16 @@ var __h__;
     setCloudSeed = setCloudSeed2;
     setCloudAmplitude = setCloudAmplitude2;
     setCloudMultiplier = setCloudMultiplier2;
-    __h__ = __h__2;
+    loadParamsFromFile = loadParamsFromFile2;
+    applyUrlParams = applyUrlParams2;
 
     document.getElementById("loadingscreen").style.display = "none";
 
     console.log("finished initialization");
 
-    confirmWalkthrough().onInteracted(accepted => {
-        if (accepted) {
-            startWalkthrough();
-        }
-    });
+    //confirmWalkthrough().onInteracted(accepted => {
+    //    if (accepted) {
+    //        startWalkthrough();
+    //    }
+    //});
 });
