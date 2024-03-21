@@ -179,12 +179,19 @@ var pluginFractal = null;
 var pluginCs = null;
 
 async function compileShaderCode(cmethod, cscheme, fractal, postf) {
-    return await compileShaderCode_(
+
+    showLoadingWave();
+
+    var result = await compileShaderCode_(
         await fetchSubCode(cmethod, "colormethods"),
         customCs ? document.getElementById("cscodei").value : await fetchSubCode(cscheme, "colorschemes", pluginCs),
         customFractal ? document.getElementById("fcodei").value : await fetchSubCode(fractal, "fractals", pluginFractal),
         await fetchSubCode(postf, "post_functions")
     );
+
+    hideLoadingWave();
+
+    return result;
 }
 
 status("STATUS: initializing fractal explorer");
@@ -322,6 +329,10 @@ var presets_colormethods = {
     "interior_2": {
         "id": 13,
         "description": "Another interior coloring method, a little different that the first one."
+    },
+    "interior_stripes": {
+        "id": 14,
+        "description": "Stripes, but on the interior. A little messy, only looks really good on the juliasets."
     }
 };
 
@@ -726,7 +737,19 @@ var presets_fractals = {
         "id": 40,
         "radius": 10,
         "description": "Square root makes tree, apparently. Changes its appearance a lot with different powers.",
-        "formula": "add formula here"
+        "formula": "<p>z<sub>n+1</sub> = sqrt(z<sub>n</sub><sup>POWER+1</sup>) + c</p>"
+    },
+    "unnamed_10": {
+        "id": 41,
+        "radius": 10000000,
+        "description": "I reeeaally need to find some names for all of these.",
+        "formula": "<p>z<sub>n+1</sub> = z<sub>n</sub><sup>3</sup> + z<sub>n</sub> + c</p>"
+    },
+    "not_mandelbrot": {
+        "id": 42,
+        "radius": 10000000,
+        "description": "Looks like the mandelbrot set at first, but really isn't.",
+        "formula": "<p>z<sub>n+1</sub> = (((1 - i) * z<sub>n</sub>) / 2) * (((1 + i) * (z<sub>n</sub> - 1)) / 2) + c</p>"
     }
 }
 
@@ -752,6 +775,14 @@ function showUrlWarning() {
 
 function hideUrlWarning() {
     document.getElementById("urlaoutdatedwarn").style.display = "none";
+}
+
+function showLoadingWave() {
+    document.getElementById("loadingscreen").style.display = "block";
+}
+
+function hideLoadingWave() {
+    document.getElementById("loadingscreen").style.display = "none";
 }
 
 function updateUi() {
@@ -1344,6 +1375,8 @@ var applyUrlParams;
     applyUrlParams = applyUrlParams2;
 
     document.getElementById("loadingscreen").style.display = "none";
+    document.getElementById("statusbar").style.display = "none";
+    document.getElementById("loadingscreen").style.backgroundColor = "#00000060";
 
     console.log("finished initialization");
 

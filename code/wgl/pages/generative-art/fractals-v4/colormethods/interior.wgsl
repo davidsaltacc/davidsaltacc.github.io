@@ -1,6 +1,6 @@
 if (magnitude(z) > radius) {
     color_black = true;
     break;
-} else {
+} else if (iteration == maxIterations) {
     color_v = log(magnitude(z));
 }
