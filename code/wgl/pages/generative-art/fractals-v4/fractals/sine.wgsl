@@ -1,1 +1,1 @@
-return apply_post_function(c_pow(c_sin(z), power) + c);
+return apply_post_function(c_pow(c_sin(z), power) + c, c);

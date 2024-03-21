@@ -489,6 +489,11 @@ var presets_functions = {
         "id": 17,
         "radius": 10,
         "description": "Inversed. Pretty much just 1/z."
+    },
+    "scatter":{
+        "id": 18,
+        "radius": null,
+        "description": "Make sure to use a high sample count, among with a high colorfulness value, then it creates an almost buddhabrot-like image."
     }
 }
 
@@ -837,7 +842,9 @@ async function setFractal(type) {
     if (postFracFunc == "none") {
         radius = presets_fractals[type]["radius"];
     } else {
-        radius = presets_functions[postFracFunc]["radius"];
+        if (presets_functions[postFracFunc]["radius"] != null) {
+            radius = presets_functions[postFracFunc]["radius"];
+        }
     }
 
     await compileShaderCode(colorMethod, colorscheme, fractalType, postFracFunc);

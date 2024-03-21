@@ -1,1 +1,1 @@
-return apply_post_function(c_division(c_pow(z, 7.) + c.x / c.y, z));
+return apply_post_function(c_division(c_pow(z, 7.) + c.x / c.y, z), c);

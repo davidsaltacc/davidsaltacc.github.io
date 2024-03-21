@@ -3,4 +3,4 @@ return apply_post_function(
         z.y - sign(z.x) * sqrt(abs(c.y * z.x - (c.x + c.y))), 
         c.x - z.x
     ), power
-));
+), c);

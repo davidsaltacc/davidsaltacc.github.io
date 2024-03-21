@@ -1,1 +1,1 @@
-return apply_post_function(c_pow(z, 3.) + c_multiplication(c - vec2<f32>(1., 0.), z) - c);
+return apply_post_function(c_pow(z, 3.) + c_multiplication(c - vec2<f32>(1., 0.), z) - c, c);

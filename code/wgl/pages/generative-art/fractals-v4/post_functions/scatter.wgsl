@@ -1,0 +1,1 @@
+return z + (ms_rand(c) * 2 - 1);

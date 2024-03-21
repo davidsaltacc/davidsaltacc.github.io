@@ -1,1 +1,1 @@
-return apply_post_function(c_pow(z, power)) + c;
+return apply_post_function(c_pow(z, power), c) + c;
