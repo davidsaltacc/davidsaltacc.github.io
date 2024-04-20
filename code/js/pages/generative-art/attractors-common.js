@@ -22,7 +22,7 @@ var maxParticles = 600000;
 
 var req = null;
 
-function draw(func) {
+function draw(func, zoom = 1) {
 
     cancelAnimationFrame(req);
 
@@ -101,7 +101,7 @@ function Particle(x, y, move) {
         this.position.x = m[0];
         this.position.y = m[1];
     };
-    this.show = function() {
+    this.show = function(zoom) {
         ctx.strokeRect(...denormalize(this.position.x, this.position.y), 0.1, 0.1); // idk how 0.1 is allowed, but it seems to create a better image so i keep it.
     };
 }

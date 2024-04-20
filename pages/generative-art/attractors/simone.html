@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Simone Attractor</title>
+    <link rel="stylesheet" type="text/css" href="../../../styles.css">
+    <link rel="shortcut icon" type="image/png" href="../../../assets/favicon.png">
+	<link rel="stylesheet" type="text/css" href="../../../code/css/pages/generative-art/attractors.css">
+</head>
+
+<body>
+    <p>a, b:</p>
+    <input type="range" class="slider" min="-8" max="8" step="0.001" value="3.61" id="a" onchange="drawF();">
+    <input type="range" class="slider" min="-8" max="8" step="0.001" value="4.24" id="b" onchange="drawF();">
+    <button type="button" onclick="exportCanvas();">Export</button>
+    <script src="../../../code/js/pages/generative-art/attractors-common.js"></script>
+    <script src="../../../code/js/pages/generative-art/attractors/simone.js"></script>
+</body>
+</html>
