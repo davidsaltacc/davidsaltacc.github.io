@@ -396,6 +396,18 @@ var presets_colorschemes = {
     "blue": {
         "id": 14,
         "description": "Blue."
+    },
+    "cold": {
+        "id": 15,
+        "description": "Only cold colors."
+    },
+    "winter": {
+        "id": 16,
+        "description": "Snowy and icy. I like it"
+    },
+    "glow": {
+        "id": 17,
+        "description": "Doesn't sound like the best of names for this"
     }
 };
 
