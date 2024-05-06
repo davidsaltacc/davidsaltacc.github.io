@@ -33,7 +33,7 @@
 
         <!--
 
-        TOGGLABLE AREA TEMPLATE
+        TOGGLABLE AREA TEMPLATE (made by me, made for me, not internet copy paste)
 
         <div class="toggleable">
             <div id="NAMEareatoggle" class="collapsToggle">
@@ -757,5 +757,33 @@ return vec4&lt;f32&gt;(0., 0., 0., 1.);
     <!--<script src="../../code/js/pages/generative-art/fractals-v4/walkthrough.js"></script>-->
     <script src="../../code/js/pages/generative-art/fractals-v4/main.js"></script>
     <script src="../../code/js/pages/generative-art/fractals-v4/plugins.js"></script>
+    <div class="toggleable">
+        <div id="googleareatoggle" class="collapsToggle">
+            <span id="NAMEareaind" class="areaind">&#11206;</span>
+            <h3>Literally just random keywords for google to crawl so I get more clicks</h3>
+        </div>
+        <div id="googlearea" style="display: block;">
+            <script>
+                var googlee = document.getElementById("googleareatoggle");
+                var googlee2 = document.getElementById("googlearea");
+                var googlee3 = document.getElementById("googleareaind");
+                googlee.addEventListener("click", ev => {
+                    if (googlee2.style.display == "none") {
+                        googlee2.style.display = "block";
+                        googlee3.innerHTML = "&#11206;";
+                        return;
+                    }
+                    if (googlee2.style.display == "block") {
+                        googlee2.style.display = "none";
+                        googlee3.innerHTML = "&#11208;";
+                        return;
+                    }
+                });
+            </script>
+            <p>Fractal Explorer v4 or Fractal Viewer v4 made by justacoder or davidsaltacc is the best way to explore and view fractals online in the browser no download, you can view Fractals like the mandelbrot set, burning ship, tricorn, with many colormaps, color methods, and more, you can create art, Fractal Art v4, Fractal Generative Art. </p><br>
+            <p>Does this even work? (Google please put this somewhere up the top search results i dont want to go to page 8 just to see it THAJNKSHSHDDF)</p>
+            <hr>
+        </div>
+    </div>
 </body>
 </html>
