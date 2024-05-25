@@ -11,14 +11,14 @@ var noiseGrid = [];
 var noiseGridX = Math.ceil(canvas.width / 16) + 1;
 var noiseGridY = Math.ceil(canvas.height / 16) + 1;
 
-var noiseScale = 0.015;
-var particlesAmount = 0.005 * canvas.width * canvas.height;
+var noiseScale = Math.random() * 0.02 + 0.001;
+var particlesAmount = 0.006 * canvas.width * canvas.height;
 
 context.fillStyle = "#000000ff";
 context.fillRect(0, 0, canvas.width, canvas.height);
 
 context.lineWidth = 1;
-context.strokeStyle = "#ffffff10";
+context.strokeStyle = "#ffffff60";
 
 noiseGrid = [];
 for (var x = 0; x < noiseGridX; x++) {
@@ -39,7 +39,13 @@ for (var i = 0; i <= particlesAmount; i++) {
     });
 }
 
+var maxIter = 22;
+var iter = 0;
+
 setInterval(() => {
+
+    iter = 0;
+    noiseScale = Math.random() * 0.02 + 0.001;
 
     noise.seed(Math.random());
     noiseGrid = [];
@@ -56,10 +62,16 @@ setInterval(() => {
         p.vy = 0;
     });
     context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    requestAnimationFrame(frame);
 
 }, 15000);
 
 function frame() {
+
+    if (iter > maxIter) {
+        return;
+    }
 
     particles.forEach(p => {
 
@@ -89,6 +101,8 @@ function frame() {
         p.vy *= 0.8;
 
     });
+
+    iter += 1;
 
     requestAnimationFrame(frame);
 }
