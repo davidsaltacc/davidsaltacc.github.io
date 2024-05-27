@@ -66,7 +66,7 @@ function hsv2rgb(h, s, v) {
 setInterval(() => {
 
     iter = 0;
-    noiseScale = Math.random() * 0.02 + 0.001;
+    noiseScale = Math.random() * 0.012 + 0.001;
 
     noise.seed(Math.random());
     noiseGrid = [];
