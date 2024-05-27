@@ -18,7 +18,6 @@ context.fillStyle = "#000000ff";
 context.fillRect(0, 0, canvas.width, canvas.height);
 
 context.lineWidth = 1;
-context.strokeStyle = "#ffffff60";
 
 noiseGrid = [];
 for (var x = 0; x < noiseGridX; x++) {
@@ -41,6 +40,28 @@ for (var i = 0; i <= particlesAmount; i++) {
 
 var maxIter = 22;
 var iter = 0;
+
+function hsv2rgb(h, s, v) {
+    var r, g, b, i, f, p, q, t;
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+    return [
+        Math.round(r * 255),
+        Math.round(g * 255),
+        Math.round(b * 255)
+    ];
+}
 
 setInterval(() => {
 
@@ -95,6 +116,9 @@ function frame() {
         p.y += p.vy;
         
         context.lineTo(p.x, p.y);
+        var color = hsv2rgb(ang / 12, 0.55, 1);
+        context.strokeStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]}, 0.37)`;
+
         context.stroke();
 
         p.vx *= 0.8;
