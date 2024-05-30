@@ -11,7 +11,7 @@ var noiseGrid = [];
 var noiseGridX = Math.ceil(canvas.width / 16) + 1;
 var noiseGridY = Math.ceil(canvas.height / 16) + 1;
 
-var noiseScale = Math.random() * 0.02 + 0.001;
+var noiseScale = 0.0008 + (Math.random() ** 2) * 0.03;
 var particlesAmount = 0.006 * canvas.width * canvas.height;
 
 context.fillStyle = "#000000ff";
@@ -66,7 +66,7 @@ function hsv2rgb(h, s, v) {
 setInterval(() => {
 
     iter = 0;
-    noiseScale = Math.random() * 0.012 + 0.001;
+    noiseScale = 0.0008 + (Math.random() ** 2) * 0.03;
 
     noise.seed(Math.random());
     noiseGrid = [];
@@ -107,7 +107,7 @@ function frame() {
         var x = Math.floor(p.x / 16);
         var y = Math.floor(p.y / 16);
 
-        var ang = noiseGrid[x][y]; // * Math.random(); // cool effect
+        var ang = noiseGrid[x][y]; // * Math.random(); // cool effect on higher noise scales
 
         p.vx = Math.cos(ang) * 0.5 + p.vx;
         p.vy = Math.sin(ang) * 0.5 + p.vy;
