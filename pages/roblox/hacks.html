@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Exploits</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/favicon.png">
+	<link rel="stylesheet" type="text/css" href="/code/css/pages/roblox/hacks.css">
+    <script src="/code/js/pages/roblox/hacks.js"></script>
+</head>
+<body>
+    <div class="topbar">
+        <div class="pagename">
+            <h2>Roblox Exploits</h2>
+        </div>
+        <a onclick="changeTab('adblockers', this);" id="adblockers_button">Adblockers</a>
+        <a onclick="changeTab('bypassers', this);" id="bypassers_button">Keysystem bypassers</a>
+        <a onclick="changeTab('viruses', this);" id="viruses_button">Viruses/RATs/Fake Exploits</a>
+        <a onclick="changeTab('exploits', this);" id="exploits_button" class="active">Exploits</a>
+    </div>
+
+    <div class="container" id="adblockers" style="display: none;">
+        <div class="card adblocker">
+            <div class="content">
+                <h3>uBlock Origin</h3>
+                <hr>
+                <div class="text">
+                    <p>Best adblocker, works for all platforms. </p>
+                    <p>If the page detects it, you might need to disable it.</p>
+                    <br>
+                    <p>Highly recommended.</p>
+                    <button onclick="window.open('https://ublockorigin.com')">FREE</button>
+                </div>
+            </div>
+        </div>
+        <div class="card adblocker">
+            <div class="content">
+                <h3>Brave Browser</h3>
+                <hr>
+                <div class="text">
+                    <p>Its a browser, but has a built in adblocker, that is quite good aswell. If you want it as a youtube adblocker aswell, uBlock Origin is the only thing working.</p>
+                    <button onclick="window.open('https://brave.com/')">FREE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="viruses" style="display: none;">
+        <div class="card virus">
+            <div class="content">
+                <h3>Xylex</h3>
+                <hr>
+                <div class="text">
+                    <p>Xylex is a scam, it doesn't work and apparently uses free dlls from wave.</p>
+                    <a href="https://www.reddit.com/r/robloxhackers/comments/1d53pd4/xylex_is_a_scam/" target="_blank" rel="noopener">More...</a>
+                </div>
+            </div>
+        </div>
+        <div class="card virus">
+            <div class="content">
+                <h3>Oxycontin</h3>
+                <hr>
+                <div class="text">
+                    <p>Oxycontin is a scam. UNC Tests showcased are completely fake, finishing in 0.001s, with a success rate of 78 out of 83, which would be ~94%, but the UNC test says 75%. Learn how to do math first, idiots. </p>
+                    <a href="https://www.reddit.com/r/robloxhackers/comments/1cz1ega/oxycontin_is_fake_with_proof/" target="_blank" rel="noopener">More...</a>
+                </div>
+            </div>
+        </div>
+        <div class="card virus">
+            <div class="content">
+                <h3>Eulen</h3>
+                <hr>
+                <div class="text">
+                    <p>Eulen owner seems to be actually the Oxycontin owner. Same speech pattern, the server is the old oxycontin server and in a reddit user's server, they are saying they are oxycontin.</p>
+                    <a href="https://www.reddit.com/r/robloxhackers/comments/1d647sl/eulen_executor_is_fake_with_proof/" target="_blank" rel="noopener">More...</a>
+                </div>
+            </div>
+        </div>
+        <div class="card virus">
+            <div class="content">
+                <h3>Saturn</h3>
+                <hr>
+                <div class="text">
+                    <p>Saturn is a virus. When run in a Virtual Machine, saturn doesn't open and UI, it force closes task manager on open, and adds itself to exlusions in Windows defender.</p>
+                    <a href="https://www.reddit.com/r/robloxhackers/comments/1d78dbq/cw_saturn_executor_is_fake/" target="_blank" rel="noopener">More...</a>
+                </div>
+            </div>
+        </div>
+        <div class="card virus">
+            <div class="content">
+                <h3>Fermium</h3>
+                <hr>
+                <div class="text">
+                    <p>Fermium's owner left the discord server and no one got refunded. </p>
+                    <a href="https://www.reddit.com/r/robloxhackers/comments/1dbzhcg/small_story_about_fermium/" target="_blank" rel="noopener">More...</a>
+                </div>
+            </div>
+        </div>
+        <div class="card virus">
+            <div class="content">
+                <h3>Kiwi X</h3>
+                <hr>
+                <div class="text">
+                    <p>Kiwi X is a RAT (Remote Access Trojan). Upon opening one of Kiwi X's files, you can see lots of registry modification code, and its not even its own malware written by the Kiwi X Owner, its possible its a RAT named Quasar.</p>
+                    <a href="https://www.reddit.com/r/robloxhackers/comments/1cdmkqn/kiwix_is_malware_a_short_dig/" target="_blank" rel="noopener">More...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="bypassers" style="display: none;">
+        <div class="card bypass">
+            <div class="content">
+                <h3>bypass.city</h3>
+                <hr>
+                <div class="text">
+                    <p>Bypasses linkvertise, not tested for other plaforms, but probably works too.</p>
+                    <button onclick="window.open('https://bypass.city');">BYPASS</button>
+                </div>
+            </div>
+        </div>
+        <div class="card bypass">
+            <div class="content">
+                <h3>bypass-all-shortlinks-debloated</h3>
+                <hr>
+                <div class="text">
+                    <p>Bypasses a lot of link shorteners, completely automatically.</p><br>
+                    <p>Requires a userscript manager like violentmonkey to be installed.</p>
+                    <h4>How to use:</h4>
+                    <p>- Install violentmonkey from the first link.</p>
+                    <p>- Install the script from the second link.</p>
+                    <button onclick="window.open('https://violentmonkey.github.io');">GET VIOLENTMONKEY</button>
+                    <button onclick="window.open('https://codeberg.org/Amm0ni4/bypass-all-shortlinks-debloated/raw/branch/main/Bypass_All_Shortlinks.user.js');">GET SCRIPT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="exploits">
+        <div class="buttoncontainer">
+            <button onclick="toggleFilterMenu();"></button>
+            <div class="filter-icon-container" id="filter" style="transform: translate(0px, -150px)">
+                <div onclick="toggleFilter('ex_win', this)" class="filterico icon windows"></div>
+                <div onclick="toggleFilter('ex_and', this)" class="filterico icon android"></div>
+                <div onclick="toggleFilter('ex_mac', this)" class="filterico icon macos"></div>
+                <div onclick="toggleFilter('ex_ios', this)" class="filterico icon ios"></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card ex_win">
+                <div class="content">
+                    <h3>Electron V3</h3>
+                    <div class="icon-container">
+                        <div class="icon windows"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- Good reputation</p>
+                        <p class="g">- Claims to be a level 8 executor, which is one level higher than the best of executors pre-hyperion</p>
+                        <p class="g">- 98% UNC, most scripts work</p>
+                        <p class="g">- Beta versions have been given to some people already, so it probably works, and will release soon</p>
+                        <p class="n">- Not released yet</p>
+                        <button onclick="window.open('');">NOT RELEASED YET</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_win">
+                <div class="content">
+                    <h3>Solara</h3>
+                    <div class="icon-container">
+                        <div class="icon windows"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- No keysystem</p>
+                        <p class="n">- 53% UNC, so lots of scripts don't work</p>
+                        <p class="b">- Unknown if detected, but possible. Proceed with caution</p>
+                        <button onclick="window.open('https://discord.gg/getsolara');">FREE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_win">
+                <div class="content">
+                    <h3>Wave</h3>
+                    <div class="icon-container">
+                        <div class="icon windows"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- Safe in some builds</p>
+                        <p class="g">- No keysystem</p>
+                        <p class="b">- Owned by CodeX and Arceus X who stole user data in 2021</p>
+                        <button onclick="window.open('https://getwave.gg');">FREE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_and ex_mac">
+                <div class="content">
+                    <h3>Hydrogen</h3>
+                    <div class="icon-container">
+                        <div class="icon android"></div>
+                        <div class="icon macos"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- MacOS and Android don't (yet) have Hyperion</p>
+                        <p class="g">- Developers say it will be for Windows and iOS too sometime in the future</p>
+                        <p class="n">- MacOS can still get banwaves</p>
+                        <p class="n">- Keysystem</p>
+                        <button onclick="window.open('https://hydrogen.sh');">FREE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_win">
+                <div class="content">
+                    <h3>Domain</h3>
+                    <div class="icon-container">
+                        <div class="icon windows"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- Good reputation</p>
+                        <p class="n">- Last updated: 05.02.</p>
+                        <button onclick="window.open('https://discord.gg/subdomain');">15$</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_and ex_ios">
+                <div class="content">
+                    <h3>Codex</h3>
+                    <div class="icon-container">
+                        <div class="icon android"></div>
+                        <div class="icon ios"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="n">- Potential banwaves</p>
+                        <p class="b">- Long keysystem</p>
+                        <p class="b">- Partnered with and uses core tech from Arceus X who stole user data in 2021</p>
+                        <button onclick="window.open('https://codex.lol');">FREE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_and">
+                <div class="content">
+                    <h3>Delta</h3>
+                    <div class="icon-container">
+                        <div class="icon android"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- Popular choice</p>
+                        <p class="g">- Really good performance</p>
+                        <p class="n">- Keysystem</p>
+                        <p class="n">- Possible banwaves</p>
+                        <p class="b">- Owner has a shady background</p>
+                        <button onclick="window.open('https://deltaexploits.net/');">FREE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_mac">
+                <div class="content">
+                    <h3>MacSploit</h3>
+                    <div class="icon-container">
+                        <div class="icon macos"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- No keysystem</p>
+                        <p class="g">- Fast updates</p>
+                        <p class="n">- Possible banwaves</p>
+                        <p class="n">- Source code has been leaked</p>
+                        <p class="b">- Owner has a shady background</p>
+                        <p class="b">- Team is disrespectful</p>
+                        <button onclick="window.open('https://discord.com/invite/macsploit')">10$</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_win ex_and ex_mac">
+                <div class="content">
+                    <h3>bunni.lol</h3>
+                    <div class="icon-container">
+                        <div class="icon windows"></div>
+                        <div class="icon android"></div>
+                        <div class="icon macos"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- Apparently by trusted devs</p>
+                        <p class="n">- Very different prices</p>
+                        <p class="n">- All platforms still in development</p>
+                        <p class="n">- Discord server requires verification, which needs you to allow a bot to join servers for you. Developers say, it is for pulling members back if the server gets terminated. If you don't want that, <a href="https://www.iorad.com/player/2100432/Discord---How-to-deauthorize-an-app-" target="_blank" rel="noopener">here</a> a guide on how to remove it.</p>
+                        <h4>Prices</h4>
+                        <h5>Windows:</h5>
+                        <p>$25 Monthly, $8 Weekly, $2.5 Daily <br><span style="font-size: xx-small;">(What in the world are these prices?)</span></p>
+                        <h5>Mac:</h5>
+                        <p>$10 Monthly, $4 Weekly, $1 Daily</p>
+                        <h5>Android:</h5>
+                        <p>Free, but with keysystem.</p>
+                        <button onclick="window.open('https://bunni.lol')">DIFFERENT PRICES</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_and">
+                <div class="content">
+                    <h3>Vega X</h3>
+                    <div class="icon-container">
+                        <div class="icon android"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- Fast updates</p>
+                        <p class="n">- Possible banwaves</p>
+                        <p class="n">- Keysystem, or paid</p>
+                        <p class="b">- Partnered with Arceus X, who stole user data in 2021</p>
+                        <button onclick="window.open('https://vegax.gg')">FREE or 20$/4000R$</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_and ex_ios">
+                <div class="content">
+                    <h3>Arceus X</h3>
+                    <div class="icon-container">
+                        <div class="icon android"></div>
+                        <div class="icon ios"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="n">- Same as Codex</p>
+                        <p class="n">- Long keysystem</p>
+                        <p class="n">- Possible banwaves</p>
+                        <p class="b">- Arceus X stole user data in 2021</p>
+                        <button onclick="window.open('https://spdmteam.com');">FREE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card ex_win">
+                <div class="content">
+                    <h3>Carbon</h3>
+                    <div class="icon-container">
+                        <div class="icon windows"></div>
+                    </div>
+                    <hr>
+                    <div class="text">
+                        <p class="g">- Trusted, apparently</p>
+                        <p class="n">- Not released yet</p>
+                        <button onclick="window.open('https://discord.com/invite/kwz2teyQVs');">2-5$</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img id="background" src="../../assets/robloxhacks-background.png"></img>
+</body>
+</html>
