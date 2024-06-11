@@ -11,6 +11,15 @@ function changeTab(name, button) { // very messy but works
     el("viruses_button").className = "";
     el("bypassers_button").className = "";
     el("adblockers_button").className = "";
+    el("nav_exploits_button").className = "";
+    el("nav_viruses_button").className = "";
+    el("nav_bypassers_button").className = "";
+    el("nav_adblockers_button").className = "";
+    if (button.id.startsWith("nav_")) {
+        el(button.id.replace("nav_", "")).className = "active";
+    } else {
+        el("nav_" + button.id).className = "active";
+    }
     button.className = "active";
 }
 
@@ -53,5 +62,14 @@ function toggleFilter(name, button) {
         if (!visible) {
             card.style.display = "none";
         }
+    }
+}
+
+function toggleNav() {
+    var sidebar = el("sidebar");
+    if (sidebar.style.left == "-100vw") {
+        sidebar.style.left = "0";
+    } else {
+        sidebar.style.left = "-100vw";
     }
 }

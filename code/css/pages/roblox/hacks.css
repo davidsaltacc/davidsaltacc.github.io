@@ -11,10 +11,9 @@
 
 body {
     background-color: #000000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
@@ -43,8 +42,8 @@ body {
     border-left: 1px solid rgba(255, 255, 255, 0.5);
     border-right: 1px solid rgba(0, 0, 0, 0.5);
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-    -webkit-backdrop-filter: blur(11px) brightness(65%);
-    backdrop-filter: blur(11px) brightness(65%);
+    -webkit-backdrop-filter: blur(11px) brightness(50%);
+    backdrop-filter: blur(11px) brightness(50%);
     height: min-content;
     transition: 0.5s;
     min-height: 300px;
@@ -202,7 +201,6 @@ hr {
 
 .topbar a {
     float: right;
-    display: block;
     text-align: center;
     padding: 18px 16px;
     background-color: #ffffff30;
@@ -290,4 +288,101 @@ hr {
 * {
     -ms-overflow-style: none; 
     scrollbar-width: none; 
+}
+
+.small {
+    font-size: xx-small;
+}
+
+.small a {
+    color: #98afd4;
+    text-decoration: none;
+}
+
+#contents {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+#sidebar {
+    display: none;
+}
+
+.hamburger {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5em;
+    line-height: 1em;
+    color: #e0e0e0;
+    display: none;
+}
+
+@media screen and (max-width: 400px) {
+    .container .card .content .text {
+        font-size: smaller;
+    }
+}
+
+@media screen and (max-width: 900px) {
+
+    .container .card {
+        width: 90vw;
+    }
+    
+    .container .card .content {
+        width: 90vw;
+    }
+    
+    .container .card .content .text button {
+        width: 100%;
+    }
+
+    #tabbuttons {
+        display: none;
+    }
+
+    #sidebar {
+        display: block;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+}
+
+#sidebar {
+    height: 100%;
+    width: 80vw;
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #a0a0a0;
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#sidebar img {
+    width: 100vh;
+    height: calc(100vh + 40px);
+    position: absolute;
+    z-index: -1;
+    -webkit-filter: blur(8px) brightness(30%);
+    filter: blur(8px) brightness(30%);
+    margin: -20px -20px -20px -20px;
+}
+
+#sidebar a {
+    color: #d0d0d0;
+    font-size: larger;
+    padding: 10px;
+}
+
+#sidebar a.active {
+    color: #efefef;
 }
