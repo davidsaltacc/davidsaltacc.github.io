@@ -197,6 +197,7 @@ hr {
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
     overflow: visible;
+    z-index: 102;
 }
 
 .topbar a {
@@ -221,7 +222,7 @@ hr {
     text-align: center;
     background-color: #ffffff30;
     margin-right: 2px;
-    padding: 13px 20px;
+    padding: 12.5px 20px;
     color: #e0e0e0;
 }
 
@@ -311,18 +312,32 @@ hr {
 }
 
 .hamburger {
-    width: 60px;
+    width: 130px;
     height: 60px;
     font-size: 1.5em;
     line-height: 1em;
     color: #e0e0e0;
-    display: none;
+    display: block;
 }
 
 @media screen and (max-width: 400px) {
     .container .card .content .text {
         font-size: smaller;
     }
+}
+
+#sidebar {
+    height: 100%;
+    width: 450px;
+    z-index: 103;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #a0a0a0;
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 @media screen and (max-width: 900px) {
@@ -339,32 +354,10 @@ hr {
         width: 100%;
     }
 
-    #tabbuttons {
-        display: none;
-    }
-
     #sidebar {
-        display: block;
+        width: 70vw;
     }
 
-    .hamburger {
-        display: block;
-    }
-
-}
-
-#sidebar {
-    height: 100%;
-    width: 80vw;
-    z-index: 100;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #a0a0a0;
-    transition: 0.2s;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
 }
 
 #sidebar img {
@@ -385,4 +378,13 @@ hr {
 
 #sidebar a.active {
     color: #efefef;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
 }
