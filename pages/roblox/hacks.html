@@ -164,7 +164,7 @@
         </div>
 
         <div id="exploits">
-            <div class="buttoncontainer">
+            <div class="filterbuttoncontainer">
                 <button onclick="toggleFilterMenu();"></button>
                 <div class="filter-icon-container" id="filter" style="transform: translate(0px, -150px)">
                     <div onclick="toggleFilter('ex_win', this)" class="filterico icon windows"></div>
@@ -175,16 +175,36 @@
             </div>
             <div class="container" id="exploitcontainer"></div>
         </div>
+        <!--
+        <div id="editor" class="container" style="display: none;">
+            <h1>Data Editor and Card Creator </h1>
+            <div class="dataimportbuttoncontainer">
+                <button onclick="autoImportEditableCards();">Import automatically</button>
+                <button>Import from json data</button> 
+            </div>
+            <div id="editorCardContainer" class="container"></div>
+        </div>
+        -->
+        
+        <div id="issues" class="container" style="display: none;">
+            <h1 id="issuetitle">There seem to be no open issues</h1>
+            <button onclick="window.open('https://github.com/rsploits/rsploits.github.io/issues/new');">Open issue</button>
+        </div>
     </div>
+
     <div id="sidebar" style="left: -100vw;">
         <img src="../../assets/robloxhacks-background.png"></img>
         <a onclick="changeTab('exploits', this);" id="nav_exploits_button" class="active">Exploits</a>
         <a onclick="changeTab('viruses', this);" id="nav_viruses_button">Viruses/RATs/Fake Exploits</a>
         <a onclick="changeTab('bypassers', this);" id="nav_bypassers_button">Keysystem bypassers</a>
         <a onclick="changeTab('adblockers', this);" id="nav_adblockers_button">Adblockers</a>
+        <a onclick="changeTab('issues', this);" id="nav_issues_button">Issues and Suggestions</a>
+        <!--<a onclick="changeTab('editor', this);" id="nav_editor_button">Data Editor/Card Creator</a>-->
     </div>
     <div id="overlay" style="display: none; background-color: #00000000"></div>
     <img id="background" src="../../assets/robloxhacks-background.png"></img>
     <script src="/code/js/pages/roblox/hacks.js"></script>
+
+    <!--<script>changeTab('editor', document.getElementById('nav_editor_button'));</script>-->
 </body>
 </html>
