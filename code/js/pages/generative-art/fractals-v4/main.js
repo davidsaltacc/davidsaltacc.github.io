@@ -82,6 +82,46 @@ async function fetchSubCode(name, type, customCode) {
     return code;
 }
 
+async function loadImage(url) {
+    var img = new Image();
+    img.src = url;
+    await img.decode();
+
+    var canv = document.createElement("canvas");
+    canv.width = img.width;
+    canv.height = img.height;
+
+    var ctx = canv.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var data = ctx.getImageData(0, 0, img.width, img.height);
+    canv.remove();
+    return {
+        data: data.data,
+        width: img.width, 
+        height: img.height
+    };
+}
+
+function createOrbitTrapTexture(width, height) {
+    var texture = device.createTexture({
+        size: [width, height, 1],
+        format: "rgba8unorm",
+        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT
+    });
+    return texture;
+}
+
+function createOrbitTrapTextureSampler() {
+    return device.createSampler({
+        magFilter: "nearest",
+        minFilter: "nearest"
+    });
+}
+
+var orbitTrapTextureSourceImage;
+var orbitTrapTexture;
+var orbitTrapTextureSampler;
+
 async function compileShaderCode_(cmethod, cscheme, fractal, postf) {
     var code = null;
     await fetch("../../code/wgl/pages/generative-art/fractals-v4/main.wgsl") 
@@ -91,6 +131,10 @@ async function compileShaderCode_(cmethod, cscheme, fractal, postf) {
         }
     );
 
+    orbitTrapTextureSourceImage = await loadImage("/assets/cat.png");
+    orbitTrapTexture = createOrbitTrapTexture(orbitTrapTextureSourceImage.width, orbitTrapTextureSourceImage.height);
+    orbitTrapTextureSampler = createOrbitTrapTextureSampler();
+
     code = code.replace("///POST_FUNC", postf);
     code = code.replace("///ITER_FUNC", fractal);
     code = code.replace("///COLORSCHEME", cscheme);
@@ -99,21 +143,30 @@ async function compileShaderCode_(cmethod, cscheme, fractal, postf) {
     const cshaderModule = device.createShaderModule({ code: code });
     var cpipeline;
 
-
     try {
 
         cpipeline = await device.createRenderPipelineAsync({
-            layout: device.createPipelineLayout({ bindGroupLayouts: [
-                device.createBindGroupLayout({
+            layout: device.createPipelineLayout({
+                bindGroupLayouts: [ device.createBindGroupLayout({
                     entries: [
                         {
                             binding: 0,
                             visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
                             buffer: {},
-                        }
-                    ]
-                })
-            ]}),
+                        },
+                        {
+                            binding: 1,
+                            visibility: GPUShaderStage.FRAGMENT,
+                            texture: {},
+                        },
+                        {
+                            binding: 2,
+                            visibility: GPUShaderStage.FRAGMENT,
+                            sampler: {},
+                        },
+                    ],
+                }) ]
+            }),
             vertex: {
                 module: cshaderModule,
                 entryPoint: "vertex",
@@ -121,7 +174,7 @@ async function compileShaderCode_(cmethod, cscheme, fractal, postf) {
             fragment: {
                 module: cshaderModule,
                 entryPoint: "fragment",
-                targets: [{ format }],
+                targets: [{ format: format }],
             },
             primitive: {
                 topology: "triangle-strip",
@@ -140,6 +193,7 @@ async function compileShaderCode_(cmethod, cscheme, fractal, postf) {
             errormsg += "line " + (m.lineNum + 1) + ": " + code.split("\n")[m.lineNum] + "\n";
             errormsg += "\n...";
         });
+        console.log(errormsg);
         return errormsg;
     }
 
@@ -151,18 +205,24 @@ async function compileShaderCode_(cmethod, cscheme, fractal, postf) {
                 resource: {
                     buffer: uniformBuffer
                 }
+            },
+            {
+                binding: 1,
+                resource: orbitTrapTexture.createView()
+            },
+            {
+                binding: 2,
+                resource: orbitTrapTextureSampler
             }
         ]
     });
     contextMain.configure({
         device,
-        format,
-        alphaMode: "opaque",
+        format
     });
     contextJul.configure({
         device,
-        format,
-        alphaMode: "opaque",
+        format
     });
     pipeline = cpipeline;
     bindGroup = cbindGroup; 
@@ -244,13 +304,22 @@ function draw(context, juliaset, center, zoom) {
         juliaset
     ]);
 	device.queue.writeBuffer(uniformBuffer, 0, arrayBuffer);
+    device.queue.writeTexture(
+        { texture: orbitTrapTexture },
+        orbitTrapTextureSourceImage.data,
+        {
+            bytesPerRow: orbitTrapTextureSourceImage.width * 4,
+            rowsPerImage: orbitTrapTextureSourceImage.height
+        },
+        { width: orbitTrapTextureSourceImage.width, height: orbitTrapTextureSourceImage.height }
+    );
 
 	const encoder = device.createCommandEncoder();
 	const renderPass = encoder.beginRenderPass({
 		colorAttachments: [{
 			view: context.getCurrentTexture().createView(),
 			loadOp: "clear",
-			clearValue: [0, 0, 0, 0],
+			clearValue: [0, 0, 0, 1],
 			storeOp: "store",
 		}],
 	});
@@ -288,7 +357,7 @@ var presets_colormethods = {
     },
     "rings": {
         "id": 3,
-        "description": "Rings around the fractal. A lower radius makes it look better sometimes. Aim for around 20000."
+        "description": "Rings around the fractal."
     },
     "stripes": {
         "id": 4,
@@ -333,6 +402,10 @@ var presets_colormethods = {
     "interior_stripes": {
         "id": 14,
         "description": "Stripes, but on the interior. A little messy, only looks really good on the juliasets."
+    },
+    "pickover_stalk": {
+        "id": 15,
+        "description": "Another attempt at orbit traps. Looks quite nice, actually. Even when I don't understand half of it. Has a lot of lines, so maybe put a higher sample count."
     }
 };
 

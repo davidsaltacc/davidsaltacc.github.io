@@ -22,6 +22,8 @@ struct Uniforms {
 }
 
 @group(0) @binding(0) var<uniform> uniforms: Uniforms;
+@group(0) @binding(1) var orbitTrapTexture: texture_2d<f32>;
+@group(0) @binding(2) var orbitTrapTextureSampler: sampler;
 
 const pi: f32 = 3.1415926535897932384626433832795;
 const e: f32 = 2.7182818284590452353602874713527;
@@ -274,6 +276,7 @@ fn ms_rand(c: vec2<f32>) -> f32 {
 
 @fragment
 fn fragment(input: VertexOutput) -> @location(0) vec4<f32> { 
+
 	var pos: vec2<f32> = input.fragmentPosition / uniforms.zoom + uniforms.center;
 	var rcolor: vec4<f32> = vec4<f32>(0., 0., 0., 0.);  
 	var sampleCount: f32 = f32(uniforms.sampleCount);
@@ -331,5 +334,6 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 		}
 	}
 	return rcolor / sampleCount;
+	
 }
 
