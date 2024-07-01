@@ -59,7 +59,7 @@ body {
 
 .container .card:hover {
     transform: translateX(4px) rotate3d(0, 0, 1, 0.15deg);
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .container .card .content {
@@ -104,8 +104,8 @@ body {
     object-fit: cover;
     width: 100%;
     height: 100%;
-    -webkit-filter: blur(8px) brightness(60%);
-    filter: blur(8px) brightness(60%);
+    -webkit-filter: blur(8px) brightness(30%);
+    filter: blur(8px) brightness(30%);
 }
 
 
@@ -128,15 +128,15 @@ body {
 }
 
 .g {
-    color: #5ffa5f;
+    color: #6fff6f;
 }
 
 .n {
-    color: #fafa5f;
+    color: #ffff6f;
 }
 
 .b {
-    color: #ff5f5f;
+    color: #ff6f6f;
 }
 
 hr {
@@ -188,7 +188,7 @@ hr {
 
 .topbar {
     overflow: hidden;
-    background-color: #ffffff50;
+    background-color: #ffffff20;
     position: fixed;
     top: 0;
     width: 100%;
@@ -504,4 +504,30 @@ h1, h2 {
     margin-bottom: 6px;
     margin-top: 2px;
     margin-left: 10px;
+}
+
+.popuptext {
+    display: flex;
+    width: 120px;
+    background-color: #555555;
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+    padding: 8px;
+    z-index: 1;
+    bottom: -140%;
+    right: 15px;
+    border-radius: 5px;
+    font-size: x-small;
+}
+
+.popuptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
 }

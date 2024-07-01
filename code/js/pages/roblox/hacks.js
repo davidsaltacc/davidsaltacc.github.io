@@ -64,6 +64,7 @@ function toggleFilter(name, button) {
 }
 
 function toggleNav() {
+    el("hamburgerpopup").style.display = "none";
     var sidebar = el("sidebar");
     var overlay = el("overlay");
     if (sidebar.style.left == "-100vw") {

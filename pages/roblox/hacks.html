@@ -12,7 +12,10 @@
         <div class="pagename">
             <h2>Roblox Exploits</h2>
         </div>
-        <a onclick="toggleNav();" class="hamburger">☰ More</a>
+        <a onclick="toggleNav();" class="hamburger">
+            ☰ More
+            <span class="popuptext" id="hamburgerpopup">Keysystem bypassers, RAT lists, Issues/Suggestions, and more!</span>
+        </a>
     </div>
 
     <div id="contents">
@@ -199,6 +202,7 @@
         <a onclick="changeTab('bypassers', this);" id="nav_bypassers_button">Keysystem bypassers</a>
         <a onclick="changeTab('adblockers', this);" id="nav_adblockers_button">Adblockers</a>
         <a onclick="changeTab('issues', this);" id="nav_issues_button">Issues and Suggestions</a>
+        <a onclick="window.open('https://ko-fi.com/justacoder');">Support me!</a>
         <!--<a onclick="changeTab('editor', this);" id="nav_editor_button">Data Editor/Card Creator</a>-->
     </div>
     <div id="overlay" style="display: none; background-color: #00000000"></div>
