@@ -840,6 +840,18 @@ var presets_fractals = {
         "radius": 10000000,
         "description": "Looks like the mandelbrot set at first, but really isn't.",
         "formula": "<p>z<sub>n+1</sub> = (((1 - i) * z<sub>n</sub>) / 2) * (((1 + i) * (z<sub>n</sub> - 1)) / 2) + c</p>"
+    },
+    "sierpinsky": {
+        "id": 43,
+        "radius": 100000000000000000000,
+        "description": "IFS Fractal except its not IFS its escape-time. Has no juliaset, so both canvases are filled with the same.",
+        "formula": "if (Im(z<sub>n</sub>) > 0.5) then: z<sub>n+1</sub> = (2 * Re(z<sub>n</sub>) + i * 2 * Im(z<sub>n</sub>) - 1) <br>else if (Re(z<sub>n</sub>) > 0.5) then: z<sub>n+1</sub> = (2 * Re(z<sub>n</sub>) - 1, i* 2 * Im(z<sub>n</sub>)) <br>else: z<sub>n+1</sub> = (2 * Re(z<sub>n</sub>) + i * 2 * Im(z<sub>n</sub>))"
+    },
+    "barnsley": {
+        "id": 44,
+        "radius": 10,
+        "description": "Fern.",
+        "formula": "z<sub>n+1</sub> = (z<sub>n</sub> - sign(Re(z<sub>n</sub>))) * c"
     }
 }
 
