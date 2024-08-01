@@ -1341,6 +1341,8 @@ async function resetSettings() {
 applyUrlParams();
 createUrlParams();
 
+setCanvasSize(500);
+
 updateDescriptions();
 
 async function toggleShader(b, t) {
