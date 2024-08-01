@@ -1347,6 +1347,7 @@ function listenDprChange() {
         listenDprChange();
     }, { once: true });
 }
+document.body.style.zoom = 1 / window.devicePixelRatio * 100 + "%";
 listenDprChange();
 
 updateDescriptions();
