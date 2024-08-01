@@ -1201,8 +1201,6 @@ function setCanvasSize(size) {
     canvasJul.width = canvasJul.height = size;
     canvasMain.clientWidth = canvasMain.clientHeight = size;
     canvasJul.clientWidth = canvasJul.clientHeight = size;
-    canvasMain.style.width = canvasMain.style.height = size / window.devicePixelRatio + "px";
-    canvasJul.style.width = canvasJul.style.height = size / window.devicePixelRatio + "px";
     if (size > (window.innerWidth - window.innerWidth / 6) / 2 && size > window.innerHeight - window.innerHeight / 4) {
         setCanvasesSticky(false);
     } else {
@@ -1341,7 +1339,15 @@ async function resetSettings() {
 applyUrlParams();
 createUrlParams();
 
-setCanvasSize(500);
+function listenDprChange() {
+    matchMedia("(resolution: " + window.devicePixelRatio + "dppx)").addEventListener("change", _ => {
+        if (window.devicePixelRatio > 1) {
+            document.body.style.zoom = 1 / window.devicePixelRatio * 100 + "%";
+        }
+        listenDprChange();
+    }, { once: true });
+}
+listenDprChange();
 
 updateDescriptions();
 
