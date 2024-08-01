@@ -1339,17 +1339,6 @@ async function resetSettings() {
 applyUrlParams();
 createUrlParams();
 
-function listenDprChange() {
-    matchMedia("(resolution: " + window.devicePixelRatio + "dppx)").addEventListener("change", _ => {
-        if (window.devicePixelRatio > 1) {
-            document.body.style.zoom = 1 / window.devicePixelRatio * 100 + "%";
-        }
-        listenDprChange();
-    }, { once: true });
-}
-document.body.style.zoom = 1 / window.devicePixelRatio * 100 + "%";
-listenDprChange();
-
 updateDescriptions();
 
 async function toggleShader(b, t) {
