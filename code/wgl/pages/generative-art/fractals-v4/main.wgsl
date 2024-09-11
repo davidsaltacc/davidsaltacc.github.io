@@ -281,7 +281,7 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 	var rcolor: vec4<f32> = vec4<f32>(0., 0., 0., 0.);  
 	var sampleCount: f32 = f32(uniforms.sampleCount);
 
-	for (var sample: f32 = 0.0; sample < sampleCount; sample += 1) {
+	for (var sample: f32 = 0.0; sample < sampleCount; sample += 1.) {
 		var c: vec2<f32> = vec2<f32>(
 			ms_rand(pos + sample),
 			ms_rand(100. + pos + sample)
