@@ -68,7 +68,7 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 	var color: vec3<f32> = vec3<f32>(0., 0., 0.);  
 	var rr: f32 = 0.; 
 
-	for (var sample: f32 = 0.0; sample < sampleCount; sample += 1) {
+	for (var sample: f32 = 0.0; sample < sampleCount; sample += 1.) {
 		var pos: vec2<f32> = vec2<f32>(
 			rand(rc + sample),
 			rand(50. + rc + sample)
