@@ -79,7 +79,7 @@ fn fbm(x: f32, y: f32, z: f32, amp_: f32, freq_: f32, oct: f32, pers: f32, lac: 
     var freq: f32 = freq_;
     var v: f32 = 0;
     var m: f32 = 0;
-    for (var i: f32 = 0.; i < oct; i += 1) {
+    for (var i: f32 = 0.; i < oct; i += 1.) {
         v += amp * noise3d(x * freq, y * freq, z * freq);
         m += amp;
         amp *= pers;
