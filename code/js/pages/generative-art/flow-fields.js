@@ -116,7 +116,7 @@ function frame() {
         p.y += p.vy;
         
         context.lineTo(p.x, p.y);
-        var color = hsv2rgb(ang / 12, 0.55, 1);
+        var color = hsv2rgb(ang / 12 + Math.PI, 0.32, 1.05);
         context.strokeStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]}, 0.37)`;
 
         context.stroke();
