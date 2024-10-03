@@ -24,7 +24,7 @@ for (var i = step; i <= height - step; i += step) {
         normY += Math.abs(normY) == normY ? -0.5 : 0.5;
         var variance = Math.max(width / 2 - 50 - distanceToCenter, 0);
         var random = Math.random() * variance / 4 * -1 * normY;
-        var point = {x: j, y: i + random * ((Math.random() - 1) * 2) ** 3};
+        var point = {x: j, y: i + random * ((Math.random() - 1) * 2) ** 2};
 
         line.push(point);
     } 
