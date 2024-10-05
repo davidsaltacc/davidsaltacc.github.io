@@ -1,1 +1,0 @@
-return vec2<f32>(c.x, c.y * -1.) + apply_post_function(vec2<f32>(2. * z.x * z.y, abs(z.y) - abs(z.x)), c);

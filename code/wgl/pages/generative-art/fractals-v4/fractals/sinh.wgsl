@@ -1,1 +1,0 @@
-return apply_post_function(c_pow(c_sinh(z), power), c) + c;

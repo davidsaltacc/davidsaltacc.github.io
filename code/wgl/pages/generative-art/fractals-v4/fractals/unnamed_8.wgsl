@@ -1,1 +1,0 @@
-return apply_post_function(c_division(c_pow(c_sqrt(c_division(c_pow(z, 2.), c)) - c_division(c, c_pow(z, 2.)), power), vec2<f32>(2., 0.)), c);

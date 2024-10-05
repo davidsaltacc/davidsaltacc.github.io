@@ -1,1 +1,0 @@
-return apply_post_function(c_division(c_pow(z, 4.) + vec2<f32>(1., c.x), c_pow(z, 2.) + vec2<f32>(1., c.y)), c);

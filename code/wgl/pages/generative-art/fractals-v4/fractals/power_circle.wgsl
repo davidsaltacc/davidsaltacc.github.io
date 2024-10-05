@@ -1,1 +1,0 @@
-return apply_post_function(c_cpow(z, c), c);

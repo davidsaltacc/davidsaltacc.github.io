@@ -1,1 +1,0 @@
-return apply_post_function(c_sqrt(c_pow(z, power + 1.)) + c, c);

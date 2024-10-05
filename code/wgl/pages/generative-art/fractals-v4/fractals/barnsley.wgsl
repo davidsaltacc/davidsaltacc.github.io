@@ -1,1 +1,0 @@
-return apply_post_function(c_multiplication(z - vec2<f32>(sign(z.x), 0.), c), c);
