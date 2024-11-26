@@ -1,0 +1,51 @@
+
+body {
+
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #000000;
+    color: #ffffff;
+
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+    user-select: none;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+}
+
+s {
+    text-decoration-thickness: 0.12em;
+}
+
+input[type="checkbox"] {
+
+    width: 2em;
+    height: 2em;
+
+}
+
+p {
+    padding: 5px;
+}
+
+a {
+    color: #c7eaff;
+}
+
+.small {
+    font-size: 80%;
+}
+
+.centered {
+    text-align: center;
+}
