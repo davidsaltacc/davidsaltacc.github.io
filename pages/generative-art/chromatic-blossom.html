@@ -11,11 +11,11 @@
     <h1>Chromatic Blossom</h1>
     <p>Chromatic Blossom is a zoomable and configurable flower-like beautiful pattern based on just a bit of math, creating interesting patterns upon zooming in.</p>
     <p>Radius:</p>
-    <input type="number" onchange="setRadius(this.value);" value="1000">
+    <input id="radius" type="number" onchange="setRadius(this.value);" value="1000">
     <p>Iterations:</p>
-    <input type="number" onchange="setIterations(this.value);" value="20">
+    <input id="interations" type="number" onchange="setIterations(this.value);" value="20">
     <p>Sample Count (Quality/Smoothnes Increase):</p>
-    <input type="number" onchange="setSampleCount(this.value);" value="6">
+    <input id="sampleCount" type="number" onchange="setSampleCount(this.value);" value="6">
     <p>Canvas Size:</p>
     <input type="number" onchange="setCanvasSize(this.value);" value="1000">
     <p>a, b, c, d, e, f, g, h, i, j:</p>
@@ -32,7 +32,7 @@
     <br>
     <button type="button" onclick="randomizeValues();">Randomize</button>
     <p>Skeleton Mode</p>
-    <button onclick="this.innerHTML = 'Toggle Skeleton mode ' + (toggleSkeleton() ? 'off' : 'on');">Toggle Skeleton mode on</button>
+    <button id="skel" onclick="this.innerHTML = 'Toggle Skeleton mode ' + (toggleSkeleton() ? 'off' : 'on');">Toggle Skeleton mode on</button>
     <!--
     <h2>Animate</h2>
     <p>Keyframes</p>
@@ -44,8 +44,10 @@
     <br>
     -->
     <hr>
-    <canvas id="canvasMain" width="1000" height="1000"></canvas>
     <button onclick="exportMain();">Export canvas to png</button>
+    <button onclick="openPresetLink();">Open Preset Link</button>
+    <hr>
+    <canvas id="canvasMain" width="1000" height="1000"></canvas>
     <script src="../../code/js/pages/generative-art/chromatic-blossom.js"></script>
 </body>
 </html>

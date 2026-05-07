@@ -146,8 +146,6 @@ function renderMain() {
     draw(contextMain, centerMain, zoomMain);
 }
 
-renderMain();
-
 var mouse_x_main = 0;
 var mouse_y_main = 0;
 var mouse_clicked_right_main = false;
@@ -174,10 +172,6 @@ function mouse_down_main(e) {
     updateMouseCoords_main(e);
 }
 function mouse_up_main(e) {
-    if (e.button == 0) {
-        mouse_clicked_main = false;
-        
-    }
     if (e.button == 2) {
         mouse_clicked_right_main = false;
     }
@@ -228,6 +222,10 @@ function updateUi() {
     document.getElementById("h").value = h;
     document.getElementById("i").value = i;
     document.getElementById("j").value = j;
+    document.getElementById("radius").value = radius;
+    document.getElementById("interations").value = maxIterations;
+    document.getElementById("sampleCount").value = sampleCount;
+    document.getElementById("skel").innerHTML = "Toggle Skeleton mode " + (skeleton ? "off" : "on");
 }
 
 function setIterations(i) { maxIterations = i; renderMain(); }
@@ -235,6 +233,51 @@ function setRadius(r) { radius = r; renderMain(); }
 function setSampleCount(s) { sampleCount = s; renderMain(); }
 
 function toggleSkeleton() { skeleton = !skeleton; renderMain(); return skeleton; }
+
+function openPresetLink() {
+    const url = new URL(window.location.href.split("?")[0]);
+    url.searchParams.append("a", a.toString());
+    url.searchParams.append("b", b.toString());
+    url.searchParams.append("c", c.toString());
+    url.searchParams.append("d", d.toString());
+    url.searchParams.append("e", e.toString());
+    url.searchParams.append("f", f.toString());
+    url.searchParams.append("g", g.toString());
+    url.searchParams.append("h", h.toString());
+    url.searchParams.append("i", i.toString());
+    url.searchParams.append("j", j.toString());
+    url.searchParams.append("it", maxIterations.toString());
+    url.searchParams.append("rd", radius.toString());
+    url.searchParams.append("sc", sampleCount.toString());
+    url.searchParams.append("sk", skeleton ? "1" : "0");
+    url.searchParams.append("cx", centerMain[0].toString());
+    url.searchParams.append("cy", centerMain[1].toString());
+    url.searchParams.append("zm", zoomMain.toString());
+    window.open(url.href);
+}
+
+function applyPreset(urlString) {
+    const url = new URL(urlString);
+    a = Number.parseFloat(url.searchParams.get("a") ?? a);
+    b = Number.parseFloat(url.searchParams.get("b") ?? b);
+    c = Number.parseFloat(url.searchParams.get("c") ?? c);
+    d = Number.parseFloat(url.searchParams.get("d") ?? d);
+    e = Number.parseFloat(url.searchParams.get("e") ?? e);
+    f = Number.parseFloat(url.searchParams.get("f") ?? f);
+    g = Number.parseFloat(url.searchParams.get("g") ?? g);
+    h = Number.parseFloat(url.searchParams.get("h") ?? h);
+    i = Number.parseFloat(url.searchParams.get("i") ?? i);
+    j = Number.parseFloat(url.searchParams.get("j") ?? j);
+    maxIterations = Number.parseInt(url.searchParams.get("it") ?? maxIterations);
+    radius = Number.parseInt(url.searchParams.get("rd") ?? radius);
+    sampleCount = Number.parseInt(url.searchParams.get("sc") ?? sampleCount);
+    skeleton = (url.searchParams.get("sk") ?? "0") === "1";
+    centerMain[0] = Number.parseFloat(url.searchParams.get("cx") ?? centerMain[0]);
+    centerMain[1] = Number.parseFloat(url.searchParams.get("cy") ?? centerMain[1]);
+    zoomMain = Number.parseFloat(url.searchParams.get("zm") ?? zoomMain);
+    updateUi();
+    renderMain();
+}
 
 function setA(a_) { a = a_; renderMain(); }
 function setB(b_) { b = b_; renderMain(); }
@@ -320,7 +363,9 @@ function animate() {
     // lerping
 }
 
-return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setSampleCount, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, addKeyframe, removeKeyframe, animate, toggleSkeleton];
+applyPreset(window.location.href);
+
+return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setSampleCount, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, addKeyframe, removeKeyframe, animate, toggleSkeleton, openPresetLink];
 }
 
 var renderMain;
@@ -335,7 +380,8 @@ var addKeyframe;
 var removeKeyframe; 
 var animateFrames;
 var toggleSkeleton;
-(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setSampleCount2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, addKeyframe2, removeKeyframe2, animate2, toggleSkeleton2]) => {
+var openPresetLink;
+(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setSampleCount2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, addKeyframe2, removeKeyframe2, animate2, toggleSkeleton2, openPresetLink2]) => {
     renderMain = renderMain2;
     exportMain = exportMain2;
     setCanvasSize = setCanvasSize2;
@@ -357,5 +403,6 @@ var toggleSkeleton;
     removeKeyframe = removeKeyframe2;
     animateFrames = animate2;
     toggleSkeleton = toggleSkeleton2;
+    openPresetLink = openPresetLink2;
 });
 
