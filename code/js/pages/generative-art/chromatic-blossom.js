@@ -25,6 +25,7 @@ const uniformBufferSize = Math.ceil((
     + Uint32Array.BYTES_PER_ELEMENT // radius: u32
     + Uint32Array.BYTES_PER_ELEMENT // sampleCount: u32
     + Uint32Array.BYTES_PER_ELEMENT // skeleton: u32
+    + Uint32Array.BYTES_PER_ELEMENT // skeletonClamping: u32
 ) / 8) * 8;
 
 const uniformBuffer = device.createBuffer({
@@ -93,6 +94,7 @@ var maxIterations = 20;
 var radius = 1000;
 var sampleCount = 6;
 var skeleton = false;
+var skeletonClamping = false;
 
 var a = 0.5;
 var b = 0.5;
@@ -116,11 +118,12 @@ function draw(context, center, zoom) {
         zoom,
         a, b, c, d, e, f, g, h, i, j
     ]);
-    new Uint32Array(arrayBuffer, 15 * Float32Array.BYTES_PER_ELEMENT).set([
+    new Uint32Array(arrayBuffer, 15 * Uint32Array.BYTES_PER_ELEMENT).set([
         maxIterations,
         radius,
         sampleCount,
-        skeleton
+        skeleton,
+        skeletonClamping
     ]);
     device.queue.writeBuffer(uniformBuffer, 0, arrayBuffer);
 
@@ -226,6 +229,7 @@ function updateUi() {
     document.getElementById("interations").value = maxIterations;
     document.getElementById("sampleCount").value = sampleCount;
     document.getElementById("skel").innerHTML = "Toggle Skeleton mode " + (skeleton ? "off" : "on");
+    document.getElementById("skelClamp").innerHTML = "Toggle Skeleton Clamping " + (skeletonClamping ? "off" : "on");
 }
 
 function setIterations(i) { maxIterations = i; renderMain(); }
@@ -233,6 +237,7 @@ function setRadius(r) { radius = r; renderMain(); }
 function setSampleCount(s) { sampleCount = s; renderMain(); }
 
 function toggleSkeleton() { skeleton = !skeleton; renderMain(); return skeleton; }
+function toggleSkeletonClamping() { skeletonClamping = !skeletonClamping; renderMain(); return skeletonClamping; }
 
 function openPresetLink() {
     const url = new URL(window.location.href.split("?")[0]);
@@ -250,6 +255,7 @@ function openPresetLink() {
     url.searchParams.append("rd", radius.toString());
     url.searchParams.append("sc", sampleCount.toString());
     url.searchParams.append("sk", skeleton ? "1" : "0");
+    url.searchParams.append("kc", skeletonClamping ? "1" : "0");
     url.searchParams.append("cx", centerMain[0].toString());
     url.searchParams.append("cy", centerMain[1].toString());
     url.searchParams.append("zm", zoomMain.toString());
@@ -272,6 +278,7 @@ function applyPreset(urlString) {
     radius = Number.parseInt(url.searchParams.get("rd") ?? radius);
     sampleCount = Number.parseInt(url.searchParams.get("sc") ?? sampleCount);
     skeleton = (url.searchParams.get("sk") ?? "0") === "1";
+    skeletonClamping = (url.searchParams.get("kc") ?? "0") === "1";
     centerMain[0] = Number.parseFloat(url.searchParams.get("cx") ?? centerMain[0]);
     centerMain[1] = Number.parseFloat(url.searchParams.get("cy") ?? centerMain[1]);
     zoomMain = Number.parseFloat(url.searchParams.get("zm") ?? zoomMain);
@@ -365,7 +372,7 @@ function animate() {
 
 applyPreset(window.location.href);
 
-return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setSampleCount, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, addKeyframe, removeKeyframe, animate, toggleSkeleton, openPresetLink];
+return [renderMain, exportMain, setCanvasSize, setIterations, setRadius, setSampleCount, setA, setB, setC, setD, setE, setF, setG, setH, setI, setJ, randomizeValues, addKeyframe, removeKeyframe, animate, toggleSkeleton, toggleSkeletonClamping, openPresetLink];
 }
 
 var renderMain;
@@ -380,8 +387,9 @@ var addKeyframe;
 var removeKeyframe; 
 var animateFrames;
 var toggleSkeleton;
+var toggleSkeletonClamping;
 var openPresetLink;
-(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setSampleCount2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, addKeyframe2, removeKeyframe2, animate2, toggleSkeleton2, openPresetLink2]) => {
+(async () => { return await init(); })().then(([renderMain2, exportMain2, setCanvasSize2, setIterations2, setRadius2, setSampleCount2, setA2, setB2, setC2, setD2, setE2, setF2, setG2, setH2, setI2, setJ2, randomizeValues2, addKeyframe2, removeKeyframe2, animate2, toggleSkeleton2, toggleSkeletonClamping2, openPresetLink2]) => {
     renderMain = renderMain2;
     exportMain = exportMain2;
     setCanvasSize = setCanvasSize2;
@@ -390,7 +398,7 @@ var openPresetLink;
     setSampleCount = setSampleCount2;
     setA = setA2;
     setB = setB2;
-    setC = setC2;
+    setC = setC2;ö
     setD = setD2;
     setE = setE2;
     setF = setF2;
@@ -403,6 +411,7 @@ var openPresetLink;
     removeKeyframe = removeKeyframe2;
     animateFrames = animate2;
     toggleSkeleton = toggleSkeleton2;
+    toggleSkeletonClamping = toggleSkeletonClamping2;
     openPresetLink = openPresetLink2;
 });
 

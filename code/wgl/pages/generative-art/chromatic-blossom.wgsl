@@ -21,7 +21,8 @@ struct Uniforms {
 	maxIterations: u32,
     radius: u32,
 	sampleCount: u32,
-	skeleton: u32
+	skeleton: u32,
+	skeletonClamping: u32
 }
 
 @group(0) @binding(0) var<uniform> uniforms: Uniforms;
@@ -95,6 +96,9 @@ fn fragment(input: VertexOutput) -> @location(0) vec4<f32> {
 			cy = r * sin(th * c + fi / d) * sin(ph * c + fi / d) + cy;
 			cz = r * cos(th * c + fi / d) + cz;
 			rr = r * r * r * r;
+			if (uniforms.skeletonClamping == 1) {
+				rr = clamp(rr, 0., 1.);
+			}
 		}
 		if (uniforms.skeleton == 1) {
 			color += vec3(rr, rr, rr);

@@ -32,7 +32,9 @@
     <br>
     <button type="button" onclick="randomizeValues();">Randomize</button>
     <p>Skeleton Mode</p>
+    <p>Skeleton mode displays a b/w render that may often reveal different structure, hence the name "skeleton". The Skeleton Clamping mode fixes an issue that causes multisampling not to work correctly, which in turn changes how it appears, but makes it look leagues better. As I like the pre-fix contrast, but I'm not a fan of the multisampling being broken, I will definitely implement a way to preserve both. This clamp-fix should also be applied to normal rendering, but results are way more interesting and beautiful if kept unrestricted. Those are technically an artifact of how messy code behaves, but I may at some point re-implement the algorithm in a stable way that will not be specific to anything (behaviour when going over RGB bounds).</p>
     <button id="skel" onclick="this.innerHTML = 'Toggle Skeleton mode ' + (toggleSkeleton() ? 'off' : 'on');">Toggle Skeleton mode on</button>
+    <button id="skelClamp" onclick="this.innerHTML = 'Toggle Skeleton Clamping ' + (toggleSkeletonClamping() ? 'off' : 'on');">Toggle Skeleton Clamping on</button>
     <!--
     <h2>Animate</h2>
     <p>Keyframes</p>
