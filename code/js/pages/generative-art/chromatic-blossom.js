@@ -398,7 +398,7 @@ var openPresetLink;
     setSampleCount = setSampleCount2;
     setA = setA2;
     setB = setB2;
-    setC = setC2;ö
+    setC = setC2;
     setD = setD2;
     setE = setE2;
     setF = setF2;
